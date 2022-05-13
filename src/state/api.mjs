@@ -17,7 +17,7 @@ class Sy_api {
 	//NOTE: need a guard check when calling these to ensure it's the correct turn & x,y in bounds
 	//async calls return true/false depending on success.
 	//returning false should not fail, it's just a notice that the state did not change.
-	static async api_idle_selectCharacter(x,y){
+	static api_idle_selectCharacter(x,y){
 		//return true if selecting a ch, false if selecting an unused square
 		const selected_xy=Bit.SET_XY(x,y);
 		const ch = Sy.getCharacterAtPosition(x,y);
@@ -34,7 +34,7 @@ class Sy_api {
 		Sy.checkEndOfTurn();
 		return false;
 	}
-	static async api_mov_selectDestination(x,y){
+	static api_mov_selectDestination(x,y){
 		const selected_xy=Bit.SET_XY(x,y);
 		const ch = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
@@ -44,7 +44,7 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = selected_xy;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-				await Sy_api.#renderer.waitForMovement(prevCh.point_xy,selected_xy);
+					Sy_api.#renderer.drawMovement(prevCh.point_xy,selected_xy);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -59,7 +59,7 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-				await Sy_api.#renderer.waitForMovement(prevCh.point_xy,attackPosition);
+					Sy_api.#renderer.drawMovement(prevCh.point_xy,attackPosition);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -69,7 +69,7 @@ class Sy_api {
 		//TODO: invalid movement...  could also call Sy_api.api_mov_cancel()?
 		return false;
 	}
-	static async api_mov_cancel(){
+	static api_mov_cancel(){
 		//'b' or 'a' on space with no movement/attack target
 		//clear out movement grid and reset the cursor position
 		//the character wouldn't have moved yet
@@ -78,7 +78,7 @@ class Sy_api {
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		return true;
 	}
-	static async api_tgt_selectTarget(x,y){
+	static api_tgt_selectTarget(x,y){
 		const slectedTgt = Sy.getCharacterAtPosition(x,y);
 		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){
 			console.log("invalid target cell",x,y);
@@ -92,19 +92,19 @@ class Sy_api {
 		//'a' on target
 		if (slectedTgt.point_xy != ch.point_xy) { 
 			if(Sy_api.#renderer){
-			await Sy_api.#renderer.waitForBattle(ch, slectedTgt);
+				Sy_api.#renderer.drawBattle(ch, slectedTgt);
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);
 		}
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		if(Sy.checkEndOfTurn()){
 			if(Sy_api.#renderer){
-			await Sy_api.#renderer.waitForTurnToggle();
+				Sy_api.#renderer.drawTurnToggle();
 			}
 		}
 		return true;
 	}
-	static async api_tgt_cancel(){
+	static api_tgt_cancel(){
 		//'b' or 'a' on invalid target
 		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
 										   Bit.GET_Y(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy));
@@ -116,6 +116,8 @@ class Sy_api {
 		return true;
 	}
 
+
+///////helper methods
 	//read only properties for rendering, ai, etc
 	static api_get_playerCharacters(){
 		return Sy.cbt_varCharacters.filter((x)=>{

@@ -11,9 +11,6 @@
   },
   "author": "Sylvan",
   "license": "ISC",
-  "dependencies": {
-    "boardgame.io": "^0.49.11"
-  },
   "devDependencies": {
     "snowpack": "^3.8.8"
   }

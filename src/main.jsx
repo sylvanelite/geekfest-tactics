@@ -2,16 +2,19 @@ import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { Canvas } from  './components/canvas.js';
 import { GameState } from './Game.js';
-import { Client } from 'boardgame.io/client';
+import { Renderer } from './renderer/renderer.js';
+import { Animator } from './renderer/animator.js';
 
-import { Renderer } from "./renderer/renderer.js";
+import { ui_idle } from './ui/ui_idle.js';
+import { ui_displayMove } from './ui/ui_displayMove.js';
+import { ui_selectTarget } from './ui/ui_selectTarget.js';
 
-const client = Client({ game: GameState,//debug:false,
-numPlayers: 1//single player game. in theory could allow more than 1 player to take turns?
-});
-client.start();
-window.client = client;//for debug
-//RenderPhase.preload();
+import { Sy_api } from './state/api.js';
+import {
+	cbt_STATE_IDLE,
+	cbt_STATE_DISPLAY_MOVE,
+	cbt_STATE_SELECT_WEAPON_TARGET
+} from './state/consts.mjs';
 
 const App = () => {
 	let lastRenderTime = performance.now();
@@ -21,22 +24,46 @@ const App = () => {
 			return;//cap the frame rate at a max of ~60fps
 		}
 		lastRenderTime = performance.now();
-		//render based on client.getState()
-		const state = client.getState();
-		const data = state.ctx;
-		const G = state.G;
 		const ctx = canvas.getContext('2d');
-		ctx.font = '12pt monospace';
 		ctx.clearRect(0,0,canvas.width,canvas.height);
-		//draw BG
+		
+		if(Animator.isRunning()){
+			Animator.draw(ctx);
+			return;
+		}
+		const state = Sy_api.api_getCurrentState();
+		//draw BG here? or higher up?
+		switch(state){
+			case cbt_STATE_IDLE:
+				ui_idle.draw(ctx);
+			return;
+			case cbt_STATE_DISPLAY_MOVE:
+				ui_displayMove.draw(ctx);
+			return;
+			case cbt_STATE_SELECT_WEAPON_TARGET:
+				ui_selectTarget.draw(ctx);
+			return;
+		}
+		
 	};
 	const click = (e)=>{
-		Renderer.mouseMove(e);//ensure mouse coord is up to date
-		
-		const state = client.getState();
-		const ctx = state.ctx;
-		const G = state.G;
-		
+		Renderer.mouseMove(e);//ensure mouse coord is up to date		
+		if(Animator.isRunning()){
+			return;//TODO: skip animation? 
+		}
+		const state = Sy_api.api_getCurrentState();
+		//draw BG here?
+		switch(state){
+			case cbt_STATE_IDLE:
+				ui_idle.click(Renderer.mousePoint);
+			return;
+			case cbt_STATE_DISPLAY_MOVE:
+				ui_displayMove.click(Renderer.mousePoint);
+			return;
+			case cbt_STATE_SELECT_WEAPON_TARGET:
+				ui_selectTarget.click(Renderer.mousePoint);
+			return;
+		}
 	};
 	
   return (

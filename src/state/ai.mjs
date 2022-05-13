@@ -9,7 +9,7 @@ import { Sy_api } from "./api.mjs";
 import { Bit } from "./bit.mjs";
 
 class Sy_AI {
-	static async AI(){
+	static AI(){
 		//only do AI if it's the enemy turn
 		if(Sy_api.api_getCurrentPlayerState() != cbt_ENEMY){
 			console.log("not AI turn");
@@ -17,13 +17,13 @@ class Sy_AI {
 		}
 		switch (Bit.GET_LOW_BYTE(Sy_api.api_getCurrentState())) {
 			case cbt_STATE_IDLE:
-				await Sy_AI.#STATE_IDLE();
+				Sy_AI.#STATE_IDLE();
 				break;
 			case cbt_STATE_DISPLAY_MOVE:
-				await Sy_AI.#STATE_DISPLAY_MOVE();
+				Sy_AI.#STATE_DISPLAY_MOVE();
 				break;
 			case cbt_STATE_SELECT_WEAPON_TARGET:
-				await Sy_AI.#STATE_SELECT_WEAPON_TARGET();
+				Sy_AI.#STATE_SELECT_WEAPON_TARGET();
 				break;
 			default:
 				break;
@@ -31,17 +31,17 @@ class Sy_AI {
 		return (Sy_api.api_getCurrentPlayerState() == cbt_ENEMY);
 	
 	}
-	static async #STATE_IDLE() {
+	static #STATE_IDLE() {
 		const eChara = Sy_api.api_get_enemyCharacters();
 		for (const ch of eChara){
 			if (!(ch.hasMoved) && ch.player_state != cbt_NO_PLAYER_STATE) {
 				//found a valid unit, select them:
-				await Sy_api.api_idle_selectCharacter(Bit.GET_X(ch.point_xy),Bit.GET_Y(ch.point_xy));
+				Sy_api.api_idle_selectCharacter(Bit.GET_X(ch.point_xy),Bit.GET_Y(ch.point_xy));
 				return;
 			}
 		}
 	};
-	static async #STATE_DISPLAY_MOVE() {
+	static #STATE_DISPLAY_MOVE() {
 		//see if there is an opponent in range.
 		//if yes, press 'a' on them
 		const pChara = Sy_api.api_get_playerCharacters();
@@ -49,7 +49,7 @@ class Sy_AI {
 			if(playerTgt.player_state != cbt_NO_PLAYER_STATE &&
 			   Sy_api.api_getAttackForCell(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy))){
 				   //found target, select
-				   await Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy));
+				   Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy));
 				   return;//TODO: randomise target choice if multiple are in range? could use i = offset + random() % length while iterating?
 			}
 		}
@@ -96,9 +96,9 @@ class Sy_AI {
 				}
 			}
 		}
-		await Sy_api.api_mov_selectDestination(Bit.GET_X(cursor_xy),Bit.GET_Y(cursor_xy));
+		Sy_api.api_mov_selectDestination(Bit.GET_X(cursor_xy),Bit.GET_Y(cursor_xy));
 	};
-	static async #STATE_SELECT_WEAPON_TARGET() {
+	static #STATE_SELECT_WEAPON_TARGET() {
 		//AI works by pointing cursor at target if one is in range, 
 		//can just press 'a' here to commit the action
 		const current_xy = Sy_api.api_getCurrentChPosition();
@@ -125,7 +125,7 @@ class Sy_AI {
 			}
 		}
 		//TODO: could improve AI by iterating over targets and choosing the best one to hit
-		await Sy_api.api_tgt_selectTarget(Bit.GET_X(tgt_xy),Bit.GET_Y(tgt_xy));
+		Sy_api.api_tgt_selectTarget(Bit.GET_X(tgt_xy),Bit.GET_Y(tgt_xy));
 	};
 }
 
