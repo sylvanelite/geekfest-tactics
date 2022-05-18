@@ -1,8 +1,8 @@
 //https://github.com/SethPipho/monte-carlo-tree-search-js
-import {Bit} from "./bit.mjs";
-import {Sy} from './main.mjs';
-import { Sy_AI as ai } from "./ai.mjs";
-import { Sy_api as api } from "./api.mjs";
+import {Bit} from "../bit.mjs";
+import {Sy} from '../main.mjs';
+import { Sy_AI as ai } from "../ai.mjs";
+import { Sy_api as api } from "../api.mjs";
 import {
 	cbt_PLAYER,
 	cbt_ENEMY,
@@ -10,9 +10,8 @@ import {
 	cbt_STATE_IDLE,
 	cbt_STATE_SELECT_WEAPON_TARGET,
 	st_Character,
-	st_Terrain,
 	cbt_NULL_CHARACTER
-} from "./consts.mjs";
+} from "../consts.mjs";
 
 
 class SyBoard {
@@ -68,7 +67,7 @@ class SyBoard {
 
     moves(){
 		/* returns list of valid moves given current game state*/
-		const moves = SyBoard.#getUnorderedMoves();
+		const moves = SyBoard.getUnorderedMoves();
 		//console.log(moves);
 		return moves;
 	}
@@ -190,7 +189,7 @@ static #applyMoveFast(move){
 	Sy.cbt_CurrentState=cbt_STATE_IDLE;
 }
 //use this if the order of attacks is unimportant
-static #getUnorderedMoves(){
+static getUnorderedMoves(){
 	
 	let chs = api.api_get_playerCharacters();
 	let allCh = [];
@@ -235,25 +234,21 @@ static #getUnorderedMoves(){
 					
 					for(let j=max_range;j>=min_range;j-=1){
 						for(let i=0;i<j;i+=1){
-							//diagonal left-up
 							if(x-j+i>=0){
 								if(canAttkCell(x,y,x-j+i,y-i)){
 									tgtSet.add(Bit.SET_XY(x-j+i,y-i));
 								}
 							}
-							//diagonal down-right
 							if(x+j-i<Sy.MAP_WIDTH){
 								if(canAttkCell(x,y,x+j-i,y+i)){
 									tgtSet.add(Bit.SET_XY(x+j-i,y+i));
 								}
 							}
-							//diagonal top-right
 							if(y-j+i>=0){
 								if(canAttkCell(x,y,x+i,y-j+i)){
 									tgtSet.add(Bit.SET_XY(x+i,y-j+i));
 								}
 							}
-							//diagonal left-down
 							if(y+j-i<Sy.MAP_HEIGHT){
 								if(canAttkCell(x,y,x-i,y+j-i)){
 									tgtSet.add(Bit.SET_XY(x-i,y+j-i));

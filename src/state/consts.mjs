@@ -9,10 +9,10 @@ class st_Character{//"st" prefix indicates it's struct-like.
                    //All vars are 'simple' data types (numbers) not strings or objects
 	static ch_cl_DEFAULT=0;//TODO: replace this with bit flag of skills
 	constructor(){
-		this.hp=20;
+		this.hp=1;
 		this.atk=5;
 		this.point_xy=0;
-		this.mov=3;
+		this.mov=2;
 		this.hasMoved=false;
 		this.player_state=cbt_NO_PLAYER_STATE;
 		this.min_range=1;

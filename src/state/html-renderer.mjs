@@ -41,7 +41,6 @@ class HtmlRenderer{
 		}
 		return res;
 	}
-	//for debugging
 	static consoleRender(){
 		const res = HtmlRenderer.#getTextDescription();
 		console.log(res);

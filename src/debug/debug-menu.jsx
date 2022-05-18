@@ -1,23 +1,106 @@
-import React from 'https://cdn.skypack.dev/react';
+import React, {useState} from 'https://cdn.skypack.dev/react';
+
+import {Unit} from "./unit.js";
+import {Terrain} from "./terrain.js";
+
+import {Bit} from "../state/bit.mjs";
 import {Sy} from "../state/main.js";
+import {Sy_api as api} from "../state/api.js";
+import {
+	cbt_PLAYER,
+	cbt_ENEMY,
+	cbt_NO_PLAYER_STATE,
+	st_Character,
+} from "../state/consts.js";
+
+const initialUnits = ()=>{
+	const ch0 = new st_Character();
+	const ch1 = new st_Character();
+	const ch2 = new st_Character();
+	const ch3 = new st_Character();
+
+	ch0.player_state = cbt_PLAYER;
+	ch0.point_xy = Bit.SET_XY(0,0);
+	ch1.player_state = cbt_PLAYER;
+	ch1.point_xy = Bit.SET_XY(1,0);
+	ch2.player_state = cbt_ENEMY;
+	ch2.point_xy = Bit.SET_XY(1,3);
+	ch3.player_state = cbt_ENEMY;
+	ch3.point_xy = Bit.SET_XY(1,4);
+	return [ch0,ch1,ch2,ch3];
+};
+const initialTerrain = ()=>{
+	return {
+		width:3,
+		height:5,
+		terrain:[
+		1 ,1 ,1 ,
+		99,1 ,1 ,
+		99,1 ,1 ,
+		1 ,1 ,99,
+		1 ,1 ,99,
+		]
+	};
+};
 
 function DebugMenu(props) {
-	const hide = "";
+	
+	const [terrainData,setTerrain] = useState(initialTerrain());
+	const [unitData,setUnits] = useState(initialUnits());
+	
 	const click = ()=>{
-		console.log("here");
-		console.log(Sy.cbt_terrain);
+		console.log("debug");
 	};
-	/*
-	todo: some kind of save/load button, opens a .json file and stores it into Sy
-	then some kind of eidtor: map height/width, terrain, units 
+	const apply = ()=>{
+		console.log("apply");
+		api.api_generateRoom(42,terrainData,unitData);
+	};
 	
-	plus the ability to step forward/back in turns?
 	
-	*/
-  return (<div 
-		style={{float:"right",display:""}}
-		onClick={click}
-  >debug</div>);
+	const playerUnits = ()=>{
+		
+	}
+	const terrain = ()=>{
+		const res = [];
+		const cellClick =(idx,newCost)=>{
+			setTerrain((oldTerrain)=>{
+				const ter = oldTerrain.terrain.slice();
+				ter[idx]=newCost;
+				return {
+					width:oldTerrain.width,
+					height:oldTerrain.height,
+					terrain:ter
+				};
+			});
+		};
+		let idx = 0;
+		for(let j=0;j<terrainData.height;j+=1){
+			for(let i=0;i<terrainData.width;i+=1){
+				let ch = " ";
+				const terrain = terrainData.terrain[idx];//TODO: should pass this in to Sy to read from state?
+				res.push(<Terrain cost={terrain} cellChange={cellClick}  idx={idx}/>);
+				idx+=1;
+			}
+			res.push(<br/>)
+		}
+		return (<div>
+		{res}
+		</div>);
+	}
+	const enemyUnits = ()=>{
+		
+	}
+	
+	
+	
+  return (<div style={{float:"right",display:""}}>
+  <div onClick={click}> debug</div>
+  
+  <button onClick={apply} >apply</button>
+  
+  {terrain()}
+	
+  </div>);
 }
 
 export {DebugMenu};
