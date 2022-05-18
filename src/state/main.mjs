@@ -6,7 +6,6 @@ import {
 	cbt_STATE_IDLE,
 	cbt_STATE_SELECT_WEAPON_TARGET,
 	st_Character,
-	st_Terrain,
 	cbt_NULL_CHARACTER
 } from "./consts.mjs";
 const SIZE_OF_INT = 32;//number of bits in Uint32Array. Used for the dimensions of cbt_attack's bitmask.
@@ -16,7 +15,7 @@ class Sy  {
 static MAP_WIDTH = 36;//each dimension should be less than a byte (0-255)
 static MAP_HEIGHT = 12;
 //these could be const, but if changing the world size, these should be variable
-static cbt_terrain = [...Array(Sy.MAP_WIDTH)].map(e => Array(Sy.MAP_HEIGHT).fill(0).map(()=>new st_Terrain()));
+static cbt_terrain = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
 static cbt_move = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
 static cbt_attack =  new Uint32Array(Sy.MAP_WIDTH* Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT));//bit mask of which cells can be attacked. 
 static cbt_varCharacters = [];//array to hold st_Character()
@@ -40,6 +39,21 @@ static flushChPositionCache(){
         }
 	}
 }
+
+static setMapSize(width,height){
+	if(Sy.MAP_WIDTH == width&&Sy.MAP_HEIGHT==height){
+		return;//nothing to do
+	}
+	//flush variables that depend on dimensions
+	//NOTE: this depends on being in the idle state.
+	Sy.MAP_WIDTH = width;
+	Sy.MAP_HEIGHT = height;
+	Sy.cbt_terrain = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
+	Sy.cbt_move = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
+	Sy.cbt_attack =  new Uint32Array(Sy.MAP_WIDTH* Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT));
+	Sy.#moveQueue = new Int32Array(Sy.MAP_WIDTH * Sy.MAP_HEIGHT);
+}
+
 static cellIsFree(position_xy){
 	return !Sy.#chPositionCache.has(position_xy);
 }
@@ -129,11 +143,13 @@ static getAttackForCell( x, y){
 	const remainder = y%(SIZE_OF_INT);
 	return Bit.BIT_CHECK(Sy.cbt_attack[idx],remainder)
 }
-static getTerrain(x,y){
-	return Sy.cbt_terrain[x][y];
+static getTerrainForCell(x,y){
+	const idx = y*Sy.MAP_WIDTH+x;
+	return Sy.cbt_terrain[idx];
 }
-static setTerrain(x, y, terrain){
-	Sy.cbt_terrain[x][y] = terrain;
+static setTerrainForCell(x, y, terrain){
+	const idx = y*Sy.MAP_WIDTH+x;
+	Sy.cbt_terrain[idx] = terrain;
 }
 static getMoveCellFromAttack( attackX,  attackY, ch){
 	const min_range = ch.min_range;
@@ -183,9 +199,9 @@ static performBattleCalculation( ch, enemy){
 		Sy.changeChPosistion(enemy,enemy.point_xy);
 	}
 }
-static getCostForTerrain(chCl,terrain){
+static getCostForTerrain(chCl,terrainBaseCost){
 	//TODO: check chCl against a bit flag of skills for that ch to determine movement.
-	return terrain.cost;
+	return terrainBaseCost;
 }
 static #canMoveThroughCell = function(xy,player_state){
 	if(Sy.cellIsFree(xy)){
@@ -220,7 +236,7 @@ static fillMove( x, y, move, ch) {
 		for(const {px,py} of points){
 			if (py < Sy.MAP_HEIGHT && py>=0 && px < Sy.MAP_WIDTH && px>=0) {
 				const xy = Bit.SET_XY(px, py);
-				const terrain = Sy.getTerrain(px, py);
+				const terrain = Sy.getTerrainForCell(px, py);
 				const cost = Sy.getCostForTerrain(chCl,terrain);
 				const nodeCost = nodeMove-cost;
 				if (nodeCost > 0 && Sy.getMoveForCell(px, py) < nodeCost) {

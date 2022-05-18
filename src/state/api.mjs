@@ -5,8 +5,7 @@ import {
 	cbt_STATE_IDLE,
 	cbt_STATE_DISPLAY_MOVE,
 	cbt_STATE_SELECT_WEAPON_TARGET,
-	st_Character,
-	st_Terrain
+	st_Character
 } from "./consts.mjs";
 import { Sy } from "./main.mjs";
 import { Bit } from "./bit.mjs";
@@ -186,9 +185,6 @@ class Sy_api {
 		}
 		return res;
 	}
-	static api_getTerrainCost(x,y){
-		return Sy.getTerrain(x,y).cost;
-	}
 	//seed for generating random data
 	//data = 2d array of initial terrain
 	static api_generateRoom(seed=0,terrainData=null,unitData=null){
@@ -196,29 +192,82 @@ class Sy_api {
 		Sy.cbt_CurrentPlayerState= cbt_PLAYER;
 		Sy.cbt_isv_STATE_IDLE_xy=0;
 		Sy.cbt_isv_STATE_DISPLAY_MOVE_xy=0;
-		Sy.resetMove();
-		Sy.resetAttack();
 		PRNG.RNG_A=42+seed;
 		PRNG.RNG_B=1234+seed*4;
 		PRNG.RNG_C=5678+seed*2;
 		PRNG.RNG_D=9001+seed*3;
 		for(let i=0;i<Sy.MAP_WIDTH;i+=1){
 			for(let j=0;j<Sy.MAP_HEIGHT;j+=1){
-				Sy.setTerrain(i,j,new st_Terrain());
+				Sy.setTerrainForCell(i,j,1);
 			}
 		}
 		if(terrainData){
-			for(let i=0;i<Sy.MAP_WIDTH;i+=1){
-				for(let j=0;j<Sy.MAP_HEIGHT;j+=1){
-					Sy.setTerrain(i,j,terrainData[i][j]);
-				}
-			}
+			Sy.setMapSize(terrainData.width,terrainData.height);
+			Sy.cbt_terrain = terrainData.terrain.slice();
 		}
 		if(unitData){
 			Sy.cbt_varCharacters = JSON.parse(JSON.stringify(unitData));
 		}
+		Sy.resetMove();
+		Sy.resetAttack();
 		Sy.flushChPositionCache();
 	}
+	static api_cloneState(){
+		//deep copy of globals
+		const terrainCopy=Sy.cbt_terrain.slice();
+		const moveCopy=Sy.cbt_move.slice();
+		const atkCopy = Sy.cbt_attack.slice();//slice is shallow copy, should be ok since it's ints
+		//ch needs deep copy
+		const chCopy = Array(Sy.cbt_varCharacters.length);
+		let i=0;
+		for(const ch of Sy.cbt_varCharacters){
+			const copy = new st_Character();
+			const keys = Object.keys(copy);
+			for(const key of keys){
+				copy[key] = ch[key];
+			}
+			chCopy[i] = copy;
+			i+=1;
+		}
+		return{
+			width:Sy.MAP_WIDTH,
+			height:Sy.MAP_HEIGHT,
+			currentState:Sy.cbt_CurrentState,//int
+			currentPlayerState:Sy.cbt_CurrentPlayerState,//int
+			xy:Sy.cbt_xy,//int
+			isv_STATE_IDLE_xy:Sy.cbt_isv_STATE_IDLE_xy,//int
+			isv_STATE_DISPLAY_MOVE_xy:Sy.cbt_isv_STATE_DISPLAY_MOVE_xy,//int
+			terrain:terrainCopy,
+			move:moveCopy,
+			attack:atkCopy,
+			varCharacters:chCopy,
+			rngA:PRNG.RNG_A,
+			rngB:PRNG.RNG_B,
+			rngC:PRNG.RNG_C,
+			rngD:PRNG.RNG_D,
+		};
+	}
+	static api_setState(savedState){
+		//set map dimensions (must be done before setting attack, etc)
+		Sy.setMapSize(savedState.width,savedState.height);
+		//all globals that aren't const
+		Sy.cbt_CurrentState=savedState.currentState;//int
+		Sy.cbt_CurrentPlayerState=savedState.currentPlayerState;//int
+		Sy.cbt_xy = savedState.xy;//int
+		Sy.cbt_isv_STATE_IDLE_xy = savedState.isv_STATE_IDLE_xy;//int
+		Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = savedState.isv_STATE_DISPLAY_MOVE_xy;//int
+		//all global arrays
+		Sy.cbt_terrain = savedState.terrain;
+		Sy.cbt_move = savedState.move;
+		Sy.cbt_attack = savedState.attack;
+		Sy.cbt_varCharacters = savedState.varCharacters;
+		PRNG.RNG_A = savedState.rngA;
+		PRNG.RNG_B = savedState.rngB;
+		PRNG.RNG_C = savedState.rngC;
+		PRNG.RNG_D = savedState.rngD;
+		Sy.flushChPositionCache();
+	}
+	
 	static api_render(){
 		Sy_api.#renderer.render();
 	}

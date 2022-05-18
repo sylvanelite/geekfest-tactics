@@ -20,7 +20,7 @@ class Animator{
 		animation.duration +=1;
 		//TODO: switch on animation.kind() and actually draw it
 		if(animation.duration>=animation.totalDuration){
-			Animator.#animations.splice();
+			Animator.#animations.splice(0,1);
 		}
 	}
 	

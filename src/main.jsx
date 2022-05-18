@@ -1,5 +1,6 @@
 import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
+import { DebugMenu } from  './debug/debug-menu.js';
 import { Canvas } from  './components/canvas.js';
 import { GameState } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
@@ -15,6 +16,9 @@ import {
 	cbt_STATE_DISPLAY_MOVE,
 	cbt_STATE_SELECT_WEAPON_TARGET
 } from './state/consts.mjs';
+
+//https://www.gamedeveloper.com/programming/making-a-game-boy-game-in-2017-a-quot-sheep-it-up-quot-post-mortem-part-1-2-
+
 
 const App = () => {
 	let lastRenderTime = performance.now();
@@ -55,13 +59,13 @@ const App = () => {
 		//draw BG here?
 		switch(state){
 			case cbt_STATE_IDLE:
-				ui_idle.click(Renderer.mousePoint);
+				ui_idle.click();
 			return;
 			case cbt_STATE_DISPLAY_MOVE:
-				ui_displayMove.click(Renderer.mousePoint);
+				ui_displayMove.click();
 			return;
 			case cbt_STATE_SELECT_WEAPON_TARGET:
-				ui_selectTarget.click(Renderer.mousePoint);
+				ui_selectTarget.click();
 			return;
 		}
 	};
@@ -75,6 +79,7 @@ const App = () => {
 			height={Renderer.height} 
 			style={{width:Renderer.width/window.devicePixelRatio,height:Renderer.height/window.devicePixelRatio
 			}}/>
+	<DebugMenu />
 	</div>
   );
 }

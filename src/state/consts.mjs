@@ -22,12 +22,6 @@ class st_Character{//"st" prefix indicates it's struct-like.
 }
 const cbt_NULL_CHARACTER = new st_Character();//NOTE: don't compare to null directly, compare player_state instead.
 
-class st_Terrain{
-	constructor(){
-		this.cost=1;
-	}
-}
-
 export {
 	cbt_PLAYER,
 	cbt_ENEMY,
@@ -35,7 +29,6 @@ export {
 	cbt_STATE_IDLE,
 	cbt_STATE_DISPLAY_MOVE,
 	cbt_STATE_SELECT_WEAPON_TARGET,
-	st_Terrain,
 	st_Character,
 	cbt_NULL_CHARACTER
 };
