@@ -57,7 +57,32 @@ function DebugMenu(props) {
 	};
 	
 	
-	const playerUnits = ()=>{
+	const units = ()=>{
+		const playerUnits = [];
+		const enemyUnits = [];
+		const unitClick = (idx,newUnit)=>{
+			setUnits((oldUnits)=>{
+				const unt = [];
+				for(const unit of oldUnits){//shallow copy of unchanged units.
+					unt.push(unit);
+				}
+				unt[idx]=newUnit;
+				return unt;
+			});
+		};
+		
+		for(let i=0;i<unitData.length;i+=1){
+			const ch = unitData[i];
+			const res = (ch.player_state == cbt_PLAYER?playerUnits:enemyUnits);
+			res.push(<Unit unit={ch} unitChange={unitClick} idx={i}/>);
+		}
+		
+		return (<div>
+		Units(P):
+			{playerUnits}
+			Units(E):
+			{enemyUnits}
+		</div>);
 		
 	}
 	const terrain = ()=>{
@@ -99,6 +124,7 @@ function DebugMenu(props) {
   <button onClick={apply} >apply</button>
   
   {terrain()}
+  {units()}
 	
   </div>);
 }
