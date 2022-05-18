@@ -1,4 +1,4 @@
-import React, {useState} from 'https://cdn.skypack.dev/react';
+import React, {useState,useEffect} from 'https://cdn.skypack.dev/react';
 
 import {Unit} from "./unit.js";
 import {Terrain} from "./terrain.js";
@@ -47,14 +47,18 @@ function DebugMenu(props) {
 	
 	const [terrainData,setTerrain] = useState(initialTerrain());
 	const [unitData,setUnits] = useState(initialUnits());
-	
+	const apply = ()=>{
+		console.log("apply",terrainData,unitData);
+		api.api_generateRoom(42,terrainData,unitData);
+	};
 	const click = ()=>{
 		console.log("debug");
 	};
-	const apply = ()=>{
-		console.log("apply");
-		api.api_generateRoom(42,terrainData,unitData);
-	};
+	//initialisation (useEffect to make this run once, not each re-render)
+	//remove 'useEffect' if removing the 'apply' button and making changes instantly
+    useEffect(()=>{
+		apply();
+    }, [])
 	
 	
 	const units = ()=>{

@@ -203,13 +203,15 @@ class Sy_api {
 		}
 		if(terrainData){
 			Sy.setMapSize(terrainData.width,terrainData.height);
-			Sy.cbt_terrain = terrainData.terrain.slice();
+			Sy.cbt_terrain = terrainData.terrain;
 		}
 		if(unitData){
-			Sy.cbt_varCharacters = JSON.parse(JSON.stringify(unitData));
+			Sy.cbt_varCharacters = unitData;
 		}
 		Sy.resetMove();
 		Sy.resetAttack();
+		//establish deep copy to decouple state
+		Sy_api.api_setState(Sy_api.api_cloneState());
 		Sy.flushChPositionCache();
 	}
 	static api_cloneState(){
