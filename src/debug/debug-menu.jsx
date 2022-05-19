@@ -122,15 +122,15 @@ function DebugMenu(props) {
 	
 	
 	
-  return (<div style={{float:"right",display:""}}>
-  <div onClick={click}> debug</div>
-  
-  <button onClick={apply} >apply</button>
-  
-  {terrain()}
-  {units()}
-	
-  </div>);
+  return (
+  <aside class={"menu"}>
+	  <div onClick={click}> debug</div>
+	  
+	  <button onClick={apply} >apply</button>
+	  
+	  {terrain()}
+	  {units()}
+  </aside>);
 }
 
 export {DebugMenu};

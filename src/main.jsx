@@ -1,6 +1,7 @@
-import React from 'https://cdn.skypack.dev/react';
+import React, {useState} from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-import { DebugMenu } from  './debug/debug-menu.js';
+import { DebugContainer } from  './debug/container.js';
+
 import { Canvas } from  './components/canvas.js';
 import { GameState } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
@@ -18,7 +19,7 @@ import {
 } from './state/consts.mjs';
 
 //https://www.gamedeveloper.com/programming/making-a-game-boy-game-in-2017-a-quot-sheep-it-up-quot-post-mortem-part-1-2-
-
+const DEBUG_ENABLED = true;
 
 const App = () => {
 	let lastRenderTime = performance.now();
@@ -70,20 +71,27 @@ const App = () => {
 		}
 	};
 	
+	
+	
   return (
-    <div>
-	<Canvas draw={draw} onClick={click} 
-                onMouseMove={Renderer.mouseMove}
-                onMouseOut={Renderer.mouseOut}
-			width={Renderer.width} 
-			height={Renderer.height} 
-			style={{width:Renderer.width/window.devicePixelRatio,height:Renderer.height/window.devicePixelRatio
-			}}/>
-	<DebugMenu />
+    <div class={"container is-widescren"} >
+		<div class={"columns"}>
+		<div class={"column"}>
+			<Canvas draw={draw} onClick={click} 
+					onMouseMove={Renderer.mouseMove}
+					onMouseOut={Renderer.mouseOut}
+				width={Renderer.width} 
+				height={Renderer.height} 
+				style={{width:Renderer.width/window.devicePixelRatio,height:Renderer.height/window.devicePixelRatio
+				}}/>
+		</div>
+		<DebugContainer enabled={DEBUG_ENABLED}/>
+	</div>
 	</div>
   );
 }
 window.onresize=()=>{
+	return;//
 	const canvElems=document.getElementsByTagName('canvas');
 	for(const c of canvElems){
 		c.style.width=window.innerWidth+"px";
