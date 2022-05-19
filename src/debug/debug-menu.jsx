@@ -88,8 +88,8 @@ function DebugMenu(props) {
 			{enemyUnits}
 		</div>);
 		
-	}
-	const terrain = ()=>{
+	};
+	const terrainGrid = ()=>{
 		const res = [];
 		const cellClick =(idx,newCost)=>{
 			setTerrain((oldTerrain)=>{
@@ -115,11 +115,29 @@ function DebugMenu(props) {
 		return (<div>
 		{res}
 		</div>);
-	}
-	const enemyUnits = ()=>{
-		
-	}
+	};
 	
+	const copyTerrain = (oldTerrain,newTerrain)=>{
+		
+		//copy from old->new so it's not blanked out
+		
+		//initialise terrain with a cost of 1
+		for(let i=0;i<newTerrain.terrain.length;i+=1){
+			newTerrain.terrain[i]=1;
+		}
+		const getIdxForCell = (x,y,terr)=>{
+			const idx = y*terr.width+x;
+			return idx
+		};
+		for(let x=0;x<newTerrain.width&&x<oldTerrain.width;x+=1){
+			for(let y=0;y<newTerrain.height&&y<oldTerrain.height;y+=1){
+				const idxOld = getIdxForCell(x,y,oldTerrain);
+				const idxNew = getIdxForCell(x,y,newTerrain);
+				newTerrain.terrain[idxNew] = oldTerrain.terrain[idxOld];
+			}
+		}
+		
+	};
 	
 	
   return (
@@ -128,7 +146,46 @@ function DebugMenu(props) {
 	  
 	  <button onClick={apply} >apply</button>
 	  
-	  {terrain()}
+
+		<div class="field-group">
+			<div class="field is-inline-block-desktop">
+				w: <input style={{maxWidth:"72px"}} type={'number'} value={terrainData.width} class={"input is-small"}
+					onChange={(e)=>{
+						if(e.target.value<1){
+							return false;
+						}
+						setTerrain((oldTerrain)=>{
+							const width = e.target.value;
+							const newTerrain= {
+								width:width,
+								height:oldTerrain.height,
+								terrain:new Uint32Array(width*oldTerrain.height)
+							};
+							copyTerrain(oldTerrain,newTerrain);
+							return newTerrain;
+						});
+					}}
+				></input>,
+				h: <input style={{maxWidth:"72px"}} type={'number'} value={terrainData.height} class={"input is-small"}
+					onChange={(e)=>{
+						if(e.target.value<1){
+							return false;
+						}
+						setTerrain((oldTerrain)=>{
+							const height = e.target.value;
+							const newTerrain= {
+								width:oldTerrain.width,
+								height:height,
+								terrain:new Uint32Array(oldTerrain.width*height)
+							};
+							copyTerrain(oldTerrain,newTerrain);
+							return newTerrain;
+						});
+					}}
+				></input>
+			</div>
+		</div>
+	  {terrainGrid()}
 	  {units()}
   </aside>);
 }
