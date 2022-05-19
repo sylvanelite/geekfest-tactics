@@ -13,34 +13,92 @@ function Unit(props) {
 		this.movCl=st_Character.ch_cl_DEFAULT;
 		*/
 		
-	const changeHp = ()=>{
-		props.unit.hp+=1;
+	const changeHp = (newHp)=>{
+		console.log(newHp);
+		props.unit.hp=newHp;
 		props.unitChange(props.idx,props.unit);
 	};
-	const changeAtk = ()=>{
-		props.unit.atk+=1;
+	const changeAtk = (newAtk)=>{
+		props.unit.atk=atk;
 		props.unitChange(props.idx,props.unit);
 	};
-	const changeMov = ()=>{
-		props.unit.mov+=1;
+	const changeMov = (newMov)=>{
+		props.unit.mov=newMov;
 		props.unitChange(props.idx,props.unit);
 	};
-	const changeMinRange = ()=>{
-		props.unit.min_range+=1;
+	const changeMinRange = (newRange)=>{
+		props.unit.min_range=newRange;
 		props.unitChange(props.idx,props.unit);
 	};
-	const changeMaxRange = ()=>{
-		props.unit.max_range+=1;
+	const changeMaxRange = (newRange)=>{
+		props.unit.max_range=newRange;
 		props.unitChange(props.idx,props.unit);
 	};
 	
   //TODO: x,y
+  
+  const [modal,setModal] = useState(false);
+  
   return (<div>
-  hp:<span onClick={changeHp}> {props.unit.hp} </span>
-  atk:<span onClick={changeAtk}> {props.unit.atk} </span>
-  mov:<span onClick={changeMov}> {props.unit.mov} </span>
-  min_range:<span onClick={changeMinRange}> {props.unit.min_range} </span>
-  max_range:<span onClick={changeMaxRange}> {props.unit.max_range} </span>
+  
+  <button onClick={()=>setModal(true)}>{"unit"+props.idx}</button>
+  
+  <div class={(modal?"modal is-active":"modal")}>
+	  <div class={"modal-background"} onClick={()=>setModal(false)}></div>
+	  <div class={"modal-content"} style={{backgroundColor:'white'}}>
+	  <div class={"section"}>
+		  <div class={"columns"}>
+			  <div class={"column"}>
+				  <div class={"field"}>
+					<label class={"label"}>HP</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"}  value={props.unit.hp}
+							onChange={(e)=>{changeHp(e.target.value)}}
+						>
+						</input>
+					</div>
+				  </div>
+				  <div class={"field"}>
+					<label class={"label"}>atk</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={props.unit.atk}
+							onChange={(e)=>{changeAtk(e.target.value)}}>
+						</input>
+					</div>
+				  </div>
+				  <div class={"field"}>
+					<label class={"label"}>mov</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={props.unit.mov}
+							onChange={(e)=>{changeMov(e.target.value)}}>
+						</input>
+					</div>
+				  </div>
+			  </div>
+			  <div class={"column"}>
+				  <div class={"field"}>
+					<label class={"label"}>min_range</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={props.unit.min_range}
+							onChange={(e)=>{changeMinRange(e.target.value)}}>
+						</input>
+					</div>
+				  </div>
+				  <div class={"field"}>
+					<label class={"label"}>max_range</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={props.unit.max_range}
+							onChange={(e)=>{changeMaxRange(e.target.value)}}>
+						</input>
+					</div>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+	  </div>
+	  <button class={"modal-close is-large"} aria-label={"close"} onClick={()=>setModal(false)}></button>
+	</div>
+  
   </div>);
 }
 
