@@ -1,4 +1,5 @@
 import React, {useState} from 'https://cdn.skypack.dev/react';
+import {Bit} from '../state/bit.js';
 
 function Unit(props) {
 		/*
@@ -32,6 +33,18 @@ function Unit(props) {
 	};
 	const changeMaxRange = (newRange)=>{
 		props.unit.max_range=newRange;
+		props.unitChange(props.idx,props.unit);
+	};
+	const changeX = (newX)=>{
+		const [x,y] = Bit.GET_XY(props.unit.point_xy);
+		const xy = Bit.SET_XY(newX,y);
+		props.unit.point_xy = xy;
+		props.unitChange(props.idx,props.unit);
+	};
+	const changeY = (newY)=>{
+		const [x,y] = Bit.GET_XY(props.unit.point_xy);
+		const xy = Bit.SET_XY(x,newY);
+		props.unit.point_xy = xy;
 		props.unitChange(props.idx,props.unit);
 	};
 	
@@ -76,6 +89,20 @@ function Unit(props) {
 				  </div>
 			  </div>
 			  <div class={"column"}>
+				  <div class={"field"}>
+					<label class={"label"}>x</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={Bit.GET_X(props.unit.point_xy)}
+							onChange={(e)=>{changeX(e.target.value)}}>
+						</input>
+					</div>
+					<label class={"label"}>y</label>
+					<div class={"control"}>
+						<input class={"input"} type={"number"} value={Bit.GET_Y(props.unit.point_xy)}
+							onChange={(e)=>{changeY(e.target.value)}}>
+						</input>
+					</div>
+				  </div>
 				  <div class={"field"}>
 					<label class={"label"}>min_range</label>
 					<div class={"control"}>
