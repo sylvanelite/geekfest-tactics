@@ -234,24 +234,28 @@ static getUnorderedMoves(){
 					
 					for(let j=max_range;j>=min_range;j-=1){
 						for(let i=0;i<j;i+=1){
-							if(x-j+i>=0){
-								if(canAttkCell(x,y,x-j+i,y-i)){
-									tgtSet.add(Bit.SET_XY(x-j+i,y-i));
+							const upX = x-j+i;
+							const downX = x+j-i;
+							const rightY = y-j+i;
+							const leftY = y+j-i; 
+							if(upX>=0&&upX<Sy.MAP_WIDTH&&y-i>=0){
+								if(canAttkCell(x,y,upX,y-i)){
+									tgtSet.add(Bit.SET_XY(upX,y-i));
 								}
 							}
-							if(x+j-i<Sy.MAP_WIDTH){
-								if(canAttkCell(x,y,x+j-i,y+i)){
-									tgtSet.add(Bit.SET_XY(x+j-i,y+i));
+							if(downX>=0&&downX<Sy.MAP_WIDTH&&y+i<Sy.MAP_HEIGHT){
+								if(canAttkCell(x,y,downX,y+i)){
+									tgtSet.add(Bit.SET_XY(downX,y+i));
 								}
 							}
-							if(y-j+i>=0){
-								if(canAttkCell(x,y,x+i,y-j+i)){
-									tgtSet.add(Bit.SET_XY(x+i,y-j+i));
+							if(rightY>=0&&rightY<Sy.MAP_HEIGHT&&x+i<Sy.MAP_WIDTH){
+								if(canAttkCell(x,y,x+i,rightY)){
+									tgtSet.add(Bit.SET_XY(x+i,rightY));
 								}
 							}
-							if(y+j-i<Sy.MAP_HEIGHT){
-								if(canAttkCell(x,y,x-i,y+j-i)){
-									tgtSet.add(Bit.SET_XY(x-i,y+j-i));
+							if(leftY>=0&&leftY<Sy.MAP_HEIGHT&&x-i>=0){
+								if(canAttkCell(x,y,x-i,leftY)){
+									tgtSet.add(Bit.SET_XY(x-i,leftY));
 								}
 							}
 						}

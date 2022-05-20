@@ -127,7 +127,7 @@ function DebugMenu(props) {
 		}
 		const getIdxForCell = (x,y,terr)=>{
 			const idx = y*terr.width+x;
-			return idx
+			return idx;
 		};
 		for(let x=0;x<newTerrain.width&&x<oldTerrain.width;x+=1){
 			for(let y=0;y<newTerrain.height&&y<oldTerrain.height;y+=1){
