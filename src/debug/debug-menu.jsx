@@ -141,9 +141,10 @@ function DebugMenu(props) {
 		
 	};
 	
+	const [searchDepth,setSearchDepth] = useState(3);
 	const evaluateBoard = ()=>{
-		console.log("searching");
-		const res = IterativeDeepening.search();
+		console.log("searching: "+searchDepth);
+		const res = IterativeDeepening.search(searchDepth);
 		console.log("done: ",res);
 	};
 	
@@ -154,7 +155,15 @@ function DebugMenu(props) {
 	  
 	  <button onClick={apply} >apply</button>
 	  
+		<div class="field-group">
 	  <button onClick={evaluateBoard} >evaluateBoard</button>
+		<input  value={searchDepth} 
+				type={'number'} class={"input is-small"}style={{maxWidth:"48px"}} 
+				onChange={(e)=>{
+				const value = parseInt(e.target.value,10);
+				setSearchDepth(value);
+			}}></input>
+		</div>
 
 		<div class="field-group">
 			<div class="field is-inline-block-desktop">

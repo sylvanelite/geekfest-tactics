@@ -21,6 +21,12 @@ fill tree a state,
 if state is not terminal, children = and a list of moves->new states
 */
 
+const RESULT={
+	WIN:'WIN',
+	LOSE:'LOSE',
+	NOT_FOUND:'NOT_FOUND'
+};
+
 class IterativeDeepening {
 	static applyMove(move){
 		/* play a move, move being an element from .moves() list */
@@ -52,9 +58,10 @@ class IterativeDeepening {
 				break;
 			}
 		}
-		
-		return !(pAlive&&eAlive);
-	};
+		node.isTerminal = !pAlive||!eAlive;
+		node.isPlayerWin = pAlive&&!eAlive;
+		return node.isTerminal;
+	}
 	static populateChildren(node){
 		if(node.children){return;}//already initialised
 		node.children = [];
@@ -69,43 +76,51 @@ class IterativeDeepening {
 				state:Sy_api.api_cloneState()
 			});
 		}
-	};
+	}
 
 	static truncatedDFS(node, maxDepth, currentDepth = 1){
 	  if (IterativeDeepening.evaluate(node)){
-		  return true;
+		  if(node.isPlayerWin){
+			  return RESULT.WIN;
+		  }
+		  return RESULT.LOSE;
 	  }
 	  IterativeDeepening.populateChildren(node);
 	  for (const child of node.children) {
 		if (currentDepth < maxDepth) {
 			const found = IterativeDeepening.truncatedDFS(child, maxDepth, currentDepth + 1);
-			if (found) {
-				return true;
+			//can short-circuit on a win
+			if (found == RESULT.WIN) {
+				return RESULT.WIN;
 			}
+			//TODO: how to handle lose?
+			//at the moment, just treat it the same as 'not found'
+			//i.e. keep searching until all children exhausted
 		}
 	  }
-	  return false;
-	};
+	  return RESULT.NOT_FOUND;
+	}
 
-	static search(){//return true/false depending on if win is found (todo: use best score instead)
+	static search(MAX_DEPTH){//return true/false depending on if win is found (todo: use best score instead)
 	  const initialState = Sy_api.api_cloneState();
 	  const node = {
 			state:Sy_api.api_cloneState()
 		};
-	  const maxDepth = 5;
 	  let depth = 1;
-	  while (depth < maxDepth) {
-		const found = IterativeDeepening.truncatedDFS(node, maxDepth, depth);
-		if(found){
+	  while (depth < MAX_DEPTH) {
+		const found = IterativeDeepening.truncatedDFS(node, MAX_DEPTH, depth);
+		console.log("depth:"+depth+" "+found);
+		if(found== RESULT.WIN){
 			Sy_api.api_setState(initialState);
-			return true;
+			console.log(node);
+			return RESULT.WIN;
 		}
 		depth += 1;
-		console.log("depth:"+depth);
 	  }
 	  Sy_api.api_setState(initialState);
-	  return false;// didn't find anything
-	};
+			console.log(node);
+	  return RESULT.NOT_FOUND;// didn't find anything
+	}
 
 }
 
