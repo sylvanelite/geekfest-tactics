@@ -12,6 +12,7 @@ class ui_selectTarget{
 			return;
 		}
 		const cell = Renderer.getMouseCell();
+		console.log(cell)
 		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			console.log("cell out of bounds: ",cell.x,cell.y);
 			return;

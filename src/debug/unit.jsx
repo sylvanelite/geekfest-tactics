@@ -66,7 +66,7 @@ function Unit(props) {
 					<label class={"label"}>HP</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"}  value={props.unit.hp}
-							onChange={(e)=>{changeHp(e.target.value)}}
+							onChange={(e)=>{changeHp(parseInt(e.target.value,10))}}
 						>
 						</input>
 					</div>
@@ -75,7 +75,7 @@ function Unit(props) {
 					<label class={"label"}>atk</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={props.unit.atk}
-							onChange={(e)=>{changeAtk(e.target.value)}}>
+							onChange={(e)=>{changeAtk(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 				  </div>
@@ -83,7 +83,7 @@ function Unit(props) {
 					<label class={"label"}>mov</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={props.unit.mov}
-							onChange={(e)=>{changeMov(e.target.value)}}>
+							onChange={(e)=>{changeMov(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 				  </div>
@@ -93,13 +93,13 @@ function Unit(props) {
 					<label class={"label"}>x</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={Bit.GET_X(props.unit.point_xy)}
-							onChange={(e)=>{changeX(e.target.value)}}>
+							onChange={(e)=>{changeX(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 					<label class={"label"}>y</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={Bit.GET_Y(props.unit.point_xy)}
-							onChange={(e)=>{changeY(e.target.value)}}>
+							onChange={(e)=>{changeY(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 				  </div>
@@ -107,7 +107,7 @@ function Unit(props) {
 					<label class={"label"}>min_range</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={props.unit.min_range}
-							onChange={(e)=>{changeMinRange(e.target.value)}}>
+							onChange={(e)=>{changeMinRange(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 				  </div>
@@ -115,7 +115,7 @@ function Unit(props) {
 					<label class={"label"}>max_range</label>
 					<div class={"control"}>
 						<input class={"input"} type={"number"} value={props.unit.max_range}
-							onChange={(e)=>{changeMaxRange(e.target.value)}}>
+							onChange={(e)=>{changeMaxRange(parseInt(e.target.value,10))}}>
 						</input>
 					</div>
 				  </div>

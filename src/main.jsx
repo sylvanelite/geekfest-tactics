@@ -12,6 +12,7 @@ import { ui_displayMove } from './ui/ui_displayMove.js';
 import { ui_selectTarget } from './ui/ui_selectTarget.js';
 
 import { Sy_api } from './state/api.js';
+import { Sy } from './state/main.js';
 import {
 	cbt_STATE_IDLE,
 	cbt_STATE_DISPLAY_MOVE,
@@ -20,6 +21,9 @@ import {
 
 //https://www.gamedeveloper.com/programming/making-a-game-boy-game-in-2017-a-quot-sheep-it-up-quot-post-mortem-part-1-2-
 const DEBUG_ENABLED = true;
+if(DEBUG_ENABLED){
+	window.Sy = Sy;
+}
 
 const App = () => {
 	let lastRenderTime = performance.now();

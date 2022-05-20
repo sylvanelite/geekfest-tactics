@@ -243,7 +243,7 @@ static fillMove( x, y, move, ch) {
 					if (Sy.#canMoveThroughCell(xy,ch.player_state)) {
 						Sy.setMoveForCell(px, py, nodeCost);
 						Sy.#moveQueue[end]=xy;
-						Sy.#moveQueue[end]=Bit.SET_HIGHER_BYTE(Sy.#moveQueue[end],(nodeCost));
+						Sy.#moveQueue[end]=Bit.SET_HIGHER_BYTE(Sy.#moveQueue[end],nodeCost);
 						end+=1;
 					}
 				}

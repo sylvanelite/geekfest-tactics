@@ -151,11 +151,12 @@ function DebugMenu(props) {
 			<div class="field is-inline-block-desktop">
 				w: <input style={{maxWidth:"72px"}} type={'number'} value={terrainData.width} class={"input is-small"}
 					onChange={(e)=>{
-						if(e.target.value<1){
+						const value = parseInt(e.target.value,10);
+						if(value<1){
 							return false;
 						}
 						setTerrain((oldTerrain)=>{
-							const width = e.target.value;
+							const width = value;
 							const newTerrain= {
 								width:width,
 								height:oldTerrain.height,
@@ -168,11 +169,12 @@ function DebugMenu(props) {
 				></input>,
 				h: <input style={{maxWidth:"72px"}} type={'number'} value={terrainData.height} class={"input is-small"}
 					onChange={(e)=>{
-						if(e.target.value<1){
+						const value = parseInt(e.target.value,10);
+						if(value<1){
 							return false;
 						}
 						setTerrain((oldTerrain)=>{
-							const height = e.target.value;
+							const height = value;
 							const newTerrain= {
 								width:oldTerrain.width,
 								height:height,
