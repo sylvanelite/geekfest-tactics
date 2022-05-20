@@ -13,6 +13,8 @@ import {
 	st_Character,
 } from "../state/consts.js";
 
+import {IterativeDeepening} from "../state/iterativedeepening/iterativedeepening.mjs";
+
 const initialUnits = ()=>{
 	const ch0 = new st_Character();
 	const ch1 = new st_Character();
@@ -139,6 +141,12 @@ function DebugMenu(props) {
 		
 	};
 	
+	const evaluateBoard = ()=>{
+		console.log("searching");
+		const res = IterativeDeepening.search();
+		console.log("done: ",res);
+	};
+	
 	
   return (
   <aside class={"menu"}>
@@ -146,6 +154,7 @@ function DebugMenu(props) {
 	  
 	  <button onClick={apply} >apply</button>
 	  
+	  <button onClick={evaluateBoard} >evaluateBoard</button>
 
 		<div class="field-group">
 			<div class="field is-inline-block-desktop">
