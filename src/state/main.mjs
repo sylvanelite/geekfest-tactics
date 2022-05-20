@@ -17,7 +17,7 @@ static MAP_HEIGHT = 12;
 //these could be const, but if changing the world size, these should be variable
 static cbt_terrain = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
 static cbt_move = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
-static cbt_attack =  new Uint32Array(Sy.MAP_WIDTH* Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT));//bit mask of which cells can be attacked. 
+static cbt_attack =  new Uint32Array(Math.ceil((Sy.MAP_WIDTH*Sy.MAP_HEIGHT)/SIZE_OF_INT));//bit mask of which cells can be attacked. 
 static cbt_varCharacters = [];//array to hold st_Character()
 static cbt_CurrentState= cbt_STATE_IDLE;//state machine: idle->display move->select target
 static cbt_CurrentPlayerState= cbt_PLAYER;
@@ -50,7 +50,7 @@ static setMapSize(width,height){
 	Sy.MAP_HEIGHT = height;
 	Sy.cbt_terrain = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
 	Sy.cbt_move = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
-	Sy.cbt_attack =  new Uint32Array(Sy.MAP_WIDTH* Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT));
+	Sy.cbt_attack =  new Uint32Array(Math.ceil((Sy.MAP_WIDTH*Sy.MAP_HEIGHT)/SIZE_OF_INT));
 	Sy.#moveQueue = new Int32Array(Sy.MAP_WIDTH * Sy.MAP_HEIGHT);
 }
 
@@ -132,16 +132,16 @@ static resetAttack(){
 	}
 }
 static setAttackForCell( x, y){
-	const cellY = Math.ceil(y/SIZE_OF_INT);
-	const idx = x*Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT)+cellY;
-	const remainder = y%(SIZE_OF_INT);
-	Sy.cbt_attack[idx]=Bit.BIT_SET(Sy.cbt_attack[idx],remainder);
+	const mapIdx = y*Sy.MAP_WIDTH+x;
+	const bitIdx = Math.floor(mapIdx/SIZE_OF_INT);
+	const remainder = mapIdx%(SIZE_OF_INT);
+	Sy.cbt_attack[bitIdx]=Bit.BIT_SET(Sy.cbt_attack[bitIdx],remainder);
 }
 static getAttackForCell( x, y){
-	const cellY = Math.ceil(y/SIZE_OF_INT);
-	const idx = x*Math.ceil(Sy.MAP_HEIGHT/SIZE_OF_INT)+cellY;
-	const remainder = y%(SIZE_OF_INT);
-	return Bit.BIT_CHECK(Sy.cbt_attack[idx],remainder)
+	const mapIdx = y*Sy.MAP_WIDTH+x;
+	const bitIdx = Math.floor(mapIdx/SIZE_OF_INT);
+	const remainder = mapIdx%(SIZE_OF_INT);
+	return Bit.BIT_CHECK(Sy.cbt_attack[bitIdx],remainder)
 }
 static getTerrainForCell(x,y){
 	const idx = y*Sy.MAP_WIDTH+x;
@@ -256,21 +256,21 @@ static fillMove( x, y, move, ch) {
 static fillAttack( x, y, min_range, max_range) {
 	for(let j=max_range;j>=min_range;j-=1){
 		for(let i=0;i<j;i+=1){
-			//diagonal left-up
-			if(x-j+i>=0){
-				Sy.setAttackForCell(x-j+i,y-i);
+			const upX = x-j+i;
+			const downX = x+j-i;
+			const rightY = y-j+i;
+			const leftY = y+j-i; 
+			if(upX>=0&&upX<Sy.MAP_WIDTH&&y-i>=0){
+				Sy.setAttackForCell(upX,y-i);
 			}
-			//diagonal down-right
-			if(x+j-i<Sy.MAP_WIDTH){
-				Sy.setAttackForCell(x+j-i,y+i);
+			if(downX>=0&&downX<Sy.MAP_WIDTH&&y+i<Sy.MAP_HEIGHT){
+				Sy.setAttackForCell(downX,y+i);
 			}
-			//diagonal top-right
-			if(y-j+i>=0){
-				Sy.setAttackForCell(x+i,y-j+i);
+			if(rightY>=0&&rightY<Sy.MAP_HEIGHT&&x+i<Sy.MAP_WIDTH){
+				Sy.setAttackForCell(x+i,rightY);
 			}
-			//diagonal left-down
-			if(y+j-i<Sy.MAP_HEIGHT){
-				Sy.setAttackForCell(x-i,y+j-i);
+			if(leftY>=0&&leftY<Sy.MAP_HEIGHT&&x-i>=0){
+				Sy.setAttackForCell(x-i,leftY);
 			}
 		}
 	}
