@@ -62,6 +62,7 @@ const App = () => {
 		if(Animator.isRunning()){
 			return;//TODO: skip animation? 
 		}
+		//TODO: check control source?
 		const state = Sy_api.api_getCurrentState();
 		//draw BG here?
 		switch(state){
