@@ -32,6 +32,8 @@ const App = () => {
 		const ctx = canvas.getContext('2d');
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		
+		ui_idle.draw(ctx);//always draw idle?
+		
 		if(Animator.isRunning()){
 			Animator.draw(ctx);
 			return;
@@ -40,7 +42,7 @@ const App = () => {
 		//draw BG here? or higher up?
 		switch(state){
 			case cbt_STATE_IDLE:
-				ui_idle.draw(ctx);
+			//	ui_idle.draw(ctx);
 			return;
 			case cbt_STATE_DISPLAY_MOVE:
 				ui_displayMove.draw(ctx);
@@ -60,13 +62,13 @@ const App = () => {
 		//draw BG here?
 		switch(state){
 			case cbt_STATE_IDLE:
-				ui_idle.click();
+				ui_idle.click(e);
 			return;
 			case cbt_STATE_DISPLAY_MOVE:
-				ui_displayMove.click();
+				ui_displayMove.click(e);
 			return;
 			case cbt_STATE_SELECT_WEAPON_TARGET:
-				ui_selectTarget.click();
+				ui_selectTarget.click(e);
 			return;
 		}
 	};
@@ -77,12 +79,16 @@ const App = () => {
     <div class={"container is-widescren"} >
 		<div class={"columns"}>
 		<div class={"column"}>
-			<Canvas draw={draw} onClick={click} 
+			<Canvas draw={draw} 
+					onClick={click} 
+					onContextMenu={(e)=>{click(e);e.preventDefault();return false;}}
 					onMouseMove={Renderer.mouseMove}
 					onMouseOut={Renderer.mouseOut}
 				width={Renderer.width} 
 				height={Renderer.height} 
-				style={{width:Renderer.width/window.devicePixelRatio,height:Renderer.height/window.devicePixelRatio
+				style={{width:Renderer.width/window.devicePixelRatio,
+						height:Renderer.height/window.devicePixelRatio,
+						border:"1px solid black"
 				}}/>
 		</div>
 		<DebugContainer enabled={DEBUG_ENABLED}/>

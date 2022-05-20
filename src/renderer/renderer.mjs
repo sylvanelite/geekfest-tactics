@@ -8,8 +8,9 @@ class Renderer{
 	static mousePoint=null;
 	
 	static mouseMove(e){
-		const x = (e.pageX - e.target.offsetLeft);//*window.devicePixelRatio;
-		const y = (e.pageY - e.target.offsetTop);//*window.devicePixelRatio;
+		const elemRect = e.target.getBoundingClientRect();
+		const x = (e.pageX - elemRect.left);//*window.devicePixelRatio;
+		const y = (e.pageY - elemRect.top);//*window.devicePixelRatio;
 		const ratioX =  e.target.width/e.target.clientWidth;
 		const ratioY =  e.target.height/e.target.clientHeight;
 		Renderer.mousePoint={x:x*ratioX,y:y*ratioY};
@@ -23,6 +24,15 @@ class Renderer{
 				Renderer.mousePoint.x <= rect.x + rect.width &&
 				rect.y <= Renderer.mousePoint.y && 
 				Renderer.mousePoint.y <= rect.y + rect.height);
+	}
+	static getMouseCell(){
+		//TODO: params like grid x,y,width,height, 
+		//      as well as offsets if there's a scrollable view
+		const tileSize = 16;
+		const x = Math.floor(Renderer.mousePoint.x/tileSize);
+		const y = Math.floor(Renderer.mousePoint.y/tileSize);
+		
+		return {x,y};
 	}
 	
 }
