@@ -20,7 +20,7 @@ function Unit(props) {
 		props.unitChange(props.idx,props.unit);
 	};
 	const changeAtk = (newAtk)=>{
-		props.unit.atk=atk;
+		props.unit.atk=newAtk;
 		props.unitChange(props.idx,props.unit);
 	};
 	const changeMov = (newMov)=>{

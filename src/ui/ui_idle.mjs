@@ -30,6 +30,8 @@ class ui_idle{
 		const h = Sy_api.api_getMapHeight();
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
+				ctx.strokeStyle="#ccc";
+				ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
 				
 				const terrain = Sy.getTerrainForCell(i,j);
 				ctx.fillStyle="white";
@@ -51,17 +53,23 @@ class ui_idle{
 					ctx.strokeStyle="blue";
 					ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
 				}
-				const pState = Sy_api.api_getCharacterAtPosition(i,j).player_state;
-				if(pState == cbt_PLAYER){
+				const ch = Sy_api.api_getCharacterAtPosition(i,j);
+				if(ch.player_state == cbt_PLAYER){
 					ctx.fillStyle="blue";
+					if(ch.hasMoved){
+						ctx.fillStyle="#888";
+					}
 					ctx.beginPath();
 					ctx.arc(i*tileSize+tileSize/2, 
 							j*tileSize+tileSize/2,
 							tileSize/2, 0, 2 * Math.PI);
 					ctx.fill();
 				}
-				if(pState == cbt_ENEMY){
+				if(ch.player_state == cbt_ENEMY){
 					ctx.fillStyle="red";
+					if(ch.hasMoved){
+						ctx.fillStyle="#888";
+					}
 					ctx.beginPath();
 					ctx.arc(i*tileSize+tileSize/2, 
 							j*tileSize+tileSize/2,
