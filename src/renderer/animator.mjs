@@ -106,11 +106,17 @@ class Animator{
 	
 	static enqueue_drawMovement(xy_from,xy_to){
 		//TODO: generate movement path?
+		//calc movement speed, it will be lerped based on duration
+		const [startx,starty] = Bit.GET_XY(xy_from);
+		const [endx,endy] = Bit.GET_XY(xy_to);
+		const distance = Math.abs(endx-startx)+Math.abs(endy-starty);
+		const moveSpeed = distance*4;
+		
 		Animator.#animations.push({
 			kind:ANIMATION.MOVE,
 			data:{xy_from,xy_to},
 			duration:0,
-			totalDuration:33
+			totalDuration:moveSpeed
 		});
 	}
 	static enqueue_drawBattle(ch, tgtCh){
