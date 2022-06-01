@@ -42,12 +42,13 @@ class Animator{
 		}
 	}
 	
+	static lerp(start, end, amount){
+		return start*(1-amount)+end*amount;
+	}
+	
 	static draw_Movement(ctx,animation){
 		ui_background.drawTerrain(ctx);
 		
-		const lerp = (start, end, amount) => {
-			return start*(1-amount)+end*amount;
-		};
 		const chs = Sy_api.api_get_allCharacters();
 		//TODO: factor in distance to lerp amount (|xfom-xto|+|yfrom-yto|)
 		const lerpUnit = (ch)=>{
@@ -55,24 +56,52 @@ class Animator{
 			const [startx,starty] = Bit.GET_XY(animation.data.xy_from);
 			const [endx,endy] = Bit.GET_XY(animation.data.xy_to);
 			const duration = animation.duration/animation.totalDuration;
-			const lerpx = lerp(startx,endx,duration);
-			const lerpy = lerp(starty,endy,duration);
+			const lerpx = Animator.lerp(startx,endx,duration);
+			const lerpy = Animator.lerp(starty,endy,duration);
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
 		for(const ch of chs){
-			if(ch.point_xy != animation.data.xy_to){
-				ui_background.drawUnit(ctx,ch);
-			}else{
+			if(ch.point_xy == animation.data.xy_to){
 				lerpUnit(ch);
+			}else{
+				ui_background.drawUnit(ctx,ch);
 			}
 		}
 		
 	}
 	static draw_Battle(ctx,animation){
 		ui_background.drawTerrain(ctx);
+		const lerpUnit = (ch)=>{
+			//lerp to destination
+			const [startx,starty] = Bit.GET_XY(ch.point_xy);
+			const [endx,endy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
+			const duration = animation.duration/animation.totalDuration;
+			const lerpx = Animator.lerp(startx,endx,duration);
+			const lerpy = Animator.lerp(starty,endy,duration);
+			console.log(ch);
+			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
+		};
+		//TODO: could also reset player 'hasMoved' state
+		//NOTE: if this is the last unit in a turn to attack, the turn would have already toggled
+		
+		//need to render defending unit if it's damage has already been calced
+		const [dx,dy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
+		const defUnit = Sy_api.api_getCharacterAtPosition(dx,dy);
+		const defState = defUnit.player_state;
+		defUnit.player_state = animation.data.targetStats.player_state;
+		const chs = Sy_api.api_get_allCharacters();
+		for(const ch of chs){
+			if(ch.point_xy == animation.data.ch.point_xy){
+				lerpUnit(ch);
+			}else{
+				ui_background.drawUnit(ctx,ch);
+			}
+		}
+		defUnit.player_state = defState;
 	}
 	static draw_ToggleTurn(ctx,animation){
 		ui_background.drawTerrain(ctx);
+		ui_background.drawUnits(ctx);
 	}
 	
 	static enqueue_drawMovement(xy_from,xy_to){
@@ -84,10 +113,14 @@ class Animator{
 			totalDuration:33
 		});
 	}
-	static enqueue_drawBattle(ch, slectedTgt){
+	static enqueue_drawBattle(ch, tgtCh){
+		//copy intial values of the target so that they can rendered as-is
+		const targetStats = {
+			player_state:tgtCh.player_state
+		};
 		Animator.#animations.push({
 			kind:ANIMATION.BATTLE,
-			data:{ch, slectedTgt},
+			data:{ch, tgtCh, targetStats},
 			duration:0,
 			totalDuration:33
 		});
