@@ -3,7 +3,7 @@ import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { DebugContainer } from  './debug/container.js';
 
 import { Canvas } from  './components/canvas.js';
-import { GameState,GAME_STATE } from './Game.js';
+import { GameState,GAME_STATE,CONTROL_SOURCE } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
 import { Animator } from './renderer/animator.js';
 
@@ -54,7 +54,11 @@ const App = () => {
 		
 	};
 	const click = (e)=>{
-		Renderer.mouseMove(e);//ensure mouse coord is up to date		
+		Renderer.mouseMove(e);//ensure mouse coord is up to date	
+		const controlSource = GameState.getControlSource();
+		if(controlSource!=CONTROL_SOURCE.LOCAL){
+			return;
+		}	
 		if(Animator.isRunning()){
 			return;//TODO: skip animation? 
 		}
