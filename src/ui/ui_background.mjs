@@ -1,7 +1,7 @@
 
 import { Sy } from "../state/main.mjs";//todo: remove Sy?
 import { Sy_api } from "../state/api.mjs";
-
+import { Bit } from "../state/bit.mjs";
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
 	cbt_PLAYER,
@@ -22,9 +22,10 @@ const colours = [
 	'bisque'
 
 ];
+
+const tileSize = 16;
 class ui_background{
-	static draw(ctx){
-		const tileSize = 16;
+	static drawTerrain(ctx){
 		const w = Sy_api.api_getMapWidth();
 		const h = Sy_api.api_getMapHeight();
 		for(let j=0;j<h;j+=1){
@@ -52,32 +53,41 @@ class ui_background{
 					ctx.strokeStyle="blue";
 					ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
 				}
-				const ch = Sy_api.api_getCharacterAtPosition(i,j);
-				if(ch.player_state == cbt_PLAYER){
-					ctx.fillStyle="blue";
-					if(ch.hasMoved){
-						ctx.fillStyle="#888";
-					}
-					ctx.beginPath();
-					ctx.arc(i*tileSize+tileSize/2, 
-							j*tileSize+tileSize/2,
-							tileSize/2, 0, 2 * Math.PI);
-					ctx.fill();
-				}
-				if(ch.player_state == cbt_ENEMY){
-					ctx.fillStyle="red";
-					if(ch.hasMoved){
-						ctx.fillStyle="#888";
-					}
-					ctx.beginPath();
-					ctx.arc(i*tileSize+tileSize/2, 
-							j*tileSize+tileSize/2,
-							tileSize/2, 0, 2 * Math.PI);
-					ctx.fill();
-				}
 			}
 		}
-		
+	}
+	static drawUnits(ctx){
+		const pCh = Sy_api.api_get_playerCharacters();
+		const eCh = Sy_api.api_get_enemyCharacters();
+		for(const ch of pCh){
+			ctx.fillStyle="blue";
+			if(ch.hasMoved){
+				ctx.fillStyle="#888";
+			}
+			ctx.beginPath();
+			const [x,y] = Bit.GET_XY(ch.point_xy);
+			ctx.arc(x*tileSize+tileSize/2, 
+					y*tileSize+tileSize/2,
+					tileSize/2, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+		for(const ch of eCh){
+			ctx.fillStyle="red";
+			if(ch.hasMoved){
+				ctx.fillStyle="#888";
+			}
+			ctx.beginPath();
+			const [x,y] = Bit.GET_XY(ch.point_xy);
+			ctx.arc(x*tileSize+tileSize/2, 
+					y*tileSize+tileSize/2,
+					tileSize/2, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+	}
+	
+	static draw(ctx){
+		ui_background.drawTerrain(ctx);
+		ui_background.drawUnits(ctx);
 	}
 }
 export {ui_background};

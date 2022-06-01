@@ -1,9 +1,10 @@
 
+import { ui_background } from '../ui/ui_background.mjs';
+
 const ANIMATION = {
 	MOVE:'MOVE',
 	BATTLE:'BATTLE',
 	TURN:'TURN',
-	
 };
 
 //base class for drawing & computing interaction with them
@@ -19,6 +20,7 @@ class Animator{
 		const animation = Animator.#animations[0];
 		animation.duration +=1;
 		//TODO: switch on animation.kind() and actually draw it
+		ui_background.draw(ctx);
 		if(animation.duration>=animation.totalDuration){
 			Animator.#animations.splice(0,1);
 		}
