@@ -3,7 +3,7 @@ import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { DebugContainer } from  './debug/container.js';
 
 import { Canvas } from  './components/canvas.js';
-import { GameState } from './Game.js';
+import { GameState,GAME_STATE } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
 import { Animator } from './renderer/animator.js';
 
@@ -13,11 +13,6 @@ import { ui_selectTarget } from './ui/ui_selectTarget.js';
 
 import { Sy_api } from './state/api.js';
 import { Sy } from './state/main.js';
-import {
-	cbt_STATE_IDLE,
-	cbt_STATE_DISPLAY_MOVE,
-	cbt_STATE_SELECT_WEAPON_TARGET
-} from './state/consts.mjs';
 
 //https://www.gamedeveloper.com/programming/making-a-game-boy-game-in-2017-a-quot-sheep-it-up-quot-post-mortem-part-1-2-
 const DEBUG_ENABLED = true;
@@ -45,13 +40,13 @@ const App = () => {
 		const state = Sy_api.api_getCurrentState();
 		//draw BG here? or higher up?
 		switch(state){
-			case cbt_STATE_IDLE:
+			case GAME_STATE.BATTLE_IDLE:
 			//	ui_idle.draw(ctx);
 			return;
-			case cbt_STATE_DISPLAY_MOVE:
+			case GAME_STATE.BATTLE_MOVE:
 				ui_displayMove.draw(ctx);
 			return;
-			case cbt_STATE_SELECT_WEAPON_TARGET:
+			case GAME_STATE.BATTLE_TARGET:
 				ui_selectTarget.draw(ctx);
 			return;
 		}
@@ -63,16 +58,16 @@ const App = () => {
 			return;//TODO: skip animation? 
 		}
 		//TODO: check control source?
-		const state = Sy_api.api_getCurrentState();
+		const state = GameState.getCurrentState();
 		//draw BG here?
 		switch(state){
-			case cbt_STATE_IDLE:
+			case GAME_STATE.BATTLE_IDLE:
 				ui_idle.click(e);
 			return;
-			case cbt_STATE_DISPLAY_MOVE:
+			case GAME_STATE.BATTLE_MOVE:
 				ui_displayMove.click(e);
 			return;
-			case cbt_STATE_SELECT_WEAPON_TARGET:
+			case GAME_STATE.BATTLE_TARGET:
 				ui_selectTarget.click(e);
 			return;
 		}
