@@ -62,7 +62,7 @@ class ui_background{
 			}
 		}
 	}
-	static drawUnit(ctx,ch){
+	static drawUnitAtPosition(ctx,ch,x,y){
 		if(ch.player_state == cbt_PLAYER){
 			ctx.fillStyle="blue";
 		}
@@ -73,19 +73,18 @@ class ui_background{
 			ctx.fillStyle="#888";
 		}
 		ctx.beginPath();
-		const [x,y] = Bit.GET_XY(ch.point_xy);
 		ctx.arc(x*tileSize+tileSize/2, 
 				y*tileSize+tileSize/2,
 				tileSize/2, 0, 2 * Math.PI);
 		ctx.fill();
 	}
+	static drawUnit(ctx,ch){
+		const [x,y] = Bit.GET_XY(ch.point_xy);
+		ui_background.drawUnitAtPosition(ctx,ch,x,y);
+	}
 	static drawUnits(ctx){
-		const pCh = Sy_api.api_get_playerCharacters();
-		const eCh = Sy_api.api_get_enemyCharacters();
-		for(const ch of pCh){
-			ui_background.drawUnit(ctx,ch);
-		}
-		for(const ch of eCh){
+		const chs = Sy_api.api_get_allCharacters();
+		for(const ch of chs){
 			ui_background.drawUnit(ctx,ch);
 		}
 	}

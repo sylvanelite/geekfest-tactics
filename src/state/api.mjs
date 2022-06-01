@@ -43,7 +43,7 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = selected_xy;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#renderer.drawMovement(prevCh.point_xy,selected_xy);
+					Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,selected_xy);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -58,7 +58,7 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#renderer.drawMovement(prevCh.point_xy,attackPosition);
+					Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,attackPosition);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -91,14 +91,14 @@ class Sy_api {
 		//'a' on target
 		if (slectedTgt.point_xy != ch.point_xy) { 
 			if(Sy_api.#renderer){
-				Sy_api.#renderer.drawBattle(ch, slectedTgt);
+				Sy_api.#renderer.enqueue_drawBattle(ch, slectedTgt);
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);
 		}
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		if(Sy.checkEndOfTurn()){
 			if(Sy_api.#renderer){
-				Sy_api.#renderer.drawTurnToggle();
+				Sy_api.#renderer.enqueue_drawTurnToggle();
 			}
 		}
 		return true;
@@ -128,6 +128,12 @@ class Sy_api {
 			return x.player_state == cbt_ENEMY;
 		});
 	}
+	static api_get_allCharacters(){
+		return Sy.cbt_varCharacters.filter((x)=>{
+			return x.player_state != cbt_NO_PLAYER_STATE;
+		});
+	}
+	
 	
 	static api_getCurrentPlayerState(){
 		return Sy.cbt_CurrentPlayerState;
