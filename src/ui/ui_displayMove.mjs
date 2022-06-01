@@ -1,9 +1,11 @@
 
 import { Sy_api } from "../state/api.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
+import { ui_background } from "./ui_background.mjs";
 
 class ui_displayMove{
 	static draw(ctx){
+		ui_background.draw(ctx);
 	}
 	static click(e){
 		const cell = Renderer.getMouseCell();

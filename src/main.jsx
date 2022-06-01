@@ -20,6 +20,8 @@ if(DEBUG_ENABLED){
 	window.Sy = Sy;
 }
 
+Sy_api.api_setRenderer(Animator);
+
 const App = () => {
 	let lastRenderTime = performance.now();
 	const draw = (canvas)=>{
@@ -31,17 +33,16 @@ const App = () => {
 		const ctx = canvas.getContext('2d');
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		
-		ui_idle.draw(ctx);//always draw idle?
-		
 		if(Animator.isRunning()){
 			Animator.draw(ctx);
 			return;
 		}
-		const state = Sy_api.api_getCurrentState();
+		
+		const state = GameState.getCurrentState();
 		//draw BG here? or higher up?
 		switch(state){
 			case GAME_STATE.BATTLE_IDLE:
-			//	ui_idle.draw(ctx);
+				ui_idle.draw(ctx);//always draw idle?
 			return;
 			case GAME_STATE.BATTLE_MOVE:
 				ui_displayMove.draw(ctx);

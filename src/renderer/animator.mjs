@@ -22,6 +22,7 @@ class Animator{
 		if(animation.duration>=animation.totalDuration){
 			Animator.#animations.splice(0,1);
 		}
+		console.log(animation);
 	}
 	
 	
