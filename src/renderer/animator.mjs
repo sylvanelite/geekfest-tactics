@@ -20,11 +20,25 @@ class Animator{
 		const animation = Animator.#animations[0];
 		animation.duration +=1;
 		//TODO: switch on animation.kind() and actually draw it
-		ui_background.draw(ctx);
+		ui_background.drawTerrain(ctx);
+		switch(animation.kind){
+			case ANIMATION.MOVE:
+				ui_background.drawTerrain(ctx);
+				break;
+			case ANIMATION.BATTLE:
+				ui_background.drawTerrain(ctx);
+				break;
+			case ANIMATION.TURN:
+				ui_background.drawTerrain(ctx);
+				break;
+			default:
+				console.log("unknown animation:",animation);
+		}
+		
+		//check animation is done
 		if(animation.duration>=animation.totalDuration){
 			Animator.#animations.splice(0,1);
 		}
-		console.log(animation);
 	}
 	
 	
