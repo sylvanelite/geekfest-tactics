@@ -2,6 +2,7 @@
 //base class for drawing & computing interaction with them
 class Renderer{
 	
+	static TILE_SIZE=16;
 	static width=980;
 	static height=540;
 	
@@ -28,9 +29,8 @@ class Renderer{
 	static getMouseCell(){
 		//TODO: params like grid x,y,width,height, 
 		//      as well as offsets if there's a scrollable view
-		const tileSize = 16;
-		const x = Math.floor(Renderer.mousePoint.x/tileSize);
-		const y = Math.floor(Renderer.mousePoint.y/tileSize);
+		const x = Math.floor(Renderer.mousePoint.x/Renderer.TILE_SIZE);
+		const y = Math.floor(Renderer.mousePoint.y/Renderer.TILE_SIZE);
 		
 		return {x,y};
 	}

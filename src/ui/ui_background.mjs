@@ -2,6 +2,7 @@
 import { Sy } from "../state/main.mjs";//todo: remove Sy?
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
+import { Renderer } from "../renderer/renderer.mjs";
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
 	cbt_PLAYER,
@@ -23,7 +24,6 @@ const colours = [
 
 ];
 
-const tileSize = 16;
 class ui_background{
 	static drawTerrain(ctx){
 		const w = Sy_api.api_getMapWidth();
@@ -38,7 +38,7 @@ class ui_background{
 				if(terrain==TERRAIN_IMPASSIBLE){
 					ctx.fillStyle="black";
 				}
-				ctx.fillRect(i*tileSize,j*tileSize,tileSize,tileSize);
+				ctx.fillRect(i*Renderer.TILE_SIZE,j*Renderer.TILE_SIZE,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 			}
 		}
 	}
@@ -48,16 +48,16 @@ class ui_background{
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
 				ctx.strokeStyle="#ccc";
-				ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
+				ctx.strokeRect(i*Renderer.TILE_SIZE-0.5,j*Renderer.TILE_SIZE-0.5,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 				if(Sy_api.api_getAttackForCell(i,j)){
 					ctx.lineWidth = 1;
 					ctx.strokeStyle="red";
-					ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
+					ctx.strokeRect(i*Renderer.TILE_SIZE-0.5,j*Renderer.TILE_SIZE-0.5,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 				}
 				if(Sy_api.api_getMoveForCell(i,j)){
 					ctx.lineWidth = 1;
 					ctx.strokeStyle="blue";
-					ctx.strokeRect(i*tileSize-0.5,j*tileSize-0.5,tileSize,tileSize);
+					ctx.strokeRect(i*Renderer.TILE_SIZE-0.5,j*Renderer.TILE_SIZE-0.5,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 				}
 			}
 		}
@@ -73,9 +73,9 @@ class ui_background{
 			ctx.fillStyle="#888";
 		}
 		ctx.beginPath();
-		ctx.arc(x*tileSize+tileSize/2, 
-				y*tileSize+tileSize/2,
-				tileSize/2, 0, 2 * Math.PI);
+		ctx.arc(x*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2, 
+				y*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2,
+				Renderer.TILE_SIZE/2, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 	static drawUnit(ctx,ch){
