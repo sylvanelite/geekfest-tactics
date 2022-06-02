@@ -26,6 +26,7 @@ class ui_displayMove{
 		const cell = Renderer.getMouseCell();
 		console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
+			ui_displayMove.#movePath = [];//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 			return;
 		}
@@ -55,11 +56,11 @@ class ui_displayMove{
 		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
-			console.log("empty, init path to:",ch.point_xy);
+			//console.log("empty, init path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
 		}
 		if(ui_displayMove.#movePath[0]!=ch.point_xy){
-			console.log("not at start set path to:",ch.point_xy);
+			//console.log("not at start set path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
 			return;
 		}
@@ -99,26 +100,19 @@ class ui_displayMove{
 			//max move grid is ~a mov*mov square
 			const maxLen = move*move;
 			let start = 0;
-			let end = 1;
 			const mapW = Sy_api.api_getMapWidth();
 			const mapH = Sy_api.api_getMapHeight();
-			while (start<end&&start<maxLen) {
-				const point_xy = movQueue[start].point_xy;
-				const path = movQueue[start].path;
-				const nodeMove = movQueue[start].move;
-				const [nodeX,nodeY] = Bit.GET_XY(point_xy);
+			while (start<movQueue.length&&start<maxLen) {
+				const cell =  movQueue[start];
+				const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);
 				start+=1;
-				const points = [
-					{px:nodeX,py:nodeY+1},
-					{px:nodeX,py:nodeY-1},
-					{px:nodeX+1,py:nodeY},
-					{px:nodeX-1,py:nodeY}
-				];
+				const points = [ {px:nodeX,py:nodeY+1}, {px:nodeX,py:nodeY-1},
+					             {px:nodeX+1,py:nodeY}, {px:nodeX-1,py:nodeY} ];
 				for(const {px,py} of points){
 					if (py < mapH && py>=0 && px < mapW && px>=0) {
 						const xy = Bit.SET_XY(px, py);
-						const nodeCost = nodeMove-Sy_api.api_getCostForTerrain(ch,px,py);
-						const curPath = [...path,xy];
+						const nodeCost = cell.move-Sy_api.api_getCostForTerrain(ch,px,py);
+						const curPath = [...cell.path,xy];
 						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
 						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
 							if(xy==end_xy){
@@ -130,7 +124,6 @@ class ui_displayMove{
 								move:nodeCost,
 								path:curPath
 							});
-							end+=1;
 						}
 					}
 				}
@@ -150,25 +143,28 @@ class ui_displayMove{
 		
 		const pathToAppend = getPathFrom(lastPoint,cell_xy);//TODO: should be mov after considering current path
 		const backupPath = getPathFrom(ch.point_xy,cell_xy);
-		if(!checkCostOfPath(backupPath)){
+		if(!checkCostOfPath(backupPath)){//should not happen, backup path should always be valid
 			console.warn("bakup path cost too high",backupPath);
 		}
-		if(!backupPath.length){
+		if(!backupPath.length){//should not happen, backup path should always be found
 			console.warn("could not find backup path",ch.point_xy,cell_xy);
 		}
 		if(!pathToAppend.length){
-			console.warn("not found desired path");//reset movement to search target
+			//if (e.g.) the last point on the path is greater than 
+			//the max search distance to the new cell
+			//for example, the cursor has jumped in position and the search can't cover the distance
+			//reset it
 			ui_displayMove.#movePath = backupPath;
 			return;
 		}
 		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);
 		//check new path is valid
 		if(!checkCostOfPath(userPreferredPath)){
-			//console.log("cost of new path too high:",userPreferredPath,backupPath);
+			//attempting to build up a path that's too long, reset it
 			ui_displayMove.#movePath = backupPath;
 			return;
 		}
-		//path is valid, assign it
+		//otherwise all checks paased, path is valid, assign it
 		ui_displayMove.#movePath = userPreferredPath;
 		
 	}
