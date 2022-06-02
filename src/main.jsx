@@ -100,7 +100,27 @@ class Logic{
 				console.log("update: unknown state ",state);
 			return;
 		}
-		
+	}
+	static move(e){
+		Renderer.mouseMove(e);
+		//check and execute AI
+		const controlSource = GameState.getControlSource();
+		if(controlSource!=CONTROL_SOURCE.LOCAL){
+			return;
+		}	
+		if(Animator.isRunning()){
+			return;//TODO: skip animation? 
+		}
+		const state = GameState.getCurrentState();
+		switch(state){
+			case GAME_STATE.BATTLE_MOVE:
+				ui_displayMove.move(e);
+				return;
+			case GAME_STATE.BATTLE_IDLE:
+			case GAME_STATE.BATTLE_TARGET:
+			default:
+			return;
+		}
 	}
 	
 }
@@ -126,7 +146,7 @@ const App = () => {
 			<Canvas draw={Logic.draw} 
 					onClick={Logic.click} 
 					onContextMenu={(e)=>{Logic.click(e);e.preventDefault();return false;}}
-					onMouseMove={Renderer.mouseMove}
+					onMouseMove={Logic.move}
 					onMouseOut={Renderer.mouseOut}
 				width={Renderer.width} 
 				height={Renderer.height} 

@@ -22,7 +22,8 @@ const initialUnits = ()=>{
 	const ch3 = new st_Character();
 
 	ch0.player_state = cbt_PLAYER;
-	ch0.point_xy = Bit.SET_XY(0,0);
+	ch0.point_xy = Bit.SET_XY(4,0);
+	ch0.mov=4;
 	ch1.player_state = cbt_PLAYER;
 	ch1.point_xy = Bit.SET_XY(1,0);
 	ch2.player_state = cbt_ENEMY;
@@ -33,14 +34,15 @@ const initialUnits = ()=>{
 };
 const initialTerrain = ()=>{
 	return {
-		width:3,
-		height:5,
+		width:9,
+		height:6,
 		terrain:[
-		1 ,1 ,1 ,
-		99,1 ,1 ,
-		99,1 ,1 ,
-		1 ,1 ,99,
-		1 ,1 ,99,
+		1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+		99,1 ,1 ,1 ,4 ,1 ,1 ,1 ,1 ,
+		99,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+		1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
+		1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
+		1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
 		]
 	};
 };
