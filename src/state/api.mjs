@@ -33,7 +33,7 @@ class Sy_api {
 		Sy.checkEndOfTurn();
 		return false;
 	}
-	static api_mov_selectDestination(x,y){
+	static api_mov_selectDestination(x,y,preferredPath){//TODO:preferredPath
 		const selected_xy=Bit.SET_XY(x,y);
 		const ch = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 

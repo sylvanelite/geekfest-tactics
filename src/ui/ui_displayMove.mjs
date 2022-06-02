@@ -33,7 +33,8 @@ class ui_displayMove{
 			console.log("cell out of bounds: ",cell.x,cell.y);
 			return;
 		}
-		Sy_api.api_mov_selectDestination(cell.x,cell.y);
+		Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
+		ui_displayMove.#movePath = [];//turf out the user path for next time
 	}
 	//a movement path suggested by the user
 	static #movePath = [];
@@ -52,21 +53,13 @@ class ui_displayMove{
 		const ch = Sy_api.api_getCharacterAtPosition(chx,chy);
 		const [x,y] = Bit.GET_XY(ch.point_xy);
 		const cell_xy = Bit.SET_XY(cell.x,cell.y);
-		if(cell_xy==ch.point_xy){
-			//TODO: this is not qute right, cellxy is mouse pos, not curor, it's not reset on state change
-			//should instead check if the 1st cell of the path!=character, reset?
-			//and reset on click() when exiting state too...?
-
-
-			//at the user's position, clear movement path
-			//this is both the initial state, 
-			//and the state when passing back through the ch's cell
-			ui_displayMove.#movePath = [];
-			return;
-		}
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
 			ui_displayMove.#movePath = [ch.point_xy];
+		}
+		if(ui_displayMove.#movePath[0]!=ch.point_xy){
+			ui_displayMove.#movePath = [ch.point_xy];
+			return;
 		}
 		//figure out move cell
 		//step 1)
@@ -78,6 +71,17 @@ class ui_displayMove{
 			//nothing to do if already checked this point
 			return;
 		}
+		//check if cell is currently in the path, disallow backtracking
+		for(let i=ui_displayMove.#movePath.length-2;i>=0;i-=1){
+			const p = ui_displayMove.#movePath[i];
+			if(p==cell_xy){//truncate the path to that cell
+				//+1 is to keep the current cell, and splice out everything after that
+				ui_displayMove.#movePath.splice(i+1);
+				return;
+			}
+		}
+		
+		
 		//helper pathfinding function, given two points 
 		//search from start->end and return a valid short path
 		//path is capped at ch.mov, but start may not be the ch's start pos
@@ -141,7 +145,6 @@ class ui_displayMove{
 		};
 		
 		const pathToAppend = getPathFrom(lastPoint,cell_xy);
-		console.log(ui_displayMove.#movePath,pathToAppend,lastPoint,cell_xy);
 		const bakupPath = getPathFrom(ch.point_xy,cell_xy);
 		if(!bakupPath.length){
 			console.warn("could not find backup path",ch.point_xy,cell_xy);
@@ -149,7 +152,6 @@ class ui_displayMove{
 		if(!pathToAppend.length){
 			console.log("not found");//reset movement to search target
 			ui_displayMove.#movePath = bakupPath;
-			console.log(ui_displayMove.#movePath);
 			return;
 		}
 		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);
@@ -158,18 +160,15 @@ class ui_displayMove{
 		for(const p of userPreferredPath){
 			const [px,py] = Bit.GET_XY(p);
 			const cost = Sy_api.api_getCostForTerrain(ch,px,py);
-			console.log(px,py,cost);
 			movCost += cost;
 		}
 		if(movCost>ch.mov){
-			console.log("cost of new path too high:",movCost,ch.mov);
+			console.log("cost of new path too high:");
 			ui_displayMove.#movePath = bakupPath;
-			console.log(ui_displayMove.#movePath);
 			return;
 		}
 		//path is valid, assign it
 		ui_displayMove.#movePath = userPreferredPath;
-		console.log(ui_displayMove.#movePath);
 		
 	}
 }
