@@ -140,7 +140,7 @@ class ui_displayMove{
 			return (movCost<=ch.mov+1);
 		};
 		
-		const pathToAppend = getPathFrom(lastPoint,cell_xy);//TODO: should be mov after considering current path
+		const pathToAppend = getPathFrom(lastPoint,cell_xy);
 		const backupPath = getPathFrom(ch.point_xy,cell_xy);
 		if(!checkCostOfPath(backupPath)){//should not happen, backup path should always be valid
 			console.warn("bakup path cost too high",backupPath);
