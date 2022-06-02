@@ -86,7 +86,7 @@ class ui_displayMove{
 		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
 		//should not happen, backup path should always be valid
 		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
-			console.warn("bakup path cost too high",backupPath);
+			console.warn("bakup path invalid",backupPath);
 			return;
 		}
 		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);

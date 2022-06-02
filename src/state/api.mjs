@@ -297,6 +297,7 @@ class Sy_api {
 		for(const p of path){
 			const [px,py] = Bit.GET_XY(p);
 			if(p==ch.point_xy){continue;}//don't consider start cell
+			if(Sy.getMoveForCell(px,py) == 0) {return false;}//tried to move over invalid tile
 			const cost = Sy_api.api_getCostForTerrain(ch,px,py);
 			movCost += cost;
 		}
