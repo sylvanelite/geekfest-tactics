@@ -83,82 +83,16 @@ class ui_displayMove{
 			}
 		}
 		
-		
-		//helper pathfinding function, given two points 
-		//search from start->end and return a valid short path
-		//path is capped at ch.mov, but start may not be the ch's start pos
-		const getPathFrom = (start_xy,end_xy)=>{
-			const move = ch.mov+1;
-			const movQueue = [{
-				point_xy:start_xy,
-				move:move,
-				path:[start_xy]
-			}];
-			const moveCells = new Map();
-			moveCells.set(start_xy,move);
-			//max move grid is ~a mov*mov square
-			const maxLen = move*move;
-			let start = 0;
-			const mapW = Sy_api.api_getMapWidth();
-			const mapH = Sy_api.api_getMapHeight();
-			while (start<movQueue.length&&start<maxLen) {
-				const cell =  movQueue[start];
-				const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);
-				start+=1;
-				const points = [ {px:nodeX,py:nodeY+1}, {px:nodeX,py:nodeY-1},
-					             {px:nodeX+1,py:nodeY}, {px:nodeX-1,py:nodeY} ];
-				for(const {px,py} of points){
-					if (py < mapH && py>=0 && px < mapW && px>=0) {
-						const xy = Bit.SET_XY(px, py);
-						const nodeCost = cell.move-Sy_api.api_getCostForTerrain(ch,px,py);
-						const curPath = [...cell.path,xy];
-						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
-						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
-							if(xy==end_xy){
-								return curPath;
-							}
-							moveCells.set(xy,nodeCost);
-							movQueue.push({
-								point_xy:xy,
-								move:nodeCost,
-								path:curPath
-							});
-						}
-					}
-				}
-			}
-			return [];
-		};
-		const checkCostOfPath = (path)=>{
-			let movCost = 0;
-			for(const p of path){
-				const [px,py] = Bit.GET_XY(p);
-				if(p==ch.point_xy){continue;}//don't consider start cell
-				const cost = Sy_api.api_getCostForTerrain(ch,px,py);
-				movCost += cost;
-			}
-			return (movCost<=ch.mov+1);
-		};
-		
-		const pathToAppend = getPathFrom(lastPoint,cell_xy);
-		const backupPath = getPathFrom(ch.point_xy,cell_xy);
-		if(!checkCostOfPath(backupPath)){//should not happen, backup path should always be valid
+		const pathToAppend = Sy_api.api_getMovePath(ch,lastPoint,cell_xy);
+		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
+		//should not happen, backup path should always be valid
+		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
 			console.warn("bakup path cost too high",backupPath);
-		}
-		if(!backupPath.length){//should not happen, backup path should always be found
-			console.warn("could not find backup path",ch.point_xy,cell_xy);
-		}
-		if(!pathToAppend.length){
-			//if (e.g.) the last point on the path is greater than 
-			//the max search distance to the new cell
-			//for example, the cursor has jumped in position and the search can't cover the distance
-			//reset it
-			ui_displayMove.#movePath = backupPath;
 			return;
 		}
 		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);
 		//check new path is valid
-		if(!checkCostOfPath(userPreferredPath)){
+		if(!Sy_api.api_checkPathIsValid(ch,userPreferredPath)){
 			//attempting to build up a path that's too long, reset it
 			ui_displayMove.#movePath = backupPath;
 			return;

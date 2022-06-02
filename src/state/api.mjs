@@ -14,6 +14,7 @@ import { PRNG } from "./prng.mjs";
 class Sy_api {
 	static #renderer = null;
 	static #rendererBlocked=false;
+//////////////gameplay methods
 	//NOTE: need a guard check when calling these to ensure it's the correct turn & x,y in bounds
 	//async calls return true/false depending on success.
 	//returning false should not fail, it's just a notice that the state did not change.
@@ -125,7 +126,7 @@ class Sy_api {
 	}
 
 
-///////helper methods
+//////////////helper methods
 	//read only properties for rendering, ai, etc
 	static api_get_playerCharacters(){
 		return Sy.cbt_varCharacters.filter((x)=>{
@@ -234,6 +235,75 @@ class Sy_api {
 		Sy_api.api_setState(Sy_api.api_cloneState());
 		Sy.flushChPositionCache();
 	}
+
+//////////////extension methods
+	//given a filled movement grid state, and two points on the move grid
+	//finds a path that the character could possibly traverse
+	//note: if the starting point is not exactly on the character's position
+	//      then the returned result may be invalid, or not found
+	//      in that case, the caller should check for validity
+	static api_getMovePath(ch,start_xy,end_xy){
+			const move = ch.mov+1;
+			const movQueue = [{
+				point_xy:start_xy,
+				move:move,
+				path:[start_xy]
+			}];
+			const moveCells = new Map();
+			moveCells.set(start_xy,move);
+			//max move grid is ~a mov*mov square
+			const maxLen = move*move;
+			let start = 0;
+			const mapW = Sy_api.api_getMapWidth();
+			const mapH = Sy_api.api_getMapHeight();
+			while (start<movQueue.length&&start<maxLen) {
+				const cell =  movQueue[start];
+				const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);
+				start+=1;
+				const points = [ {px:nodeX,py:nodeY+1}, {px:nodeX,py:nodeY-1},
+					             {px:nodeX+1,py:nodeY}, {px:nodeX-1,py:nodeY} ];
+				for(const {px,py} of points){
+					if (py < mapH && py>=0 && px < mapW && px>=0) {
+						const xy = Bit.SET_XY(px, py);
+						const nodeCost = cell.move-Sy_api.api_getCostForTerrain(ch,px,py);
+						const curPath = [...cell.path,xy];
+						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
+						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
+							if(xy==end_xy){
+								return curPath;
+							}
+							moveCells.set(xy,nodeCost);
+							movQueue.push({
+								point_xy:xy,
+								move:nodeCost,
+								path:curPath
+							});
+						}
+					}
+				}
+			}
+			return [];
+	}
+	//return true/false if a path is actually valid
+	//       used to tell if a user is trying to draw a path that's
+	//       greater than ch's mov, without leaving the mov grid
+	static api_checkPathIsValid(ch,path){
+		//check the path has any data (if not, a destination may not have been found)
+		if(!path.length){
+			return false;
+		}
+		//check the total cost of the path over the terrain being traversed
+		let movCost = 0;
+		for(const p of path){
+			const [px,py] = Bit.GET_XY(p);
+			if(p==ch.point_xy){continue;}//don't consider start cell
+			const cost = Sy_api.api_getCostForTerrain(ch,px,py);
+			movCost += cost;
+		}
+		return (movCost<=ch.mov+1);
+	}
+	
+	//used to save/restore/sync state
 	static api_cloneState(){
 		//deep copy of globals
 		const terrainCopy=Sy.cbt_terrain.slice();
@@ -289,7 +359,8 @@ class Sy_api {
 		PRNG.RNG_D = savedState.rngD;
 		Sy.flushChPositionCache();
 	}
-	
+
+//////////////methods configuring the API layer itself
 	static api_render(){
 		Sy_api.#renderer.render();
 	}
