@@ -79,7 +79,6 @@ class ui_displayMove{
 			if(p==cell_xy){//truncate the path to that cell
 				//+1 is to keep the current cell, and splice out everything after that
 				ui_displayMove.#movePath.splice(i+1);
-				console.log("splice");
 				return;
 			}
 		}
@@ -88,8 +87,8 @@ class ui_displayMove{
 		//helper pathfinding function, given two points 
 		//search from start->end and return a valid short path
 		//path is capped at ch.mov, but start may not be the ch's start pos
-		const getPathFrom = (start_xy,end_xy,move)=>{
-			move+=1;
+		const getPathFrom = (start_xy,end_xy)=>{
+			const move = ch.mov+1;
 			const movQueue = [{
 				point_xy:start_xy,
 				move:move,
@@ -98,7 +97,7 @@ class ui_displayMove{
 			const moveCells = new Map();
 			moveCells.set(start_xy,move);
 			//max move grid is ~a mov*mov square
-			const maxLen = (ch.mov+1)*(ch.mov+1);
+			const maxLen = move*move;
 			let start = 0;
 			let end = 1;
 			const mapW = Sy_api.api_getMapWidth();
@@ -118,10 +117,8 @@ class ui_displayMove{
 				for(const {px,py} of points){
 					if (py < mapH && py>=0 && px < mapW && px>=0) {
 						const xy = Bit.SET_XY(px, py);
-						const cost = Sy_api.api_getCostForTerrain(ch,px,py);
-						const nodeCost = nodeMove-cost;
-						const curPath = [...path];
-						curPath.push(xy);
+						const nodeCost = nodeMove-Sy_api.api_getCostForTerrain(ch,px,py);
+						const curPath = [...path,xy];
 						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
 						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
 							if(xy==end_xy){
@@ -138,13 +135,7 @@ class ui_displayMove{
 					}
 				}
 			}
-			//return the end index of the array so that 'fill attack' can traverse it later
-			console.log("not found");
 			return [];
-			
-			
-			
-			
 		};
 		const checkCostOfPath = (path)=>{
 			let movCost = 0;
@@ -157,8 +148,8 @@ class ui_displayMove{
 			return (movCost<=ch.mov+1);
 		};
 		
-		const pathToAppend = getPathFrom(lastPoint,cell_xy,ch.mov);//TODO: should be mov after considering current path
-		const backupPath = getPathFrom(ch.point_xy,cell_xy,ch.mov);
+		const pathToAppend = getPathFrom(lastPoint,cell_xy);//TODO: should be mov after considering current path
+		const backupPath = getPathFrom(ch.point_xy,cell_xy);
 		if(!checkCostOfPath(backupPath)){
 			console.warn("bakup path cost too high",backupPath);
 		}
@@ -166,14 +157,14 @@ class ui_displayMove{
 			console.warn("could not find backup path",ch.point_xy,cell_xy);
 		}
 		if(!pathToAppend.length){
-			console.log("not found");//reset movement to search target
+			console.warn("not found desired path");//reset movement to search target
 			ui_displayMove.#movePath = backupPath;
 			return;
 		}
 		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);
 		//check new path is valid
 		if(!checkCostOfPath(userPreferredPath)){
-			console.log("cost of new path too high:",userPreferredPath,backupPath);
+			//console.log("cost of new path too high:",userPreferredPath,backupPath);
 			ui_displayMove.#movePath = backupPath;
 			return;
 		}
