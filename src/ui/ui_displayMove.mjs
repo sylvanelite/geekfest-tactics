@@ -96,10 +96,7 @@ class ui_displayMove{
 				path:[start_xy]
 			}];
 			const moveCells = new Map();
-			moveCells.set(start_xy,{
-				moveCost:move,
-				path:[start_xy]
-			});
+			moveCells.set(start_xy,move);
 			//max move grid is ~a mov*mov square
 			const maxLen = (ch.mov+1)*(ch.mov+1);
 			let start = 0;
@@ -125,15 +122,12 @@ class ui_displayMove{
 						const nodeCost = nodeMove-cost;
 						const curPath = [...path];
 						curPath.push(xy);
-						const nextCost = (moveCells.has(xy)?moveCells.get(xy).moveCost:0);
+						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
 						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
 							if(xy==end_xy){
 								return curPath;
 							}
-							moveCells.set(xy,{
-								moveCost:nodeCost,
-								path:curPath
-							});
+							moveCells.set(xy,nodeCost);
 							movQueue.push({
 								point_xy:xy,
 								move:nodeCost,
