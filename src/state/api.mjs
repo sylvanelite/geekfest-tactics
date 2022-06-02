@@ -13,10 +13,11 @@ import { PRNG } from "./prng.mjs";
 
 class Sy_api {
 	static #renderer = null;
+	static #rendererBlocked=false;
 	//NOTE: need a guard check when calling these to ensure it's the correct turn & x,y in bounds
 	//async calls return true/false depending on success.
 	//returning false should not fail, it's just a notice that the state did not change.
-	static api_idle_selectCharacter(x,y){
+	static async api_idle_selectCharacter(x,y){
 		//return true if selecting a ch, false if selecting an unused square
 		const selected_xy=Bit.SET_XY(x,y);
 		const ch = Sy.getCharacterAtPosition(x,y);
@@ -33,7 +34,7 @@ class Sy_api {
 		Sy.checkEndOfTurn();
 		return false;
 	}
-	static api_mov_selectDestination(x,y,preferredPath){//TODO:preferredPath
+	static async api_mov_selectDestination(x,y,preferredPath){//TODO:preferredPath
 		const selected_xy=Bit.SET_XY(x,y);
 		const ch = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
@@ -43,7 +44,9 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = selected_xy;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,selected_xy);
+					Sy_api.#rendererBlocked = true;
+					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,selected_xy);
+					Sy_api.#rendererBlocked = false;
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -58,7 +61,9 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,attackPosition);
+					Sy_api.#rendererBlocked = true;
+					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,attackPosition);
+					Sy_api.#rendererBlocked = false;
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -77,7 +82,7 @@ class Sy_api {
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		return true;
 	}
-	static api_tgt_selectTarget(x,y){
+	static async api_tgt_selectTarget(x,y){
 		const slectedTgt = Sy.getCharacterAtPosition(x,y);
 		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){
 			console.log("invalid target cell",x,y);
@@ -91,14 +96,18 @@ class Sy_api {
 		//'a' on target
 		if (slectedTgt.point_xy != ch.point_xy) { 
 			if(Sy_api.#renderer){
-				Sy_api.#renderer.enqueue_drawBattle(ch, slectedTgt);
+				Sy_api.#rendererBlocked = true;
+				await Sy_api.#renderer.enqueue_drawBattle(ch, slectedTgt);
+				Sy_api.#rendererBlocked = false;
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);
 		}
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		if(Sy.checkEndOfTurn()){
 			if(Sy_api.#renderer){
-				Sy_api.#renderer.enqueue_drawTurnToggle();
+				Sy_api.#rendererBlocked = true;
+				await Sy_api.#renderer.enqueue_drawTurnToggle();
+				Sy_api.#rendererBlocked = false;
 			}
 		}
 		return true;
@@ -286,6 +295,9 @@ class Sy_api {
 	}
 	static api_setRenderer(renderer){
 		Sy_api.#renderer = renderer;
+	}
+	static api_isAwaiting(){
+		return (Sy_api.#renderer && Sy_api.#rendererBlocked);
 	}
 }
 export { Sy_api };

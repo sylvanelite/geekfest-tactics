@@ -18,7 +18,8 @@ const GAME_STATE={
 const CONTROL_SOURCE={
 	LOCAL:'LOCAL',
 	AI:'AI',
-	NETWORK:'NETWORK'
+	NETWORK:'NETWORK',
+	AWAIT:'AWAIT',
 };
 
 class GameState {
@@ -27,6 +28,9 @@ class GameState {
 		return Sy_api.api_getCurrentState();
 	}
 	static getControlSource(){
+		if(Sy_api.api_isAwaiting()){
+			return CONTROL_SOURCE.AWAIT;
+		}
 		const playerState = Sy_api.api_getCurrentPlayerState();
 		//TODO: check if in battle
 		if(playerState==cbt_PLAYER){

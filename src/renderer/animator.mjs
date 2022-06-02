@@ -38,6 +38,8 @@ class Animator{
 		
 		//check animation is done
 		if(animation.duration>=animation.totalDuration){
+			console.log('resolving',animation);
+			animation.resolve();
 			Animator.#animations.splice(0,1);
 		}
 	}
@@ -50,7 +52,6 @@ class Animator{
 		ui_background.drawTerrain(ctx);
 		
 		const chs = Sy_api.api_get_allCharacters();
-		//TODO: factor in distance to lerp amount (|xfom-xto|+|yfrom-yto|)
 		const lerpUnit = (ch)=>{
 			//lerp to destination
 			const [startx,starty] = Bit.GET_XY(animation.data.xy_from);
@@ -61,7 +62,7 @@ class Animator{
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
 		for(const ch of chs){
-			if(ch.point_xy == animation.data.xy_to){
+			if(ch.point_xy == animation.data.xy_from){
 				lerpUnit(ch);
 			}else{
 				ui_background.drawUnit(ctx,ch);
@@ -82,7 +83,6 @@ class Animator{
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
 		//TODO: could also reset player 'hasMoved' state
-		//NOTE: if this is the last unit in a turn to attack, the turn would have already toggled
 		
 		//need to render defending unit if it's damage has already been calced
 		const [dx,dy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
@@ -111,33 +111,52 @@ class Animator{
 		const [endx,endy] = Bit.GET_XY(xy_to);
 		const distance = Math.abs(endx-startx)+Math.abs(endy-starty);
 		const moveSpeed = distance*4;
-		
-		Animator.#animations.push({
+		const animation={
 			kind:ANIMATION.MOVE,
 			data:{xy_from,xy_to},
 			duration:0,
-			totalDuration:moveSpeed
-		});
+			totalDuration:moveSpeed,
+			resolve:(e)=>{}//should not get here
+		};
+		const promise = new Promise((res,rej)=>{
+			animation.resolve = res;
+		})
+		Animator.#animations.push(animation);;
+		return promise;
 	}
 	static enqueue_drawBattle(ch, tgtCh){
 		//copy intial values of the target so that they can rendered as-is
 		const targetStats = {
 			player_state:tgtCh.player_state
 		};
-		Animator.#animations.push({
+		const animation={
 			kind:ANIMATION.BATTLE,
 			data:{ch, tgtCh, targetStats},
 			duration:0,
-			totalDuration:33
-		});
+			totalDuration:33,
+			resolve:(e)=>{}//should not get here
+		};
+		const promise = new Promise((res,rej)=>{
+			animation.resolve = res;
+		})
+		Animator.#animations.push(animation);;
+		return promise;
 	}
 	static enqueue_drawTurnToggle(){
-		Animator.#animations.push({
+		const done = new Promise((res)=>{res();});
+		const animation={
 			kind:ANIMATION.TURN,
 			data:{},
 			duration:0,
-			totalDuration:33
-		});
+			totalDuration:33,
+			resolve:(e)=>{}//should not get here
+		};
+		const promise = new Promise((res,rej)=>{
+			animation.resolve = res;
+		})
+		Animator.#animations.push(animation);;
+		return promise;
+		return done;
 	}
 	
 }
