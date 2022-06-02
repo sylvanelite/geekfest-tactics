@@ -58,6 +58,7 @@ class ui_displayMove{
 		if(!ui_displayMove.#movePath.length){
 			//console.log("empty, init path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
+			return;
 		}
 		if(ui_displayMove.#movePath[0]!=ch.point_xy){
 			//console.log("not at start set path to:",ch.point_xy);
@@ -74,11 +75,9 @@ class ui_displayMove{
 			return;
 		}
 		//check if cell is currently in the path, disallow backtracking
-		for(let i=ui_displayMove.#movePath.length-2;i>=0;i-=1){
-			const p = ui_displayMove.#movePath[i];
-			if(p==cell_xy){//truncate the path to that cell
-				//+1 is to keep the current cell, and splice out everything after that
-				ui_displayMove.#movePath.splice(i+1);
+		for(let i=0;i<ui_displayMove.#movePath.length;i+=1){
+			if(ui_displayMove.#movePath[i]==cell_xy){//truncate the path to that cell
+				ui_displayMove.#movePath.splice(i+1);//keep cell_xy, splice out anything after that
 				return;
 			}
 		}
