@@ -65,7 +65,6 @@ class ui_displayMove{
 			return;
 		}
 		//figure out move cell
-		//step 1)
 		//track from cell-> last enqueued path point (or ch point if no path)
 		//if total cost of enqueued path + tracked cells <= ch mov, enqueue tracked cells
 		//otherwise, pathfind from ch starting position->cell and use that as new path
