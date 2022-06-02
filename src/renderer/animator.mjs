@@ -104,6 +104,13 @@ class Animator{
 		ui_background.drawUnits(ctx);
 	}
 	
+	static #enqueuPromiseAnimation(animation){
+		const promise = new Promise((res,rej)=>{
+			animation.resolve = res;
+		});
+		Animator.#animations.push(animation);
+		return promise;
+	}
 	static enqueue_drawMovement(xy_from,xy_to){
 		//TODO: generate movement path?
 		//calc movement speed, it will be lerped based on duration
@@ -115,14 +122,9 @@ class Animator{
 			kind:ANIMATION.MOVE,
 			data:{xy_from,xy_to},
 			duration:0,
-			totalDuration:moveSpeed,
-			resolve:(e)=>{}//should not get here
+			totalDuration:moveSpeed
 		};
-		const promise = new Promise((res,rej)=>{
-			animation.resolve = res;
-		})
-		Animator.#animations.push(animation);;
-		return promise;
+		return Animator.#enqueuPromiseAnimation(animation);
 	}
 	static enqueue_drawBattle(ch, tgtCh){
 		//copy intial values of the target so that they can rendered as-is
@@ -133,14 +135,9 @@ class Animator{
 			kind:ANIMATION.BATTLE,
 			data:{ch, tgtCh, targetStats},
 			duration:0,
-			totalDuration:33,
-			resolve:(e)=>{}//should not get here
+			totalDuration:33
 		};
-		const promise = new Promise((res,rej)=>{
-			animation.resolve = res;
-		})
-		Animator.#animations.push(animation);;
-		return promise;
+		return Animator.#enqueuPromiseAnimation(animation);
 	}
 	static enqueue_drawTurnToggle(){
 		const done = new Promise((res)=>{res();});
@@ -148,15 +145,9 @@ class Animator{
 			kind:ANIMATION.TURN,
 			data:{},
 			duration:0,
-			totalDuration:33,
-			resolve:(e)=>{}//should not get here
+			totalDuration:33
 		};
-		const promise = new Promise((res,rej)=>{
-			animation.resolve = res;
-		})
-		Animator.#animations.push(animation);;
-		return promise;
-		return done;
+		return Animator.#enqueuPromiseAnimation(animation);
 	}
 	
 }
