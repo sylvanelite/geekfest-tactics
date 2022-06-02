@@ -53,6 +53,11 @@ class ui_displayMove{
 		const [x,y] = Bit.GET_XY(ch.point_xy);
 		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		if(cell_xy==ch.point_xy){
+			//TODO: this is not qute right, cellxy is mouse pos, not curor, it's not reset on state change
+			//should instead check if the 1st cell of the path!=character, reset?
+			//and reset on click() when exiting state too...?
+
+
 			//at the user's position, clear movement path
 			//this is both the initial state, 
 			//and the state when passing back through the ch's cell
@@ -61,10 +66,7 @@ class ui_displayMove{
 		}
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
-			ui_displayMove.#movePath = [{
-				point_xy:ch.point_xy,
-				mov:ch.mov
-			}];
+			ui_displayMove.#movePath = [ch.point_xy];
 		}
 		//figure out move cell
 		//step 1)
@@ -72,7 +74,7 @@ class ui_displayMove{
 		//if total cost of enqueued path + tracked cells <= ch mov, enqueue tracked cells
 		//otherwise, pathfind from ch starting position->cell and use that as new path
 		const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
-		if(lastPoint.point_xy == cell_xy){
+		if(lastPoint == cell_xy){
 			//nothing to do if already checked this point
 			return;
 		}
@@ -115,7 +117,7 @@ class ui_displayMove{
 				//by visually shorter length
 				//point.sort((a,b)=>{});
 				for(const {px,py} of points){
-					if (py < mapH && py>=0 && px < mapW && px>=0) {
+					if (py < mapH && py>=0 && px < mapW && px>=0 &&  Sy.getMoveForCell(px,py)) {
 						const xy = Bit.SET_XY(px, py);
 						const nextPath = [...curPath];
 						nextPath.push(xy);
@@ -139,6 +141,7 @@ class ui_displayMove{
 		};
 		
 		const pathToAppend = getPathFrom(lastPoint,cell_xy);
+		console.log(ui_displayMove.#movePath,pathToAppend,lastPoint,cell_xy);
 		const bakupPath = getPathFrom(ch.point_xy,cell_xy);
 		if(!bakupPath.length){
 			console.warn("could not find backup path",ch.point_xy,cell_xy);
@@ -154,7 +157,9 @@ class ui_displayMove{
 		let movCost = 0;
 		for(const p of userPreferredPath){
 			const [px,py] = Bit.GET_XY(p);
-			movCost += Sy.getMoveForCell(px,py);
+			const cost = Sy_api.api_getCostForTerrain(ch,px,py);
+			console.log(px,py,cost);
+			movCost += cost;
 		}
 		if(movCost>ch.mov){
 			console.log("cost of new path too high:",movCost,ch.mov);
@@ -167,47 +172,6 @@ class ui_displayMove{
 		console.log(ui_displayMove.#movePath);
 		
 	}
-	/*
-	
-static fillMove( x, y, move, ch) {
-	const chCl = ch.movCl;
-	Sy.setMoveForCell(x,y,move);
-	Sy.#moveQueue[0]= Bit.SET_XY(x,y);
-	Sy.#moveQueue[0]= Bit.SET_HIGHER_BYTE(Sy.#moveQueue[0],move);
-	let start = 0;
-	let end = 1;
-	const maxLen = Sy.#moveQueue.length;
-    while (start<end&&start<maxLen) {
-		const nodeMove = Bit.GET_HIGHER_BYTE(Sy.#moveQueue[start]);
-		const [nodeX,nodeY] = Bit.GET_XY(Sy.#moveQueue[start]);
-		start+=1;
-		const points = [
-			{px:nodeX,py:nodeY+1},
-			{px:nodeX,py:nodeY-1},
-			{px:nodeX+1,py:nodeY},
-			{px:nodeX-1,py:nodeY}
-		];
-		for(const {px,py} of points){
-			if (py < Sy.MAP_HEIGHT && py>=0 && px < Sy.MAP_WIDTH && px>=0) {
-				const xy = Bit.SET_XY(px, py);
-				const terrain = Sy.getTerrainForCell(px, py);
-				const cost = Sy.getCostForTerrain(chCl,terrain);
-				const nodeCost = nodeMove-cost;
-				if (nodeCost > 0 && Sy.getMoveForCell(px, py) < nodeCost) {
-					if (Sy.#canMoveThroughCell(xy,ch.player_state)) {
-						Sy.setMoveForCell(px, py, nodeCost);
-						Sy.#moveQueue[end]=xy;
-						Sy.#moveQueue[end]=Bit.SET_HIGHER_BYTE(Sy.#moveQueue[end],nodeCost);
-						end+=1;
-					}
-				}
-			}
-		}
-    }
-	//return the end index of the array so that 'fill attack' can traverse it later
-	return end;
-}
-	*/
 }
 
 export {ui_displayMove};

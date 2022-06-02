@@ -150,6 +150,11 @@ class Sy_api {
 	static api_getCharacterAtPosition(x,y){
 		return Sy.getCharacterAtPosition(x,y);
 	}
+	static api_getCostForTerrain(ch,x,y){
+		const terrain = Sy.getTerrainForCell(x, y);
+		const cost = Sy.getCostForTerrain(ch.movCl,terrain);
+		return cost;
+	}
 	static api_getCurrentChPosition(){
 		switch (Bit.GET_LOW_BYTE(Sy.cbt_CurrentState)) {
 			case cbt_STATE_IDLE:
