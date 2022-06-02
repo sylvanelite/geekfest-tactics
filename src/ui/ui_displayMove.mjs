@@ -88,73 +88,69 @@ class ui_displayMove{
 		//helper pathfinding function, given two points 
 		//search from start->end and return a valid short path
 		//path is capped at ch.mov, but start may not be the ch's start pos
-		const getPathFrom = (start_xy,end_xy)=>{
+		const getPathFrom = (start_xy,end_xy,move)=>{
+			move+=1;
 			const movQueue = [{
 				point_xy:start_xy,
+				move:move,
 				path:[start_xy]
 			}];
+			const moveCells = new Map();
+			moveCells.set(start_xy,{
+				moveCost:move,
+				path:[start_xy]
+			});
 			//max move grid is ~a mov*mov square
 			const maxLen = (ch.mov+1)*(ch.mov+1);
 			let start = 0;
 			let end = 1;
 			const mapW = Sy_api.api_getMapWidth();
 			const mapH = Sy_api.api_getMapHeight();
-			//https://gist.github.com/DanDiplo/30528387da41332ff22b
-			//make sure the cell is not one that's already visited by the search
-			const notIn = (xy)=>{
-				for(const point of movQueue){
-					if(point.point_xy == xy){
-						return false;
-					}
-				}
-				return true;
-			}
-			
 			while (start<end&&start<maxLen) {
-				const [nodeX,nodeY] = Bit.GET_XY(movQueue[start].point_xy);
-				const curPath = movQueue[start].path;
+				const point_xy = movQueue[start].point_xy;
+				const path = movQueue[start].path;
+				const nodeMove = movQueue[start].move;
+				const [nodeX,nodeY] = Bit.GET_XY(point_xy);
+				start+=1;
 				const points = [
 					{px:nodeX,py:nodeY+1},
 					{px:nodeX,py:nodeY-1},
 					{px:nodeX+1,py:nodeY},
 					{px:nodeX-1,py:nodeY}
 				];
-				//order by cost, this will attempt to make this pathfinding obey terrain costs
-				//TODO: confirm this is correct? it will still prioritise fewer hops over cost
-				points.sort((a,b)=>{
-					let costA = 999;
-					let costB = 999;
-					if(a.py < mapH && a.py>=0 && a.px < mapW && a.px>=0){
-						costA = Sy_api.api_getCostForTerrain(ch,a.px,a.py);
-					}
-					if(b.py < mapH && b.py>=0 && b.px < mapW && b.px>=0){
-						costB = Sy_api.api_getCostForTerrain(ch,b.px,b.py);
-					}
-					return costA-costB;
-				});
-				
 				for(const {px,py} of points){
-					if (py < mapH && py>=0 && px < mapW && px>=0 && Sy.getMoveForCell(px,py)) {
+					if (py < mapH && py>=0 && px < mapW && px>=0) {
 						const xy = Bit.SET_XY(px, py);
-						const nextPath = [...curPath];
-						nextPath.push(xy);
-						if(xy==end_xy){
-							//found, return the path
-							return nextPath;
-						}
-						if(notIn(xy)){
+						const cost = Sy_api.api_getCostForTerrain(ch,px,py);
+						const nodeCost = nodeMove-cost;
+						const curPath = [...path];
+						curPath.push(xy);
+						const nextCost = (moveCells.has(xy)?moveCells.get(xy).moveCost:0);
+						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
+							if(xy==end_xy){
+								return curPath;
+							}
+							moveCells.set(xy,{
+								moveCost:nodeCost,
+								path:curPath
+							});
 							movQueue.push({
 								point_xy:xy,
-								path:nextPath
+								move:nodeCost,
+								path:curPath
 							});
 							end+=1;
 						}
 					}
 				}
-				start+=1;
 			}
-			//not found.
+			//return the end index of the array so that 'fill attack' can traverse it later
+			console.log("not found");
 			return [];
+			
+			
+			
+			
 		};
 		const checkCostOfPath = (path)=>{
 			let movCost = 0;
@@ -164,11 +160,11 @@ class ui_displayMove{
 				const cost = Sy_api.api_getCostForTerrain(ch,px,py);
 				movCost += cost;
 			}
-			return (movCost<=ch.mov);
+			return (movCost<=ch.mov+1);
 		};
 		
-		const pathToAppend = getPathFrom(lastPoint,cell_xy);
-		const backupPath = getPathFrom(ch.point_xy,cell_xy);
+		const pathToAppend = getPathFrom(lastPoint,cell_xy,ch.mov);//TODO: should be mov after considering current path
+		const backupPath = getPathFrom(ch.point_xy,cell_xy,ch.mov);
 		if(!checkCostOfPath(backupPath)){
 			console.warn("bakup path cost too high",backupPath);
 		}
