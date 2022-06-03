@@ -49,6 +49,8 @@ class ui_displayMove{
 		}
 		const [chx,chy] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
 		const ch = Sy_api.api_getCharacterAtPosition(chx,chy);
+		const [x,y] = Bit.GET_XY(ch.point_xy);
+		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
 			//console.log("empty, init path to:",ch.point_xy);
@@ -63,12 +65,12 @@ class ui_displayMove{
 		//check if trying to move to a targeting cell
 		//if so, see if the current movement path can hit that cell
 		//if it can, retain it. If it can't, reset it to an attack cell
+		const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
+		const [lastX,lastY] = Bit.GET_XY(lastPoint);
 		if(!Sy_api.api_getMoveForCell(cell.x,cell.y) && 
 			Sy_api.api_getAttackForCell(cell.x,cell.y)){
 			const eCh = Sy_api.api_getCharacterAtPosition(cell.x,cell.y);
 			if(eCh.player_state != cbt_NO_PLAYER_STATE && eCh.player_state != ch.player_state){
-			   const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
-			   const [lastX,lastY] = Bit.GET_XY(lastPoint);
 			   if(!(Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)>=ch.min_range&&
 				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
 					//reset to a valid attack path
@@ -80,20 +82,25 @@ class ui_displayMove{
 			}
 		}
 		
+		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
 		//update the user-selected movement path
 		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
 			//moved off a blue tile, don't update
 			return;
 		}
-		const [x,y] = Bit.GET_XY(ch.point_xy);
-		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//figure out move cell
 		//track from cell-> last enqueued path point (or ch point if no path)
 		//if total cost of enqueued path + tracked cells <= ch mov, enqueue tracked cells
 		//otherwise, pathfind from ch starting position->cell and use that as new path
-		const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
 		if(lastPoint == cell_xy){
 			//nothing to do if already checked this point
+			return;
+		}
+		//resolve snapping, can be done if hovering off the grid or backtracking through ch
+		//this probably breaks the need for pathfinding
+		if((Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y) > 1)){
+			//moved more than 1 cell, reset path
+			ui_displayMove.#movePath = backupPath;
 			return;
 		}
 		//check if cell is currently in the path, disallow backtracking
@@ -104,14 +111,11 @@ class ui_displayMove{
 			}
 		}
 		
-		const pathToAppend = Sy_api.api_getMovePath(ch,lastPoint,cell_xy);
-		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
-		//should not happen, backup path should always be valid
 		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
 			console.warn("bakup path invalid",backupPath);
 			return;
 		}
-		const userPreferredPath = ui_displayMove.#movePath.concat(pathToAppend);
+		const userPreferredPath = [...ui_displayMove.#movePath,cell_xy];
 		//check new path is valid
 		if(!Sy_api.api_checkPathIsValid(ch,userPreferredPath)){
 			//attempting to build up a path that's too long, reset it

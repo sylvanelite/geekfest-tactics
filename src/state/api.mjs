@@ -44,11 +44,12 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = final_xy;
 			Sy_api.#rendererBlocked = true;
 			if(preferredPath&&preferredPath.length>1){
-			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
+				console.log(preferredPath);
+				Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
 				for(let i=0;i<preferredPath.length-2;i+=1){
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
-					//TODO: reveal cells
+					//TODO: reveal cells?
 					//check for ! movement
 					const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
 																	Bit.GET_Y(to)).player_state;
@@ -318,14 +319,15 @@ class Sy_api {
 		}
 		//check the total cost of the path over the terrain being traversed
 		let movCost = 0;
-		for(const p of path){
+		for(let i=0;i<path.length;i+=1){
+			const p = path[i];
 			const [px,py] = Bit.GET_XY(p);
 			if(p==ch.point_xy){continue;}//don't consider start cell
 			if(Sy.getMoveForCell(px,py) == 0) {return false;}//tried to move over invalid tile
 			const cost = Sy_api.api_getCostForTerrain(ch,px,py);
 			movCost += cost;
 		}
-		return (movCost<=ch.mov+1);
+		return (movCost<=ch.mov);
 	}
 	
 	//used to save/restore/sync state
