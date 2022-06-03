@@ -12,7 +12,8 @@ class Bit {
 	static SET_Y(a,b){return Bit.SET_LOW_BYTE(a,b);};
 	static SET_XY(x,y){ let ret = 0; ret=Bit.SET_X(ret,x); ret=Bit.SET_Y(ret,y); return ret;}//returns an int with x,y packed
 	static BIT_SET(a,b){ ((a) |= (0x01<<(b)));return a;}
-	
+	static BIT_CLEAR(a,b){ ((a) &= ~(0x01<<(b)));return a;}
+
 	//should be ok. max int is 53 bits in JS. this is used as a micro-optimisation in flood fill for move
 	static SET_HIGHER_BYTE(a,b){ (a=(a & 0x00FFFF) | ((b & 0xFF) << 16));return a;}
 	static GET_HIGHER_BYTE(a){ return( a >> 16 & 0xFF);}

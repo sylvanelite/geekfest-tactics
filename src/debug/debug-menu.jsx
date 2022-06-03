@@ -36,6 +36,7 @@ const initialTerrain = ()=>{
 	return {
 		width:9,
 		height:6,
+		fogEnabled:true,
 		terrain:[
 		1 ,1 ,1 ,2 ,1 ,4 ,1 ,1 ,1 ,
 		99,1 ,1 ,2 ,5 ,1 ,1 ,1 ,1 ,
@@ -143,6 +144,15 @@ function DebugMenu(props) {
 		
 	};
 	
+	const toggleFog = ()=>{
+		setTerrain((oldTerrain)=>{
+			const newTerrain= {
+				...oldTerrain
+			};
+			newTerrain.fogEnabled = !oldTerrain.fogEnabled;
+			return newTerrain;
+		});
+	}
 	
 	
   return (
@@ -189,6 +199,9 @@ function DebugMenu(props) {
 						});
 					}}
 				></input>
+			</div>
+			<div class="field is-inline-block-desktop">
+			<button onClick={toggleFog}>Fog: {terrainData.fogEnabled?"on":"off"}</button>
 			</div>
 		</div>
 	  {terrainGrid()}

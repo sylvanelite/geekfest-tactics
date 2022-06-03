@@ -249,6 +249,7 @@ class Sy_api {
 		}
 		if(terrainData){
 			Sy.setMapSize(terrainData.width,terrainData.height);
+			Sy.setFogEnabled(terrainData.fogEnabled);
 			Sy.cbt_terrain = terrainData.terrain;
 		}
 		if(unitData){
@@ -336,6 +337,7 @@ class Sy_api {
 		const terrainCopy=Sy.cbt_terrain.slice();
 		const moveCopy=Sy.cbt_move.slice();
 		const atkCopy = Sy.cbt_attack.slice();//slice is shallow copy, should be ok since it's ints
+		const fogCopy = Sy.cbt_fog.slice();
 		//ch needs deep copy
 		const chCopy = Array(Sy.cbt_varCharacters.length);
 		let i=0;
@@ -359,6 +361,8 @@ class Sy_api {
 			terrain:terrainCopy,
 			move:moveCopy,
 			attack:atkCopy,
+			fog:fogCopy,
+			fogEnabled:Sy.FOG_ENABLED,
 			varCharacters:chCopy,
 			rngA:PRNG.RNG_A,
 			rngB:PRNG.RNG_B,
@@ -379,6 +383,8 @@ class Sy_api {
 		Sy.cbt_terrain = savedState.terrain;
 		Sy.cbt_move = savedState.move;
 		Sy.cbt_attack = savedState.attack;
+		Sy.cbt_fog = savedState.fog;
+		Sy.setFogEnabled(savedState.fogEnabled);
 		Sy.cbt_varCharacters = savedState.varCharacters;
 		PRNG.RNG_A = savedState.rngA;
 		PRNG.RNG_B = savedState.rngB;

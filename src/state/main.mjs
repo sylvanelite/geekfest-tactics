@@ -17,7 +17,9 @@ static MAP_HEIGHT = 12;
 //these could be const, but if changing the world size, these should be variable
 static cbt_terrain = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
 static cbt_move = new Uint32Array(Sy.MAP_WIDTH*Sy.MAP_HEIGHT);
-static cbt_attack =  new Uint32Array(Math.ceil((Sy.MAP_WIDTH*Sy.MAP_HEIGHT)/SIZE_OF_INT));//bit mask of which cells can be attacked. 
+static cbt_attack = new Uint32Array(Math.ceil((Sy.MAP_WIDTH*Sy.MAP_HEIGHT)/SIZE_OF_INT));//bit mask of which cells can be attacked. 
+static cbt_fog = new Uint32Array(Math.ceil((Sy.MAP_WIDTH*Sy.MAP_HEIGHT)/SIZE_OF_INT));//bit mask of hidden cells
+static FOG_ENABLED = false;
 static cbt_varCharacters = [];//array to hold st_Character()
 static cbt_CurrentState= cbt_STATE_IDLE;//state machine: idle->display move->select target
 static cbt_CurrentPlayerState= cbt_PLAYER;
@@ -130,6 +132,32 @@ static resetAttack(){
 	for(let i=0;i<Sy.cbt_attack.length;i+=1){
 		Sy.cbt_attack[i] = 0;
 	}
+}
+static resetFog(isHidden){
+	const fillval = (isHidden?0xFFFFFFFF:0);
+	for(let i=0;i<Sy.cbt_fog.length;i+=1){
+		Sy.cbt_fog[i] = fillval;
+	}
+}
+static setFogEnabled(enabled){
+	Sy.FOG_ENABLED = enabled;
+	Sy.resetFog(Sy.FOG_ENABLED);
+}
+static setFogForCell(x, y,isHidden){
+	const mapIdx = y*Sy.MAP_WIDTH+x;
+	const bitIdx = Math.floor(mapIdx/SIZE_OF_INT);
+	const remainder = mapIdx%(SIZE_OF_INT);
+	if(isHidden){
+		Sy.cbt_fog[bitIdx]=Bit.BIT_SET(Sy.cbt_fog[bitIdx],remainder);
+	}else{
+		Sy.cbt_fog[bitIdx]=Bit.BIT_CLEAR(Sy.cbt_fog[bitIdx],remainder);
+	}
+}
+static getFogForCell( x, y){
+	const mapIdx = y*Sy.MAP_WIDTH+x;
+	const bitIdx = Math.floor(mapIdx/SIZE_OF_INT);
+	const remainder = mapIdx%(SIZE_OF_INT);
+	return Bit.BIT_CHECK(Sy.cbt_fog[bitIdx],remainder)
 }
 static setAttackForCell( x, y){
 	const mapIdx = y*Sy.MAP_WIDTH+x;
