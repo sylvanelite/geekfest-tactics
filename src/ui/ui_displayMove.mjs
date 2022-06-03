@@ -45,6 +45,9 @@ class ui_displayMove{
 		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			return;//cell out of bounds
 		}
+		//TODO: check if trying to move to a targeting cell
+		
+		
 		//update the user-selected movement path
 		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
 			//moved off a blue tile, don't update

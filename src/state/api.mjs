@@ -46,7 +46,15 @@ class Sy_api {
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
 					Sy_api.#rendererBlocked = true;
-					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,selected_xy);
+					if(preferredPath&&preferredPath.length>1){
+						for(let i=0;i<preferredPath.length-2;i+=1){
+							const from = preferredPath[i];
+							const to = preferredPath[i+1];
+							await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
+						}
+					}else{
+						await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,selected_xy);
+					}
 					Sy_api.#rendererBlocked = false;
 				}
 			}
@@ -63,7 +71,10 @@ class Sy_api {
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
 					Sy_api.#rendererBlocked = true;
-					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,attackPosition);
+					//TODO: if preferredPath, check that distance from preferredPath->target is in range
+					//      if not, create backup path to "attackPosition"
+					//      this could be done at the display layer?
+					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,attackPosition);
 					Sy_api.#rendererBlocked = false;
 				}
 			}
