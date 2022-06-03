@@ -25,10 +25,10 @@ class ui_displayMove{
 	}
 	static click(e){
 		const cell = Renderer.getMouseCell();
-		ui_displayMove.move(e);//ensure pathfinding is updated
+		ui_displayMove.move();//ensure pathfinding is updated
 		console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
-			ui_displayMove.#movePath = [];//turf out the user path for next time
+			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 			return;
 		}
@@ -37,12 +37,14 @@ class ui_displayMove{
 			return;
 		}
 		Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
-		ui_displayMove.#movePath = [];//turf out the user path for next time
 	}
 	//a movement path suggested by the user
 	static #movePath = [];
 	
-	static move(e){
+	static clearPath(){
+		ui_displayMove.#movePath = [];
+	}
+	static move(){
 		const cell = Renderer.getMouseCell();
 		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			return;//cell out of bounds
@@ -53,14 +55,12 @@ class ui_displayMove{
 		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
-			//console.log("empty, init path to:",ch.point_xy);
+			console.log("empty, init path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
-			return;
 		}
 		if(ui_displayMove.#movePath[0]!=ch.point_xy){
-			//console.log("not at start set path to:",ch.point_xy);
+			console.log("not at start set path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
-			return;
 		}
 		//check if trying to move to a targeting cell
 		//if so, see if the current movement path can hit that cell
@@ -75,18 +75,13 @@ class ui_displayMove{
 				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
 					//reset to a valid attack path
 					const movCell = Sy_api.api_getMoveCellFromAttack(cell.x,cell.y,ch);
-					const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
-					ui_displayMove.#movePath = backupPath;
+					const defaultAtkPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
+					ui_displayMove.#movePath = defaultAtkPath;
 					return;
 			   }
 			}
 		}
 		
-		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
-		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
-			console.warn("bakup path invalid",backupPath);//should not get here
-			return;
-		}
 		//update the user-selected movement path
 		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
 			//moved off a blue tile, don't update
@@ -96,6 +91,16 @@ class ui_displayMove{
 			//nothing to do if already checked this point
 			return;
 		}
+		if(ch.point_xy == cell_xy){
+			//hovering over ch, can reset path
+			ui_displayMove.#movePath = [ch.point_xy];
+			return;
+		}
+		const defaultMovPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
+		if(!Sy_api.api_checkPathIsValid(ch,defaultMovPath)){
+			console.warn("bakup path invalid",defaultMovPath);//should not get here
+			return;
+		}
 		//figure out move cell
 		//incrementally build up a path
 		//check if it's valid, if so, use it
@@ -103,7 +108,7 @@ class ui_displayMove{
 		//resolve snapping, can be done if hovering off the grid or backtracking through ch
 		if((Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y) > 1)){
 			//moved more than 1 cell, reset path
-			ui_displayMove.#movePath = backupPath;
+			ui_displayMove.#movePath = defaultMovPath;
 			return;
 		}
 		//check if cell is currently in the path, disallow backtracking
@@ -117,7 +122,7 @@ class ui_displayMove{
 		const userPreferredPath = [...ui_displayMove.#movePath,cell_xy];
 		if(!Sy_api.api_checkPathIsValid(ch,userPreferredPath)){
 			//attempting to build up a path that's too long, reset it
-			ui_displayMove.#movePath = backupPath;
+			ui_displayMove.#movePath = defaultMovPath;
 			return;
 		}
 		//otherwise all checks paased, path is valid, assign it

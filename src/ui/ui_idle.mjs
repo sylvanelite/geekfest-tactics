@@ -2,6 +2,7 @@
 import { Sy_api } from "../state/api.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
+import { ui_displayMove } from "./ui_displayMove.mjs";
 
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
@@ -35,6 +36,7 @@ class ui_idle{
 			return;
 		}
 		Sy_api.api_idle_selectCharacter(cell.x,cell.y);
+		ui_displayMove.clearPath();
 	}
 }
 export {ui_idle};
