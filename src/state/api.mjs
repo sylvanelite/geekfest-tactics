@@ -40,32 +40,37 @@ class Sy_api {
 		const ch = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
 											   Bit.GET_Y(Sy.cbt_isv_STATE_IDLE_xy));
+		const movePathfind = async (final_xy)=>{
+			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = final_xy;
+			Sy_api.#rendererBlocked = true;
+			if(preferredPath&&preferredPath.length>1){
+			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
+				for(let i=0;i<preferredPath.length-2;i+=1){
+					const from = preferredPath[i];
+					const to = preferredPath[i+1];
+					//TODO: reveal cells
+					//check for ! movement
+					const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
+																	Bit.GET_Y(to)).player_state;
+					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
+						//trying to move through enemy ch, do !
+						//TODO: await enqueue_! animation
+						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
+						break;
+					}
+					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
+				}
+			}else{
+				await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,final_xy);
+			}
+			Sy_api.#rendererBlocked = false;
+		};
 		if ((ch.player_state == cbt_NO_PLAYER_STATE || selected_xy == prevCh.point_xy) &&
 			Sy.getMoveForCell(x,y) != 0) { //'a' on a blue square
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = selected_xy;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#rendererBlocked = true;
-					if(preferredPath&&preferredPath.length>1){
-						for(let i=0;i<preferredPath.length-2;i+=1){
-							const from = preferredPath[i];
-							const to = preferredPath[i+1];
-							//TODO: reveal cells
-							//check for ! movement
-							const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
-																			Bit.GET_Y(to)).player_state;
-							if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
-								//trying to move through enemy ch, do !
-								//TODO: await enqueue_! animation
-								selected_xy = from;
-								break;
-							}
-							await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
-						}
-					}else{
-						await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,selected_xy);
-					}
-					Sy_api.#rendererBlocked = false;
+					await movePathfind(selected_xy);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
@@ -80,12 +85,7 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
 				if(Sy_api.#renderer){
-					Sy_api.#rendererBlocked = true;
-					//TODO: if preferredPath, check that distance from preferredPath->target is in range
-					//      if not, create backup path to "attackPosition"
-					//      this could be done at the display layer?
-					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,attackPosition);
-					Sy_api.#rendererBlocked = false;
+					await movePathfind(attackPosition);
 				}
 			}
 			Sy.cbtDoMove(prevCh);
