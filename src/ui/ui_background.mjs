@@ -5,6 +5,7 @@ import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
+	cbt_NO_PLAYER_STATE,
 	cbt_PLAYER,
 	cbt_ENEMY
 	}from "../state/consts.mjs";
@@ -75,6 +76,14 @@ class ui_background{
 		}
 	}
 	static drawUnitAtPosition(ctx,ch,x,y){
+		if(Sy.FOG_ENABLED){
+			if(Sy.getFogForCell(x,y)&&ch.player_state!=Sy_api.api_getCurrentPlayerState()){
+				return;
+			}
+		}
+		if(ch.player_state == cbt_NO_PLAYER_STATE){
+			return;
+		}
 		if(ch.player_state == cbt_PLAYER){
 			ctx.fillStyle="blue";
 		}

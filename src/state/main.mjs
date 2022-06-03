@@ -56,7 +56,7 @@ static setMapSize(width,height){
 	Sy.#moveQueue = new Int32Array(Sy.MAP_WIDTH * Sy.MAP_HEIGHT);
 }
 
-static cellIsFree(position_xy){
+static #cellIsFree(position_xy){
 	return !Sy.#chPositionCache.has(position_xy);
 }
 static changeChPosistion(ch,position_xy){
@@ -77,11 +77,18 @@ static cbtDoMove(ch) {
 	Sy.cbt_CurrentState=cbt_STATE_SELECT_WEAPON_TARGET;
 }
 static getCharacterAtPosition(x, y){
+	let res = cbt_NULL_CHARACTER;
 	const point_xy = Bit.SET_XY(x,y);
 	if(Sy.#chPositionCache.has(point_xy)){
-		return Sy.#chPositionCache.get(point_xy);
+		res= Sy.#chPositionCache.get(point_xy);
 	}
-	return cbt_NULL_CHARACTER;
+	//fog, can always see the unit if it's one of your own 
+	if(Sy.FOG_ENABLED && Sy.getFogForCell(x,y)){
+		if(res.player_state!=Sy.cbt_CurrentPlayerState){
+			res= cbt_NULL_CHARACTER;
+		}
+	}
+	return res;
 }
 static checkEndOfTurn(){
     let endOfTurn = true;
@@ -144,26 +151,29 @@ static setFogEnabled(enabled){
 	Sy.resetFog(Sy.FOG_ENABLED);
 }
 static clearFogForCharacter(character,x,y){
-	const min_vision=1;
-	const max_vision=2;
-	//TODO: use ch.movCl to adjust vision? or other stats?
-	for(let j=max_vision;j>=min_vision;j-=1){
-		for(let i=0;i<j;i+=1){
-			const upX = x-j+i;
-			const downX = x+j-i;
-			const rightY = y-j+i;
-			const leftY = y+j-i; 
-			if(upX>=0&&upX<Sy.MAP_WIDTH&&y-i>=0){
-				Sy.setFogForCell(upX,y-i,false);
-			}
-			if(downX>=0&&downX<Sy.MAP_WIDTH&&y+i<Sy.MAP_HEIGHT){
-				Sy.setFogForCell(downX,y+i,false);
-			}
-			if(rightY>=0&&rightY<Sy.MAP_HEIGHT&&x+i<Sy.MAP_WIDTH){
-				Sy.setFogForCell(x+i,rightY,false);
-			}
-			if(leftY>=0&&leftY<Sy.MAP_HEIGHT&&x-i>=0){
-				Sy.setFogForCell(x-i,leftY,false);
+	if(Sy.FOG_ENABLED){
+		Sy.setFogForCell(x,y,false);
+		const min_vision=1;
+		const max_vision=2;
+		//TODO: use ch.movCl to adjust vision? or other stats?
+		for(let j=max_vision;j>=min_vision;j-=1){
+			for(let i=0;i<j;i+=1){
+				const upX = x-j+i;
+				const downX = x+j-i;
+				const rightY = y-j+i;
+				const leftY = y+j-i; 
+				if(upX>=0&&upX<Sy.MAP_WIDTH&&y-i>=0){
+					Sy.setFogForCell(upX,y-i,false);
+				}
+				if(downX>=0&&downX<Sy.MAP_WIDTH&&y+i<Sy.MAP_HEIGHT){
+					Sy.setFogForCell(downX,y+i,false);
+				}
+				if(rightY>=0&&rightY<Sy.MAP_HEIGHT&&x+i<Sy.MAP_WIDTH){
+					Sy.setFogForCell(x+i,rightY,false);
+				}
+				if(leftY>=0&&leftY<Sy.MAP_HEIGHT&&x-i>=0){
+					Sy.setFogForCell(x-i,leftY,false);
+				}
 			}
 		}
 	}
@@ -234,7 +244,7 @@ static getMoveCellFromAttack( attackX,  attackY, ch){
             //can move here
             if (Sy.getMoveForCell(i,j) != 0 && range>=min_range && range<=max_range){
 				const xy = Bit.SET_XY(i,j) ;
-				if( Sy.cellIsFree(xy) || ch.point_xy == xy) {
+				if( Sy.#cellIsFree(xy) || ch.point_xy == xy) {
 					const cellCost= Math.abs(i-chX)+Math.abs(j-chY);//prioritise moving fewer spaces
 					if(cellCost<cost){
 						cost = cellCost;
@@ -267,8 +277,8 @@ static getCostForTerrain(chCl,terrainBaseCost){
 	//TODO: check chCl against a bit flag of skills for that ch to determine movement.
 	return terrainBaseCost;
 }
-static #canMoveThroughCell = function(xy,player_state){
-	if(Sy.cellIsFree(xy)){
+static #canMoveThroughCell(xy,player_state){
+	if(Sy.#cellIsFree(xy)){
 		return true;
 	}
 	//cell not free, need to check if it's an ally
@@ -349,7 +359,7 @@ static fillMoveAndAttackForCharacter(ch) {
 		const node_xy = Sy.#moveQueue[i];
 		const [nodeX,nodeY] = Bit.GET_XY(node_xy);
 		//don't fill if there's an enemy or ally in that cell
-		if ((ch.point_xy==node_xy)||Sy.cellIsFree(node_xy)) {
+		if ((ch.point_xy==node_xy)||Sy.#cellIsFree(node_xy)) {
 			Sy.fillAttack(nodeX, nodeY, min_range, max_range);
 		}
 	}

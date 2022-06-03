@@ -108,7 +108,7 @@ class Sy_api {
 	}
 	static async api_tgt_selectTarget(x,y,preferredPath){
 		const slectedTgt = Sy.getCharacterAtPosition(x,y);
-		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){
+		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){//if not clicking on the unit, need to check player state for visible opponents
 			console.log("invalid target cell",x,y);
 			return false;//TODO: invalid target...  could also call Sy_api.api_tgt_cancel()?
 		}
@@ -159,23 +159,11 @@ class Sy_api {
 
 //////////////helper methods
 	//read only properties for rendering, ai, etc
-	static api_get_playerCharacters(){
-		return Sy.cbt_varCharacters.filter((x)=>{
-			return x.player_state == cbt_PLAYER;
-		});
-	}
-	static api_get_enemyCharacters(){
-		return Sy.cbt_varCharacters.filter((x)=>{
-			return x.player_state == cbt_ENEMY;
-		});
-	}
 	static api_get_allCharacters(){
 		return Sy.cbt_varCharacters.filter((x)=>{
 			return x.player_state != cbt_NO_PLAYER_STATE;
 		});
 	}
-	
-	
 	static api_getCurrentPlayerState(){
 		return Sy.cbt_CurrentPlayerState;
 	}
@@ -224,11 +212,10 @@ class Sy_api {
 			return;
 		}
 		const curPlayerState = Sy_api.api_getCurrentPlayerState();
-		let source = Sy_api.api_get_enemyCharacters();
-		if(curPlayerState == cbt_ENEMY){
-			source =  Sy_api.api_get_playerCharacters();
-		}
-		for(const ch of source){
+		let enemies = Sy_api.api_get_allCharacters().filter((x)=>{
+			return x.player_state != cbt_NO_PLAYER_STATE && x.player_state!=curPlayerState;
+		});
+		for(const ch of enemies){
 			const [x,y] = Bit.GET_XY(ch.point_xy);
 			if(Sy_api.api_getAttackForCell(x,y) && ch.player_state != cbt_NO_PLAYER_STATE){
 				const moveCell = Bit.SET_XY(x,y);

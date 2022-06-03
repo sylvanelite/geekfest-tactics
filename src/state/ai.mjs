@@ -1,5 +1,6 @@
 import {
 	cbt_ENEMY,
+	cbt_PLAYER,
 	cbt_NO_PLAYER_STATE,
 	cbt_STATE_IDLE,
 	cbt_STATE_DISPLAY_MOVE,
@@ -9,6 +10,20 @@ import { Sy_api } from "./api.mjs";
 import { Bit } from "./bit.mjs";
 
 class Sy_AI {
+	
+	static #getPlayerCharacters(){
+		const ch = Sy_api.api_get_allCharacters();
+		return ch.filter((x)=>{
+			return x.player_state == cbt_PLAYER;
+		});
+	}
+	static #getEnemyCharacters(){
+		const ch = Sy_api.api_get_allCharacters();
+		return ch.filter((x)=>{
+			return x.player_state == cbt_ENEMY;
+		});
+	}
+	
 	static AI(){
 		//only do AI if it's the enemy turn
 		if(Sy_api.api_getCurrentPlayerState() != cbt_ENEMY){
@@ -32,7 +47,7 @@ class Sy_AI {
 	
 	}
 	static #STATE_IDLE() {
-		const eChara = Sy_api.api_get_enemyCharacters();
+		const eChara = Sy_AI.#getEnemyCharacters();
 		for (const ch of eChara){
 			if (!(ch.hasMoved) && ch.player_state != cbt_NO_PLAYER_STATE) {
 				//found a valid unit, select them:
@@ -44,7 +59,7 @@ class Sy_AI {
 	static #STATE_DISPLAY_MOVE() {
 		//see if there is an opponent in range.
 		//if yes, press 'a' on them
-		const pChara = Sy_api.api_get_playerCharacters();
+		const pChara = Sy_AI.#getPlayerCharacters();
 		for (const playerTgt of pChara){
 			if(playerTgt.player_state != cbt_NO_PLAYER_STATE &&
 			   Sy_api.api_getAttackForCell(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy))){
