@@ -49,17 +49,27 @@ class Sy_api {
 				for(let i=0;i<preferredPath.length-2;i+=1){
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
-					//check for ! movement
-					const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
-																	Bit.GET_Y(to)).player_state;
+					//check for !! movement
+					//temporarily reveal the fog, check for collsion, then hide it again
+					const [to_x,to_y]=Bit.GET_XY(to);
+					const fogCovered = Sy.getFogForCell(to_x,to_y);
+					Sy.setFogForCell(to_x,to_y,false);
+					const occupiedState = Sy.getCharacterAtPosition(to_x,to_y).player_state;
+					Sy.setFogForCell(to_x,to_y,fogCovered);
 					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
 						//trying to move through enemy ch, do !
-						//TODO: await enqueue_! animation
+						//TODO: await enqueue_!! animation
 						
-						//TODO: implement !, drop to idle state by calling api_tgt_selectTarget?
+						//TODO: implement !!, drop to idle state by calling api_tgt_selectTarget?
+						//      truncate preferredPath too.
+						console.log("!!");
+						
+						
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
 						break;//TODO return some value to indicate move failed??? or just check .hasMoved after path call...
 					}
+					
+					
 					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
 				}
 			}else{

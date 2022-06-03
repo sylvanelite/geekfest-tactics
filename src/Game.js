@@ -38,7 +38,7 @@ class GameState {
 		}
 		if(playerState==cbt_ENEMY){
 			//TODO: check network, local, etc
-			return CONTROL_SOURCE.AI;
+			return CONTROL_SOURCE.LOCAL;
 		}
 		//default: local
 		return CONTROL_SOURCE.LOCAL;

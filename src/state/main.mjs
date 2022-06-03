@@ -57,7 +57,9 @@ static setMapSize(width,height){
 }
 
 static #cellIsFree(position_xy){
-	return !Sy.#chPositionCache.has(position_xy);
+	const [x,y] = Bit.GET_XY(position_xy);
+	return Sy.getCharacterAtPosition(x,y).player_state == cbt_NO_PLAYER_STATE;
+	//return !Sy.#chPositionCache.has(position_xy);
 }
 static changeChPosistion(ch,position_xy){
 	const old_xy = ch.point_xy;//clear old cache entry

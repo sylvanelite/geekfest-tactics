@@ -25,6 +25,7 @@ const initialUnits = ()=>{
 	ch0.mov=10;
 	ch1.player_state = cbt_PLAYER;
 	ch1.point_xy = Bit.SET_XY(1,0);
+	ch1.mov=4;
 	ch2.player_state = cbt_ENEMY;
 	ch2.point_xy = Bit.SET_XY(1,3);
 	ch3.player_state = cbt_ENEMY;
