@@ -50,6 +50,16 @@ class Sy_api {
 						for(let i=0;i<preferredPath.length-2;i+=1){
 							const from = preferredPath[i];
 							const to = preferredPath[i+1];
+							//TODO: reveal cells
+							//check for ! movement
+							const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
+																			Bit.GET_Y(to)).player_state;
+							if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
+								//trying to move through enemy ch, do !
+								//TODO: await enqueue_! animation
+								selected_xy = from;
+								break;
+							}
 							await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
 						}
 					}else{
