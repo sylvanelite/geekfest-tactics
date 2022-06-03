@@ -227,6 +227,9 @@ class Sy_api {
 		}
 		return res;
 	}
+	static api_getMoveCellFromAttack(x, y, ch){
+		return Sy.getMoveCellFromAttack(x, y, ch);
+	}
 	//seed for generating random data
 	//data = 2d array of initial terrain
 	static api_generateRoom(seed=0,terrainData=null,unitData=null){

@@ -3,6 +3,7 @@ import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
+import { cbt_NO_PLAYER_STATE } from "../state/consts.mjs";
 
 class ui_displayMove{
 	static draw(ctx){
@@ -24,6 +25,7 @@ class ui_displayMove{
 	}
 	static click(e){
 		const cell = Renderer.getMouseCell();
+		ui_displayMove.move(e);//ensure pathfinding is updated
 		console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
 			ui_displayMove.#movePath = [];//turf out the user path for next time
@@ -45,18 +47,8 @@ class ui_displayMove{
 		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			return;//cell out of bounds
 		}
-		//TODO: check if trying to move to a targeting cell
-		
-		
-		//update the user-selected movement path
-		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
-			//moved off a blue tile, don't update
-			return;
-		}
 		const [chx,chy] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
 		const ch = Sy_api.api_getCharacterAtPosition(chx,chy);
-		const [x,y] = Bit.GET_XY(ch.point_xy);
-		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
 			//console.log("empty, init path to:",ch.point_xy);
@@ -68,6 +60,33 @@ class ui_displayMove{
 			ui_displayMove.#movePath = [ch.point_xy];
 			return;
 		}
+		//check if trying to move to a targeting cell
+		//if so, see if the current movement path can hit that cell
+		//if it can, retain it. If it can't, reset it to an attack cell
+		if(!Sy_api.api_getMoveForCell(cell.x,cell.y) && 
+			Sy_api.api_getAttackForCell(cell.x,cell.y)){
+			const eCh = Sy_api.api_getCharacterAtPosition(cell.x,cell.y);
+			if(eCh.player_state != cbt_NO_PLAYER_STATE && eCh.player_state != ch.player_state){
+			   const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
+			   const [lastX,lastY] = Bit.GET_XY(lastPoint);
+			   if(!(Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)>=ch.min_range&&
+				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
+					//reset to a valid attack path
+					const movCell = Sy_api.api_getMoveCellFromAttack(cell.x,cell.y,ch);
+					const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
+					ui_displayMove.#movePath = backupPath;
+					return;
+			   }
+			}
+		}
+		
+		//update the user-selected movement path
+		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
+			//moved off a blue tile, don't update
+			return;
+		}
+		const [x,y] = Bit.GET_XY(ch.point_xy);
+		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//figure out move cell
 		//track from cell-> last enqueued path point (or ch point if no path)
 		//if total cost of enqueued path + tracked cells <= ch mov, enqueue tracked cells
