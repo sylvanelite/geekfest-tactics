@@ -83,21 +83,24 @@ class ui_displayMove{
 		}
 		
 		const backupPath = Sy_api.api_getMovePath(ch,ch.point_xy,cell_xy);
+		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
+			console.warn("bakup path invalid",backupPath);//should not get here
+			return;
+		}
 		//update the user-selected movement path
 		if(!Sy_api.api_getMoveForCell(cell.x,cell.y)){
 			//moved off a blue tile, don't update
 			return;
 		}
-		//figure out move cell
-		//track from cell-> last enqueued path point (or ch point if no path)
-		//if total cost of enqueued path + tracked cells <= ch mov, enqueue tracked cells
-		//otherwise, pathfind from ch starting position->cell and use that as new path
 		if(lastPoint == cell_xy){
 			//nothing to do if already checked this point
 			return;
 		}
+		//figure out move cell
+		//incrementally build up a path
+		//check if it's valid, if so, use it
+		//if not, reset it to a known-good path
 		//resolve snapping, can be done if hovering off the grid or backtracking through ch
-		//this probably breaks the need for pathfinding
 		if((Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y) > 1)){
 			//moved more than 1 cell, reset path
 			ui_displayMove.#movePath = backupPath;
@@ -110,13 +113,8 @@ class ui_displayMove{
 				return;
 			}
 		}
-		
-		if(!Sy_api.api_checkPathIsValid(ch,backupPath)){
-			console.warn("bakup path invalid",backupPath);
-			return;
-		}
+		//generate new path, and check if it's valid
 		const userPreferredPath = [...ui_displayMove.#movePath,cell_xy];
-		//check new path is valid
 		if(!Sy_api.api_checkPathIsValid(ch,userPreferredPath)){
 			//attempting to build up a path that's too long, reset it
 			ui_displayMove.#movePath = backupPath;
