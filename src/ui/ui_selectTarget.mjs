@@ -20,7 +20,7 @@ class ui_selectTarget{
 			console.log("cell out of bounds: ",cell.x,cell.y);
 			return;
 		}
-		Sy_api.api_tgt_selectTarget(cell.x,cell.y);
+		Sy_api.api_tgt_selectTarget(cell.x,cell.y,ui_displayMove.getPath());
 		ui_displayMove.clearPath();
 	}
 }

@@ -49,15 +49,16 @@ class Sy_api {
 				for(let i=0;i<preferredPath.length-2;i+=1){
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
-					//TODO: reveal cells?
 					//check for ! movement
 					const occupiedState = Sy.getCharacterAtPosition(Bit.GET_X(to),
 																	Bit.GET_Y(to)).player_state;
 					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
 						//trying to move through enemy ch, do !
 						//TODO: await enqueue_! animation
+						
+						//TODO: implement !, drop to idle state by calling api_tgt_selectTarget?
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
-						break;
+						break;//TODO return some value to indicate move failed??? or just check .hasMoved after path call...
 					}
 					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
 				}
@@ -105,7 +106,7 @@ class Sy_api {
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		return true;
 	}
-	static async api_tgt_selectTarget(x,y){
+	static async api_tgt_selectTarget(x,y,preferredPath){
 		const slectedTgt = Sy.getCharacterAtPosition(x,y);
 		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){
 			console.log("invalid target cell",x,y);
@@ -116,6 +117,14 @@ class Sy_api {
 		Sy.resetMove();
 		Sy.resetAttack();
 		ch.hasMoved = true;
+		//clear fog for movement path
+		if(preferredPath&&preferredPath.length){
+			for(const p of preferredPath){
+				const [x,y] = Bit.GET_XY(p);
+				Sy.clearFogForCharacter(ch,x,y);
+			}
+		}
+		
 		//'a' on target
 		if (slectedTgt.point_xy != ch.point_xy) { 
 			if(Sy_api.#renderer){
@@ -260,6 +269,7 @@ class Sy_api {
 		//establish deep copy to decouple state
 		Sy_api.api_setState(Sy_api.api_cloneState());
 		Sy.flushChPositionCache();
+		Sy.fillFog();
 	}
 
 //////////////extension methods

@@ -111,8 +111,8 @@ static endTurn() {
     } else {
         Sy.cbt_CurrentPlayerState= cbt_PLAYER;
     }
-    //TODO: show transition
     Sy.cbt_CurrentState=cbt_STATE_IDLE;
+	Sy.fillFog();
     return;
 }
 static getMoveForCell( x, y){
@@ -142,6 +142,42 @@ static resetFog(isHidden){
 static setFogEnabled(enabled){
 	Sy.FOG_ENABLED = enabled;
 	Sy.resetFog(Sy.FOG_ENABLED);
+}
+static clearFogForCharacter(character,x,y){
+	const min_vision=1;
+	const max_vision=2;
+	//TODO: use ch.movCl to adjust vision? or other stats?
+	for(let j=max_vision;j>=min_vision;j-=1){
+		for(let i=0;i<j;i+=1){
+			const upX = x-j+i;
+			const downX = x+j-i;
+			const rightY = y-j+i;
+			const leftY = y+j-i; 
+			if(upX>=0&&upX<Sy.MAP_WIDTH&&y-i>=0){
+				Sy.setFogForCell(upX,y-i,false);
+			}
+			if(downX>=0&&downX<Sy.MAP_WIDTH&&y+i<Sy.MAP_HEIGHT){
+				Sy.setFogForCell(downX,y+i,false);
+			}
+			if(rightY>=0&&rightY<Sy.MAP_HEIGHT&&x+i<Sy.MAP_WIDTH){
+				Sy.setFogForCell(x+i,rightY,false);
+			}
+			if(leftY>=0&&leftY<Sy.MAP_HEIGHT&&x-i>=0){
+				Sy.setFogForCell(x-i,leftY,false);
+			}
+		}
+	}
+}
+static fillFog(){
+	if(Sy.FOG_ENABLED){
+		Sy.resetFog(Sy.FOG_ENABLED);
+		for (const ch of Sy.cbt_varCharacters){
+			if(ch.player_state == Sy.cbt_CurrentPlayerState){
+				const [x,y] = Bit.GET_XY(ch.point_xy);
+				Sy.clearFogForCharacter(ch,x,y);
+			}
+		}
+	}
 }
 static setFogForCell(x, y,isHidden){
 	const mapIdx = y*Sy.MAP_WIDTH+x;

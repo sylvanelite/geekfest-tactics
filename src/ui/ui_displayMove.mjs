@@ -44,6 +44,9 @@ class ui_displayMove{
 	static clearPath(){
 		ui_displayMove.#movePath = [];
 	}
+	static getPath(){
+		return [...ui_displayMove.#movePath];
+	}
 	static move(){
 		const cell = Renderer.getMouseCell();
 		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){

@@ -41,6 +41,18 @@ class ui_background{
 				ctx.fillRect(i*Renderer.TILE_SIZE,j*Renderer.TILE_SIZE,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 			}
 		}
+		
+		
+		//TODO, wrap fog with api...
+		for(let j=0;j<h;j+=1){
+			for(let i=0;i<w;i+=1){
+				const fog = Sy.getFogForCell(i,j);
+				if(fog){
+					ctx.fillStyle="rgba(200,200,200,0.7)";
+					ctx.fillRect(i*Renderer.TILE_SIZE,j*Renderer.TILE_SIZE,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
+				}
+			}
+		}
 	}
 	static drawGridEffects(ctx){
 		const w = Sy_api.api_getMapWidth();
