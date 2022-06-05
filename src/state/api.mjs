@@ -103,7 +103,7 @@ class Sy_api {
 					}
 				}
 				
-				//TODO: clear fog for movement path
+				//clear fog for movement path
 				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
 					for(const p of preferredPath){
 						const [x,y] = Bit.GET_XY(p);
@@ -143,7 +143,7 @@ class Sy_api {
 					}
 				}
 				
-				//TODO: clear fog for movement path
+				//clear fog for movement path
 				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
 					for(const p of preferredPath){
 						const [x,y] = Bit.GET_XY(p);
