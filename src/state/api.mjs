@@ -60,21 +60,15 @@ class Sy_api {
 					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=prevCh.player_state){
 						//trying to move through enemy ch, do !
 						//TODO: await enqueue_!! animation
-						
-						//TODO: implement !!, drop to idle state by calling api_tgt_selectTarget?
-						//      truncate preferredPath too.
-						console.log("trigger:!!");
 						prevCh.hasMoved = true;
-						
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
-						preferredPath.splice(i+1);
-						break;//TODO return some value to indicate move failed??? or just check .hasMoved after path call...
+						preferredPath.splice(i+1);//truncate path to traversed section
+						break;//check .hasMoved after path call to see if !! happened
 					}
-					
-					
 					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
 				}
 			}else{
+				console.log("moving with no path supplied");
 				await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,final_xy);
 			}
 			Sy_api.#rendererBlocked = false;
