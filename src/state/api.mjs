@@ -67,6 +67,7 @@ class Sy_api {
 						prevCh.hasMoved = true;
 						
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
+						preferredPath.splice(i+1);
 						break;//TODO return some value to indicate move failed??? or just check .hasMoved after path call...
 					}
 					
@@ -88,7 +89,7 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
-			console.log("resolve1:!!");
+			console.log("resolve1:!!",preferredPath);
 				//call api_tgt_selectTarget
 				//TODO: this code is duplicated//--start
 				Sy.resetMove();
@@ -101,15 +102,15 @@ class Sy_api {
 						Sy_api.#rendererBlocked = false;
 					}
 				}
-				/*
+				
 				//TODO: clear fog for movement path
 				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
 					for(const p of preferredPath){
 						const [x,y] = Bit.GET_XY(p);
-						Sy.clearFogForCharacter(ch,x,y);
+						Sy.clearFogForCharacter(prevCh,x,y);
 					}
 				}
-				*/
+				
 				//--end
 			}
 			return true;
@@ -141,15 +142,14 @@ class Sy_api {
 						Sy_api.#rendererBlocked = false;
 					}
 				}
-				/*
+				
 				//TODO: clear fog for movement path
 				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
 					for(const p of preferredPath){
 						const [x,y] = Bit.GET_XY(p);
-						Sy.clearFogForCharacter(cellCh,x,y);
+						Sy.clearFogForCharacter(prevCh,x,y);
 					}
 				}
-				*/
 				//--end
 			}
 			return true;
