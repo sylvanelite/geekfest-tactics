@@ -185,8 +185,14 @@ class Sy_api {
 //////////////helper methods
 	//read only properties for rendering, ai, etc
 	static api_get_allCharacters(){
-		return Sy.cbt_varCharacters.filter((x)=>{
-			return x.player_state != cbt_NO_PLAYER_STATE;
+		return Sy.cbt_varCharacters.filter((ch)=>{
+			if(Sy.FOG_ENABLED && ch.player_state!=cbt_NO_PLAYER_STATE){
+				const [fog_x,fog_y] = Bit.GET_XY(ch.point_xy);
+				if(Sy.getFogForCell(fog_x,fog_y)){
+					return false;
+				}
+			}
+			return ch.player_state != cbt_NO_PLAYER_STATE;
 		});
 	}
 	static api_getCurrentPlayerState(){
