@@ -11,6 +11,8 @@ import { Bit } from "./bit.mjs";
 
 class Sy_AI {
 	
+	//TODO: implement 'preferred path' on API calls...
+	
 	static #getPlayerCharacters(){
 		const ch = Sy_api.api_get_allCharacters();
 		return ch.filter((x)=>{
@@ -63,10 +65,7 @@ class Sy_AI {
 		for (const playerTgt of pChara){
 			if(playerTgt.player_state != cbt_NO_PLAYER_STATE &&
 			   Sy_api.api_getAttackForCell(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy))){
-				   //found target, select
-				   
-				   console.log(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy));
-				   
+				   //found target, select				   
 				   Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy));
 				   return;//TODO: randomise target choice if multiple are in range? could use i = offset + random() % length while iterating?
 			}
