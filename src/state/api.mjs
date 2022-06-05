@@ -46,12 +46,13 @@ class Sy_api {
 			if(preferredPath&&preferredPath.length>1){
 				console.log(preferredPath);
 				Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
-				for(let i=0;i<preferredPath.length-2;i+=1){//TODO: this is truncating the path checking by 1...
+				for(let i=0;i<preferredPath.length-1;i+=1){//TODO: this is truncating the path checking by 1...
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
 					//check for !! movement
 					//temporarily reveal the fog, check for collsion, then hide it again
 					const [to_x,to_y]=Bit.GET_XY(to);
+					console.log("checking:",to_x,to_y);
 					const fogCovered = Sy.getFogForCell(to_x,to_y);
 					Sy.setFogForCell(to_x,to_y,false);
 					const occupiedState = Sy.getCharacterAtPosition(to_x,to_y).player_state;
@@ -100,6 +101,15 @@ class Sy_api {
 						Sy_api.#rendererBlocked = false;
 					}
 				}
+				/*
+				//TODO: clear fog for movement path
+				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
+					for(const p of preferredPath){
+						const [x,y] = Bit.GET_XY(p);
+						Sy.clearFogForCharacter(ch,x,y);
+					}
+				}
+				*/
 				//--end
 			}
 			return true;
@@ -131,6 +141,15 @@ class Sy_api {
 						Sy_api.#rendererBlocked = false;
 					}
 				}
+				/*
+				//TODO: clear fog for movement path
+				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
+					for(const p of preferredPath){
+						const [x,y] = Bit.GET_XY(p);
+						Sy.clearFogForCharacter(ch,x,y);
+					}
+				}
+				*/
 				//--end
 			}
 			return true;
@@ -154,8 +173,16 @@ class Sy_api {
 			console.log("invalid target cell",x,y);
 			return false;//TODO: invalid target...  could also call Sy_api.api_tgt_cancel()?
 		}
+		if(slectedTgt.player_state!=cbt_NO_PLAYER_STATE && !Sy_api.api_getAttackForCell(x,y) ){
+			console.log("unit target cell out of range",x,y);
+			return false;
+		}
 		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
 										   Bit.GET_Y(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy));
+		if(slectedTgt.player_state == ch.player_state){
+			console.log("targeting ally",x,y);
+			return false;
+		}
 		Sy.resetMove();
 		Sy.resetAttack();
 		ch.hasMoved = true;
@@ -174,7 +201,7 @@ class Sy_api {
 				await Sy_api.#renderer.enqueue_drawBattle(ch, slectedTgt);
 				Sy_api.#rendererBlocked = false;
 			}
-			Sy.performBattleCalculation(ch, slectedTgt);
+			Sy.performBattleCalculation(ch, slectedTgt);//TODO: battle tgt can be ally
 		}
 		Sy.cbt_CurrentState=cbt_STATE_IDLE;
 		if(Sy.checkEndOfTurn()){
