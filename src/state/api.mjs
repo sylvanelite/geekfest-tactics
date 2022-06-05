@@ -186,7 +186,7 @@ class Sy_api {
 	//read only properties for rendering, ai, etc
 	static api_get_allCharacters(){
 		return Sy.cbt_varCharacters.filter((ch)=>{
-			if(Sy.FOG_ENABLED && ch.player_state!=cbt_NO_PLAYER_STATE){
+			if(Sy.FOG_ENABLED && ch.player_state!=Sy.cbt_CurrentPlayerState){
 				const [fog_x,fog_y] = Bit.GET_XY(ch.point_xy);
 				if(Sy.getFogForCell(fog_x,fog_y)){
 					return false;
