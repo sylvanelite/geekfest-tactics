@@ -12,6 +12,8 @@ import { Bit } from "./bit.mjs";
 class Sy_AI {
 	
 	//TODO: implement 'preferred path' on API calls...
+	static #preferredPath = [];
+	
 	
 	static #getPlayerCharacters(){
 		const ch = Sy_api.api_get_allCharacters();
@@ -49,6 +51,7 @@ class Sy_AI {
 	
 	}
 	static #STATE_IDLE() {
+		Sy_AI.#preferredPath = [];
 		const eChara = Sy_AI.#getEnemyCharacters();
 		for (const ch of eChara){
 			if (!(ch.hasMoved) && ch.player_state != cbt_NO_PLAYER_STATE) {
@@ -59,15 +62,21 @@ class Sy_AI {
 		}
 	};
 	static #STATE_DISPLAY_MOVE() {
+		const start_xy = Sy_api.api_getCurrentChPosition();
+		const currentCh = Sy_api.api_getCharacterAtPosition(start_xy);
 		//see if there is an opponent in range.
 		//if yes, press 'a' on them
 		const pChara = Sy_AI.#getPlayerCharacters();
 		for (const playerTgt of pChara){
 			if(playerTgt.player_state != cbt_NO_PLAYER_STATE &&
 			   Sy_api.api_getAttackForCell(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy))){
-				   //found target, select				   
-				   Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy));
-				   return;//TODO: randomise target choice if multiple are in range? could use i = offset + random() % length while iterating?
+					//found target, select	
+					const [atk_x,atk_y] = Bit.GET_XY(playerTgt.point_xy);
+					const movCell = Sy_api.api_getMoveCellFromAttack(atk_x,atk_y,currentCh);
+					Sy_AI.#preferredPath = Sy_api.api_getMovePath(currentCh,start_xy,movCell);			   
+				    Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy),
+													Sy_AI.#preferredPath);
+				    return;//TODO: randomise target choice if multiple are in range? could use i = offset + random() % length while iterating?
 			}
 		}
 		//did not find target in range, pathfind
@@ -113,7 +122,8 @@ class Sy_AI {
 				}
 			}
 		}
-		Sy_api.api_mov_selectDestination(Bit.GET_X(cursor_xy),Bit.GET_Y(cursor_xy));
+		Sy_AI.#preferredPath = Sy_api.api_getMovePath(currentCh,start_xy,cursor_xy);
+		Sy_api.api_mov_selectDestination(Bit.GET_X(cursor_xy),Bit.GET_Y(cursor_xy),Sy_AI.#preferredPath);
 	};
 	static #STATE_SELECT_WEAPON_TARGET() {
 		//AI works by pointing cursor at target if one is in range, 
@@ -142,7 +152,8 @@ class Sy_AI {
 			}
 		}
 		//TODO: could improve AI by iterating over targets and choosing the best one to hit
-		Sy_api.api_tgt_selectTarget(Bit.GET_X(tgt_xy),Bit.GET_Y(tgt_xy));
+		Sy_api.api_tgt_selectTarget(Bit.GET_X(tgt_xy),Bit.GET_Y(tgt_xy),Sy_AI.#preferredPath);
+		Sy_AI.#preferredPath=[];
 	};
 }
 
