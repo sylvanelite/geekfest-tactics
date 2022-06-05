@@ -70,6 +70,26 @@ static changeChPosistion(ch,position_xy){
 		Sy.#chPositionCache.set(position_xy,ch);//update cache
 	}
 }
+static cbtSetUnitToWaitAndCheck(ch, preferredPath){
+	//sets a unit 'hasmoved' to true
+	//then updates the state back to idle
+	//and checks end of turn
+	//returns true/false based on if the turn has ended or not
+	
+	ch.hasMoved = true;
+	Sy.resetMove();
+	Sy.resetAttack();
+	Sy.cbt_CurrentState=cbt_STATE_IDLE;
+	//clear fog for movement path
+	if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
+		for(const p of preferredPath){
+			const [x,y] = Bit.GET_XY(p);
+			Sy.clearFogForCharacter(ch,x,y);
+		}
+	}
+	
+	return Sy.checkEndOfTurn();
+}
 static cbtDoMove(ch) {
 	//update character location to the final spot
 	Sy.changeChPosistion(ch,Sy.cbt_isv_STATE_DISPLAY_MOVE_xy);

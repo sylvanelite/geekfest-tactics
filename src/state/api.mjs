@@ -89,29 +89,14 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
-			console.log("resolve1:!!",preferredPath);
-				//call api_tgt_selectTarget
-				//TODO: this code is duplicated//--start
-				Sy.resetMove();
-				Sy.resetAttack();
-				Sy.cbt_CurrentState=cbt_STATE_IDLE;
-				if(Sy.checkEndOfTurn()){
+				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
+				if(eot){
 					if(Sy_api.#renderer){
 						Sy_api.#rendererBlocked = true;
 						await Sy_api.#renderer.enqueue_drawTurnToggle();
 						Sy_api.#rendererBlocked = false;
 					}
 				}
-				
-				//clear fog for movement path
-				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
-					for(const p of preferredPath){
-						const [x,y] = Bit.GET_XY(p);
-						Sy.clearFogForCharacter(prevCh,x,y);
-					}
-				}
-				
-				//--end
 			}
 			return true;
 		}
@@ -129,28 +114,14 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
-			console.log("resolve2:!!");
-				//call api_tgt_selectTarget
-				//TODO: this code is duplicated//--start
-				Sy.resetMove();
-				Sy.resetAttack();
-				Sy.cbt_CurrentState=cbt_STATE_IDLE;
-				if(Sy.checkEndOfTurn()){
+				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
+				if(eot){
 					if(Sy_api.#renderer){
 						Sy_api.#rendererBlocked = true;
 						await Sy_api.#renderer.enqueue_drawTurnToggle();
 						Sy_api.#rendererBlocked = false;
 					}
 				}
-				
-				//clear fog for movement path
-				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
-					for(const p of preferredPath){
-						const [x,y] = Bit.GET_XY(p);
-						Sy.clearFogForCharacter(prevCh,x,y);
-					}
-				}
-				//--end
 			}
 			return true;
 		}
@@ -186,17 +157,6 @@ class Sy_api {
 			console.log("targeting ally",x,y);
 			return false;
 		}
-		Sy.resetMove();
-		Sy.resetAttack();
-		ch.hasMoved = true;
-		//clear fog for movement path
-		if(preferredPath&&preferredPath.length){
-			for(const p of preferredPath){
-				const [x,y] = Bit.GET_XY(p);
-				Sy.clearFogForCharacter(ch,x,y);
-			}
-		}
-		
 		//'a' on target
 		if (slectedTgt.point_xy != ch.point_xy) { 
 			if(Sy_api.#renderer){
@@ -206,14 +166,13 @@ class Sy_api {
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);//TODO: battle tgt can be ally
 		}
-		Sy.cbt_CurrentState=cbt_STATE_IDLE;
-		if(Sy.checkEndOfTurn()){
-			if(Sy_api.#renderer){
-				Sy_api.#rendererBlocked = true;
-				await Sy_api.#renderer.enqueue_drawTurnToggle();
-				Sy_api.#rendererBlocked = false;
-			}
+		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
+		if(Sy_api.#renderer){
+			Sy_api.#rendererBlocked = true;
+			await Sy_api.#renderer.enqueue_drawTurnToggle();
+			Sy_api.#rendererBlocked = false;
 		}
+		
 		return true;
 	}
 	static api_tgt_cancel(){
