@@ -37,7 +37,7 @@ class Sy_api {
 	}
 	static async api_mov_selectDestination(x,y,preferredPath){//TODO:preferredPath
 		const selected_xy=Bit.SET_XY(x,y);
-		const ch = Sy.getCharacterAtPosition(x,y);
+		const cellCh = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
 											   Bit.GET_Y(Sy.cbt_isv_STATE_IDLE_xy));
 		const movePathfind = async (final_xy)=>{
@@ -57,13 +57,13 @@ class Sy_api {
 					Sy.setFogForCell(to_x,to_y,false);
 					const occupiedState = Sy.getCharacterAtPosition(to_x,to_y).player_state;
 					Sy.setFogForCell(to_x,to_y,fogCovered);
-					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=ch.player_state){
+					if(occupiedState!=cbt_NO_PLAYER_STATE&&occupiedState!=prevCh.player_state){
 						//trying to move through enemy ch, do !
 						//TODO: await enqueue_!! animation
 						
 						//TODO: implement !!, drop to idle state by calling api_tgt_selectTarget?
 						//      truncate preferredPath too.
-						console.log("!!");
+						console.log("trigger:!!");
 						prevCh.hasMoved = true;
 						
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
@@ -78,7 +78,7 @@ class Sy_api {
 			}
 			Sy_api.#rendererBlocked = false;
 		};
-		if ((ch.player_state == cbt_NO_PLAYER_STATE || selected_xy == prevCh.point_xy) &&
+		if ((cellCh.player_state == cbt_NO_PLAYER_STATE || selected_xy == prevCh.point_xy) &&
 			Sy.getMoveForCell(x,y) != 0) { //'a' on a blue square
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = selected_xy;
 			if(prevCh.point_xy!=selected_xy){
@@ -88,7 +88,7 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
-			console.log("!!");
+			console.log("resolve1:!!");
 				//call api_tgt_selectTarget
 				//TODO: this code is duplicated//--start
 				Sy.resetMove();
@@ -115,8 +115,8 @@ class Sy_api {
 			return true;
 		}
 		//'a' on an enemy, move to a position that the unit can attack from
-		if (ch.player_state != Sy.cbt_CurrentPlayerState  &&
-			ch.player_state != cbt_NO_PLAYER_STATE  &&
+		if (cellCh.player_state != Sy.cbt_CurrentPlayerState  &&
+			cellCh.player_state != cbt_NO_PLAYER_STATE  &&
 			Sy.getAttackForCell(x,y) != 0) {
 			const attackPosition = Sy.getMoveCellFromAttack(x, y, prevCh);
 			//set the mov cursor to the spot the player moves from, but leave the currnet cursor on the target
@@ -127,8 +127,8 @@ class Sy_api {
 				}
 			}
 			Sy.cbtDoMove(prevCh);
-			if(ch.hasMoved){//path cut short by !!
-			console.log("!!");
+			if(prevCh.hasMoved){//path cut short by !!
+			console.log("resolve2:!!");
 				//call api_tgt_selectTarget
 				//TODO: this code is duplicated//--start
 				Sy.resetMove();
@@ -146,7 +146,7 @@ class Sy_api {
 				if(preferredPath&&preferredPath.length){//<-- but need to truncate path to !! amount
 					for(const p of preferredPath){
 						const [x,y] = Bit.GET_XY(p);
-						Sy.clearFogForCharacter(ch,x,y);
+						Sy.clearFogForCharacter(cellCh,x,y);
 					}
 				}
 				*/
@@ -173,13 +173,16 @@ class Sy_api {
 			console.log("invalid target cell",x,y);
 			return false;//TODO: invalid target...  could also call Sy_api.api_tgt_cancel()?
 		}
-		if(slectedTgt.player_state!=cbt_NO_PLAYER_STATE && !Sy_api.api_getAttackForCell(x,y) ){
+		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
+										   Bit.GET_Y(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy));
+		if(slectedTgt.player_state!=cbt_NO_PLAYER_STATE && 
+			!Sy_api.api_getAttackForCell(x,y) &&
+			slectedTgt.point_xy != ch.point_xy ){
 			console.log("unit target cell out of range",x,y);
 			return false;
 		}
-		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
-										   Bit.GET_Y(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy));
-		if(slectedTgt.player_state == ch.player_state){
+		if(slectedTgt.player_state == ch.player_state&&
+			slectedTgt.point_xy != ch.point_xy){
 			console.log("targeting ally",x,y);
 			return false;
 		}
