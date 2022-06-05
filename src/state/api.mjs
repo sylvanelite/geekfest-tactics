@@ -46,7 +46,7 @@ class Sy_api {
 			if(preferredPath&&preferredPath.length>1){
 				console.log(preferredPath);
 				Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
-				for(let i=0;i<preferredPath.length-2;i+=1){
+				for(let i=0;i<preferredPath.length-2;i+=1){//TODO: this is truncating the path checking by 1...
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
 					//check for !! movement
@@ -63,7 +63,7 @@ class Sy_api {
 						//TODO: implement !!, drop to idle state by calling api_tgt_selectTarget?
 						//      truncate preferredPath too.
 						console.log("!!");
-						
+						prevCh.hasMoved = true;
 						
 						Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = from;
 						break;//TODO return some value to indicate move failed??? or just check .hasMoved after path call...
@@ -86,6 +86,22 @@ class Sy_api {
 				}
 			}
 			Sy.cbtDoMove(prevCh);
+			if(prevCh.hasMoved){//path cut short by !!
+			console.log("!!");
+				//call api_tgt_selectTarget
+				//TODO: this code is duplicated//--start
+				Sy.resetMove();
+				Sy.resetAttack();
+				Sy.cbt_CurrentState=cbt_STATE_IDLE;
+				if(Sy.checkEndOfTurn()){
+					if(Sy_api.#renderer){
+						Sy_api.#rendererBlocked = true;
+						await Sy_api.#renderer.enqueue_drawTurnToggle();
+						Sy_api.#rendererBlocked = false;
+					}
+				}
+				//--end
+			}
 			return true;
 		}
 		//'a' on an enemy, move to a position that the unit can attack from
@@ -101,6 +117,22 @@ class Sy_api {
 				}
 			}
 			Sy.cbtDoMove(prevCh);
+			if(ch.hasMoved){//path cut short by !!
+			console.log("!!");
+				//call api_tgt_selectTarget
+				//TODO: this code is duplicated//--start
+				Sy.resetMove();
+				Sy.resetAttack();
+				Sy.cbt_CurrentState=cbt_STATE_IDLE;
+				if(Sy.checkEndOfTurn()){
+					if(Sy_api.#renderer){
+						Sy_api.#rendererBlocked = true;
+						await Sy_api.#renderer.enqueue_drawTurnToggle();
+						Sy_api.#rendererBlocked = false;
+					}
+				}
+				//--end
+			}
 			return true;
 		}
 		console.log("invalid mov cell");
