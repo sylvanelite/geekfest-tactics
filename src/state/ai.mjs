@@ -79,8 +79,8 @@ class Sy_AI {
 			}
 		}
 		//did not find target in range, pathfind
-		let tgt_xy = Sy_api.api_getCurrentChPosition();//start position
-		let cursor_xy = Sy_api.api_getCurrentChPosition();
+		let tgt_xy = start_xy;//by default target yourself
+		let cursor_xy = start_xy;//if no target found, will try move 0/1 square usually (min distance)
 		let cellCost=999;
 		//find closest character to target
 		for (const playerTgt of pChara){
