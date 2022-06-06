@@ -26,6 +26,36 @@ const colours = [
 ];
 
 class ui_background{
+	static #backupFog(){
+		//return Sy_api.api_cloneState();//could use save/restore state? overkill for just fog
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		return {fog:Sy.cbt_fog.slice(),curPlayerState};
+	}
+	static #restoreFog(savedFog){
+		//Sy_api.api_setState(save);
+		Sy.cbt_fog = savedFog.fog;
+		Sy.cbt_CurrentPlayerState = savedFog.curPlayerState;
+	}
+	static #applyPlayerFog(){
+		if(!Sy.FOG_ENABLED ){return;}
+		//resets the fog from the point of view of a local player
+		//if it's your turn, no change
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		if(curPlayerState==cbt_PLAYER){return;}//TODO: should check control source ==local instead?
+		Sy.cbt_CurrentPlayerState = cbt_PLAYER;//set it so that the renderer and API think the player is in control
+		Sy.resetFog(Sy.FOG_ENABLED);//blank out the controller's fog
+		//if it's not your turn, only reveal within 2 spaces of unit
+		//note: can't use api get characters, since that has a fog filter built in
+		const pCh= Sy.cbt_varCharacters.filter((ch)=>{
+			return ch.player_state==cbt_PLAYER;
+		});
+		for(const ch of pCh){
+			const [x,y] = Bit.GET_XY(ch.point_xy);
+			Sy.clearFogForCharacter(ch,x,y);
+		}
+	}
+	
+	
 	static drawTerrain(ctx){
 		const w = Sy_api.api_getMapWidth();
 		const h = Sy_api.api_getMapHeight();
@@ -43,7 +73,9 @@ class ui_background{
 			}
 		}
 		
-		
+		//-- don't reveal fog unless the control source is local for the controller
+		const backup = ui_background.#backupFog();
+		ui_background.#applyPlayerFog();
 		//TODO, wrap fog with api...
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
@@ -54,6 +86,8 @@ class ui_background{
 				}
 			}
 		}
+		ui_background.#restoreFog(backup);
+
 	}
 	static drawGridEffects(ctx){
 		const w = Sy_api.api_getMapWidth();
@@ -77,9 +111,12 @@ class ui_background{
 	}
 	static drawUnitAtPosition(ctx,ch,x,y){
 		if(Sy.FOG_ENABLED){
-			if(Sy.getFogForCell(x,y)&&ch.player_state!=Sy_api.api_getCurrentPlayerState()){
-				return;
-			}
+			//-- don't reveal fog unless the control source is local for the controller
+			const backup = ui_background.#backupFog();
+			ui_background.#applyPlayerFog();
+			const isHidden = (Sy.getFogForCell(x,y)&&ch.player_state!=Sy_api.api_getCurrentPlayerState());
+			ui_background.#restoreFog(backup);
+			if(isHidden){return;}
 		}
 		if(ch.player_state == cbt_NO_PLAYER_STATE){
 			return;
@@ -104,10 +141,14 @@ class ui_background{
 		ui_background.drawUnitAtPosition(ctx,ch,x,y);
 	}
 	static drawUnits(ctx){
+		//-- don't reveal fog unless the control source is local for the controller
+		const backup = ui_background.#backupFog();
+		ui_background.#applyPlayerFog();
 		const chs = Sy_api.api_get_allCharacters();
 		for(const ch of chs){
 			ui_background.drawUnit(ctx,ch);
 		}
+		ui_background.#restoreFog(backup);
 	}
 	
 	static draw(ctx){
