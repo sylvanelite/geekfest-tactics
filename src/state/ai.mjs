@@ -29,7 +29,7 @@ class Sy_AI {
 	
 	static AI(){
 		//only do AI if it's the enemy turn
-		if(Sy_api.api_getCurrentPlayerState() != cbt_ENEMY){
+		if(Sy_api.api_getCurrentPlayerState() != cbt_ENEMY){//TODO: remove hard-coded 'enemy' state, check control source instead?
 			console.log("not AI turn");
 			return false;//returns true/false if it's the AI's turn (i.e. if a continue is needed)
 		}

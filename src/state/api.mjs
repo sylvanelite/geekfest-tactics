@@ -35,7 +35,7 @@ class Sy_api {
 		Sy.checkEndOfTurn();
 		return false;
 	}
-	static async api_mov_selectDestination(x,y,preferredPath){//TODO:preferredPath
+	static async api_mov_selectDestination(x,y,preferredPath){
 		const selected_xy=Bit.SET_XY(x,y);
 		const cellCh = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
@@ -44,15 +44,13 @@ class Sy_api {
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = final_xy;
 			Sy_api.#rendererBlocked = true;
 			if(preferredPath&&preferredPath.length>1){
-				console.log(preferredPath);
 				Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = preferredPath[preferredPath.length-1];
-				for(let i=0;i<preferredPath.length-1;i+=1){//TODO: this is truncating the path checking by 1...
+				for(let i=0;i<preferredPath.length-1;i+=1){
 					const from = preferredPath[i];
 					const to = preferredPath[i+1];
 					//check for !! movement
 					//temporarily reveal the fog, check for collsion, then hide it again
 					const [to_x,to_y]=Bit.GET_XY(to);
-					console.log("checking:",to_x,to_y);
 					const fogCovered = Sy.getFogForCell(to_x,to_y);
 					Sy.setFogForCell(to_x,to_y,false);
 					const occupiedState = Sy.getCharacterAtPosition(to_x,to_y).player_state;
