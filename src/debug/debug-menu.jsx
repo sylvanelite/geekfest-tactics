@@ -21,15 +21,18 @@ const initialUnits = ()=>{
 	const ch3 = new st_Character();
 
 	ch0.player_state = cbt_PLAYER;
-	ch0.point_xy = Bit.SET_XY(4,0);
+	ch0.point_xy = Bit.SET_XY(3,4);
 	ch0.mov=10;
 	ch1.player_state = cbt_PLAYER;
-	ch1.point_xy = Bit.SET_XY(1,0);
+	ch1.point_xy = Bit.SET_XY(2,2);
 	ch1.mov=4;
 	ch2.player_state = cbt_ENEMY;
-	ch2.point_xy = Bit.SET_XY(1,3);
+	ch2.point_xy = Bit.SET_XY(1,4);
+	ch2.max_range=1;
+	ch2.mov=10;
 	ch3.player_state = cbt_ENEMY;
-	ch3.point_xy = Bit.SET_XY(1,4);
+	ch3.point_xy = Bit.SET_XY(8,5);
+	ch3.max_range=1;
 	return [ch0,ch1,ch2,ch3];
 };
 const initialTerrain = ()=>{
@@ -39,11 +42,11 @@ const initialTerrain = ()=>{
 		fogEnabled:true,
 		terrain:[
 		1 ,1 ,1 ,2 ,1 ,4 ,1 ,1 ,1 ,
-		99,1 ,1 ,2 ,5 ,1 ,1 ,1 ,1 ,
+		99,1 ,99,2 ,5 ,1 ,1 ,1 ,1 ,
 		99,1 ,1 ,2 ,1 ,3 ,1 ,1 ,1 ,
 		1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
 		1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
-		1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+		1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
 		]
 	};
 };

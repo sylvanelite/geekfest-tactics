@@ -216,7 +216,7 @@ class Sy_api {
 		return cost;
 	}
 	static api_getCurrentChPosition(){
-		switch (Bit.GET_LOW_BYTE(Sy.cbt_CurrentState)) {
+		switch (Sy.cbt_CurrentState) {
 			case cbt_STATE_IDLE:
 			case cbt_STATE_DISPLAY_MOVE:
 				//ch is under the cursor
@@ -297,46 +297,50 @@ class Sy_api {
 	//      then the returned result may be invalid, or not found
 	//      in that case, the caller should check for validity
 	static api_getMovePath(ch,start_xy,end_xy){
-			const move = ch.mov+1;
-			const movQueue = [{
-				point_xy:start_xy,
-				move:move,
-				path:[start_xy]
-			}];
-			const moveCells = new Map();
-			moveCells.set(start_xy,move);
-			//max move grid is ~a mov*mov square
-			const maxLen = move*move;
-			let start = 0;
-			const mapW = Sy_api.api_getMapWidth();
-			const mapH = Sy_api.api_getMapHeight();
-			while (start<movQueue.length&&start<maxLen) {
-				const cell =  movQueue[start];
-				const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);
-				start+=1;
-				const points = [ {px:nodeX,py:nodeY+1}, {px:nodeX,py:nodeY-1},
-					             {px:nodeX+1,py:nodeY}, {px:nodeX-1,py:nodeY} ];
-				for(const {px,py} of points){
-					if (py < mapH && py>=0 && px < mapW && px>=0) {
-						const xy = Bit.SET_XY(px, py);
-						const nodeCost = cell.move-Sy_api.api_getCostForTerrain(ch,px,py);
-						const curPath = [...cell.path,xy];
-						const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
-						if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
-							if(xy==end_xy){
-								return curPath;
-							}
-							moveCells.set(xy,nodeCost);
-							movQueue.push({
-								point_xy:xy,
-								move:nodeCost,
-								path:curPath
-							});
+		const move = ch.mov+1;
+		const movQueue = [{
+			point_xy:start_xy,
+			move:move,
+			path:[start_xy]
+		}];
+		const moveCells = new Map();
+		moveCells.set(start_xy,move);
+		//max move grid is ~a mov*mov square
+		const maxLen = move*move;
+		let start = 0;
+		const mapW = Sy_api.api_getMapWidth();
+		const mapH = Sy_api.api_getMapHeight();
+		while (start<movQueue.length&&start<maxLen) {
+			const cell =  movQueue[start];
+			const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);
+			start+=1;
+			const points = [ {px:nodeX,py:nodeY+1}, {px:nodeX,py:nodeY-1},
+							 {px:nodeX+1,py:nodeY}, {px:nodeX-1,py:nodeY} ];
+			for(const {px,py} of points){
+				if (py < mapH && py>=0 && px < mapW && px>=0) {
+					const xy = Bit.SET_XY(px, py);
+					const nodeCost = cell.move-Sy_api.api_getCostForTerrain(ch,px,py);
+					const curPath = [...cell.path,xy];
+					const nextCost = (moveCells.has(xy)?moveCells.get(xy):0);
+					if (nodeCost > 0 && nextCost < nodeCost &&Sy_api.api_getMoveForCell(px, py)) {
+						if(xy==end_xy){
+							return curPath;
 						}
+						moveCells.set(xy,nodeCost);
+						movQueue.push({
+							point_xy:xy,
+							move:nodeCost,
+							path:curPath
+						});
 					}
 				}
 			}
-			return [];
+		}
+		if(start_xy!=end_xy){
+			console.warn("no mov path found",start_xy,end_xy,
+						Bit.GET_XY(start_xy),Bit.GET_XY(end_xy));
+		}
+		return [];
 	}
 	//return true/false if a path is actually valid
 	//       used to tell if a user is trying to draw a path that's

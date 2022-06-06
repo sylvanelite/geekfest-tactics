@@ -11,7 +11,6 @@ import { Bit } from "./bit.mjs";
 
 class Sy_AI {
 	
-	//TODO: implement 'preferred path' on API calls...
 	static #preferredPath = [];
 	
 	
@@ -63,7 +62,7 @@ class Sy_AI {
 	};
 	static #STATE_DISPLAY_MOVE() {
 		const start_xy = Sy_api.api_getCurrentChPosition();
-		const currentCh = Sy_api.api_getCharacterAtPosition(start_xy);
+		const currentCh = Sy_api.api_getCharacterAtPosition(Bit.GET_X(start_xy),Bit.GET_Y(start_xy));
 		//see if there is an opponent in range.
 		//if yes, press 'a' on them
 		const pChara = Sy_AI.#getPlayerCharacters();
@@ -73,7 +72,7 @@ class Sy_AI {
 					//found target, select	
 					const [atk_x,atk_y] = Bit.GET_XY(playerTgt.point_xy);
 					const movCell = Sy_api.api_getMoveCellFromAttack(atk_x,atk_y,currentCh);
-					Sy_AI.#preferredPath = Sy_api.api_getMovePath(currentCh,start_xy,movCell);			   
+					Sy_AI.#preferredPath = Sy_api.api_getMovePath(currentCh,start_xy,movCell);
 				    Sy_api.api_mov_selectDestination(Bit.GET_X(playerTgt.point_xy),Bit.GET_Y(playerTgt.point_xy),
 													Sy_AI.#preferredPath);
 				    return;//TODO: randomise target choice if multiple are in range? could use i = offset + random() % length while iterating?
