@@ -34,14 +34,22 @@ class GameState {
 		const playerState = Sy_api.api_getCurrentPlayerState();
 		//TODO: check if in battle
 		if(playerState==cbt_PLAYER){
-			return CONTROL_SOURCE.LOCAL;
+			return GameState.getControlSourceForPlayer(playerState);
 		}
 		if(playerState==cbt_ENEMY){
 			//TODO: check network, local, etc
-			return CONTROL_SOURCE.AI;
+			return GameState.getControlSourceForPlayer(playerState);
 		}
 		//default: local
 		return CONTROL_SOURCE.LOCAL;
+	}
+	static getControlSourceForPlayer(playerState){
+		if(playerState==cbt_PLAYER){
+			return CONTROL_SOURCE.LOCAL;
+		}
+		if(playerState==cbt_ENEMY){
+			return CONTROL_SOURCE.AI;
+		}
 	}
 }
 

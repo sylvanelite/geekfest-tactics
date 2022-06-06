@@ -1,5 +1,6 @@
 
 import { Sy } from "../state/main.mjs";//todo: remove Sy?
+import { GameState,CONTROL_SOURCE } from "../Game.mjs";//todo: remove Game?
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
@@ -37,22 +38,23 @@ class ui_background{
 		Sy.cbt_CurrentPlayerState = savedFog.curPlayerState;
 	}
 	static #applyPlayerFog(){
+		//TODO: handle move/attack grid for opponent fogged unit...
 		if(!Sy.FOG_ENABLED ){return;}
 		//resets the fog from the point of view of a local player
 		//if it's your turn, no change
 		const curPlayerState = Sy_api.api_getCurrentPlayerState();
-		//NOTE: assumes that the local player is always cbt_PLAYER
-		//      could use if control source == local, but then control source == await is problematic
-		//      also don't explicity know if source == local, who the opponent is 
-		//      this means fog won't work correctly for 1-on-1 on local console
-		//could implement a check, getContorlSourceForPlayer?
-		if(curPlayerState==cbt_PLAYER){return;}
-		Sy.cbt_CurrentPlayerState = cbt_PLAYER;//set it so that the renderer and API think the player is in control
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
+		if(controlSource==CONTROL_SOURCE.LOCAL){return;}
+		//otherwise, it's an enemy turn
+		//flip the renderer (assume that if control source is non-local, then player is local
+		//                  (may not be a good assumption, e.g. if AI v AI?)
+		const otherPlayer = (Sy.cbt_CurrentPlayerState==cbt_PLAYER?cbt_ENEMY:cbt_PLAYER);
+		Sy.cbt_CurrentPlayerState = otherPlayer;//set it so that the renderer and API think the player is in control
 		Sy.resetFog(Sy.FOG_ENABLED);//blank out the controller's fog
 		//if it's not your turn, only reveal within 2 spaces of unit
 		//note: can't use api get characters, since that has a fog filter built in
 		const pCh= Sy.cbt_varCharacters.filter((ch)=>{
-			return ch.player_state==cbt_PLAYER;
+			return ch.player_state==otherPlayer;
 		});
 		for(const ch of pCh){
 			const [x,y] = Bit.GET_XY(ch.point_xy);
