@@ -41,7 +41,12 @@ class ui_background{
 		//resets the fog from the point of view of a local player
 		//if it's your turn, no change
 		const curPlayerState = Sy_api.api_getCurrentPlayerState();
-		if(curPlayerState==cbt_PLAYER){return;}//TODO: should check control source ==local instead?
+		//NOTE: assumes that the local player is always cbt_PLAYER
+		//      could use if control source == local, but then control source == await is problematic
+		//      also don't explicity know if source == local, who the opponent is 
+		//      this means fog won't work correctly for 1-on-1 on local console
+		//could implement a check, getContorlSourceForPlayer?
+		if(curPlayerState==cbt_PLAYER){return;}
 		Sy.cbt_CurrentPlayerState = cbt_PLAYER;//set it so that the renderer and API think the player is in control
 		Sy.resetFog(Sy.FOG_ENABLED);//blank out the controller's fog
 		//if it's not your turn, only reveal within 2 spaces of unit
