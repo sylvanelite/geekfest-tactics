@@ -38,7 +38,6 @@ class ui_background{
 		Sy.cbt_CurrentPlayerState = savedFog.curPlayerState;
 	}
 	static #applyPlayerFog(){
-		//TODO: handle move/attack grid for opponent fogged unit...
 		if(!Sy.FOG_ENABLED ){return;}
 		//resets the fog from the point of view of a local player
 		//if it's your turn, no change
@@ -97,12 +96,18 @@ class ui_background{
 
 	}
 	static drawGridEffects(ctx){
+		
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
+		//render otherwise
 		const w = Sy_api.api_getMapWidth();
 		const h = Sy_api.api_getMapHeight();
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
 				ctx.strokeStyle="#ccc";
 				ctx.strokeRect(i*Renderer.TILE_SIZE-0.5,j*Renderer.TILE_SIZE-0.5,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
+				//if not local, and fog enabled (or always?) don't render attack grid?
+				if(Sy.FOG_ENABLED&&controlSource!=CONTROL_SOURCE.LOCAL ){continue;}
 				if(Sy_api.api_getAttackForCell(i,j)){
 					ctx.lineWidth = 1;
 					ctx.strokeStyle="red";

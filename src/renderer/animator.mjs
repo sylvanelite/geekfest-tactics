@@ -111,6 +111,8 @@ class Animator{
 		Animator.#animations.push(animation);
 		return promise;
 	}
+	
+	//TODO: movement has quirk, hides/shows wrong units in fog
 	static enqueue_drawMovement(xy_ch,xy_from,xy_to){
 		//TODO: generate movement path?
 		//calc movement speed, it will be lerped based on duration
