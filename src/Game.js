@@ -1,5 +1,7 @@
 
 import { Sy_api } from './state/api.js';
+import {Network}from './renderer/network.mjs';
+window.Network=Network;//TODO: use this...
 
 import {
 	cbt_PLAYER,

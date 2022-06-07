@@ -1,10 +1,12 @@
 //todo: npm install, or <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+import { Peer } from "peerjs";
 
 //used to sync peer-to-peer calls
 class Network{
 	
 	static #gameId="GJNT_";
 	static #getId(){
+		let result = '';
 		const returnLength = 5;
 		const characters = 'ABCDEFGHKMNPRSTUVWXYZ2345689';
 		const charactersLength = characters.length;
@@ -59,6 +61,7 @@ class Network{
 		const hostId = Network.#getId();
 		console.log("host:"+hostId);
 		Network.#peer = new Peer(Network.#gameId+hostId,Network.#options);
+		const peer = Network.#peer;
 		peer.on('close',Network.#peerClose);
 		peer.on('disconected',Network.#peerDisconnect);
 		peer.on('error',Network.#peerError);
@@ -76,6 +79,7 @@ class Network{
 		const joinId = Network.#getId();
 		console.log("joining:"+hostId+" as "+joinId);
 		Network.#peer = new Peer(Network.#gameId+joinId,Network.#options);
+		const peer = Network.#peer;
 		peer.on('close',Network.#peerClose);
 		peer.on('disconected',Network.#peerDisconnect);
 		peer.on('error',Network.#peerError);
@@ -84,6 +88,7 @@ class Network{
 		//You should not wait for this event before connecting to other peers if connection speed is important.
 		peer.on('open',Network.#peerOpen);
 		Network.#connection = peer.connect(Network.#gameId+hostId);
+		const conn = Network.#connection;
 		conn.on('open',Network.#connectionOpen);
 		conn.on('close',Network.#connectionClose);
 		conn.on('error',Network.#connectionError);
