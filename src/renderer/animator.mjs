@@ -112,9 +112,7 @@ class Animator{
 		return promise;
 	}
 	
-	//TODO: movement has quirk, hides/shows wrong units in fog
 	static enqueue_drawMovement(xy_ch,xy_from,xy_to){
-		//TODO: generate movement path?
 		//calc movement speed, it will be lerped based on duration
 		const [startx,starty] = Bit.GET_XY(xy_from);
 		const [endx,endy] = Bit.GET_XY(xy_to);

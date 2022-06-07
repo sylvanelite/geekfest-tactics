@@ -159,7 +159,7 @@ class Sy_api {
 			Sy.performBattleCalculation(ch, slectedTgt);//TODO: battle tgt can be ally
 		}
 		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
-		if(Sy_api.#renderer){
+		if(eot&&Sy_api.#renderer){
 			Sy_api.#rendererBlocked = true;
 			await Sy_api.#renderer.enqueue_drawTurnToggle();
 			Sy_api.#rendererBlocked = false;

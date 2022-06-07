@@ -126,7 +126,7 @@ class ui_background{
 			//-- don't reveal fog unless the control source is local for the controller
 			const backup = ui_background.#backupFog();
 			ui_background.#applyPlayerFog();
-			const isHidden = (Sy.getFogForCell(x,y)&&ch.player_state!=Sy_api.api_getCurrentPlayerState());
+			const isHidden = (Sy.getFogForCell(Math.floor(x),Math.floor(y))&&ch.player_state!=Sy_api.api_getCurrentPlayerState());
 			ui_background.#restoreFog(backup);
 			if(isHidden){return;}
 		}
