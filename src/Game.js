@@ -46,6 +46,24 @@ class GameState {
 		return CONTROL_SOURCE.LOCAL;
 	}
 	static getControlSourceForPlayer(playerState){
+		if(Network.isEnabled()){
+			if(Network.isHost()){
+				if(playerState==cbt_PLAYER){
+					return CONTROL_SOURCE.LOCAL;
+				}
+				if(playerState==cbt_ENEMY){
+					return CONTROL_SOURCE.NETWORK;
+				}
+			}else{
+				if(playerState==cbt_PLAYER){
+					return CONTROL_SOURCE.NETWORK;
+				}
+				if(playerState==cbt_ENEMY){
+					return CONTROL_SOURCE.LOCAL;
+				}
+			}
+		}
+		//local play against AI (TODO: local pvp?)
 		if(playerState==cbt_PLAYER){
 			return CONTROL_SOURCE.LOCAL;
 		}

@@ -8,7 +8,8 @@ class Network{
 	static #getId(){
 		let result = '';
 		const returnLength = 5;
-		const characters = 'ABCDEFGHKMNPRSTUVWXYZ2345689';
+		//select from charas not likely to be confused for digits
+		const characters = 'ABCDEFGHKMNPRSTUVWXYZ235689';
 		const charactersLength = characters.length;
 		for ( let i = 0; i < returnLength; i+=1 ) {
 			result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -59,7 +60,7 @@ class Network{
 	static host(){
 		Network.#isHost = true;
 		const hostId = Network.#getId();
-		console.log("host:"+hostId);
+		console.log("host: "+hostId);
 		Network.#peer = new Peer(Network.#gameId+hostId,Network.#options);
 		const peer = Network.#peer;
 		peer.on('close',Network.#peerClose);
@@ -86,15 +87,31 @@ class Network{
 		//from the docs: (peer open)
 		//You may use the peer before this is emitted, but messages to the server will be queued.
 		//You should not wait for this event before connecting to other peers if connection speed is important.
-		peer.on('open',Network.#peerOpen);
-		Network.#connection = peer.connect(Network.#gameId+hostId);
-		const conn = Network.#connection;
-		conn.on('open',Network.#connectionOpen);
-		conn.on('close',Network.#connectionClose);
-		conn.on('error',Network.#connectionError);
-		conn.on('data',Network.#connectionData);
-
-
+		//-->this doesn't work as written? seems safter to establish a connection after waiting for peer.open...
+		//peer.on('open',Network.#peerOpen);
+		peer.on('open',(e)=>{
+			Network.#peerOpen(e);
+			Network.#connection = peer.connect(Network.#gameId+hostId);
+			const conn = Network.#connection;
+			conn.on('open',Network.#connectionOpen);
+			conn.on('close',Network.#connectionClose);
+			conn.on('error',Network.#connectionError);
+			conn.on('data',Network.#connectionData);
+		});
+		
+	}
+	//used by external components to tell if networking has been activated
+	static isEnabled(){
+		if(Network.#peer){
+			return true;
+		}
+		return false;
+	}
+	static isHost(){
+		if(Network.#isHost){
+			return true;
+		}
+		return false;
 	}
 	
 }
