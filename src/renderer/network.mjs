@@ -1,5 +1,7 @@
 //todo: npm install, or <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
 import { Peer } from "peerjs";
+import { Sy_api } from "../state/api.mjs";
+import { Bit } from "../state/bit.mjs";
 
 //used to sync peer-to-peer calls
 class Network{
@@ -46,9 +48,31 @@ class Network{
 		console.log("conn: open",e);
 		//TODO: if host, send init to client?
 	}
-	static #connectionData(e){
-		console.log("conn: data",e);
+	static async #connectionData(data){
+		console.log("conn: data",data);
 		//TODO: handle data
+		
+		//TODO: less hacky way of handling data
+		//      to prevent infinite loops, do not let the API send network requests on a packet recieved
+		Sy_api.api_setNetworking(null);
+		switch(data.kind){
+			case 'move':{//TODO: use consts
+				const [idlex,idley] = Bit.GET_XY(data.idle_select);
+				const [movx,movy] = Bit.GET_XY(data.move_destination);
+				const [tgtx,tgty] = Bit.GET_XY(data.target_select);
+				const preferredPath = data.preferred_path;
+				await Sy_api.api_idle_selectCharacter(idlex,idley);
+				await Sy_api.api_mov_selectDestination(movx,movy,preferredPath);
+				await Sy_api.api_tgt_selectTarget(tgtx,tgty,preferredPath);
+				break;
+			}
+			default:
+				console.log("unknown packet",data);
+				break;
+		}
+		
+		Sy_api.api_setNetworking(Network);
+		
 	}
 	
 	static host(){

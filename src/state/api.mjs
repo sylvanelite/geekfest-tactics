@@ -87,7 +87,8 @@ class Sy_api {
 						kind:'move',
 						idle_select:Sy.cbt_isv_STATE_IDLE_xy,
 						move_destination:selected_xy,
-						preferred_path:preferredPath
+						preferred_path:preferredPath,
+						target_select:prevCh.point_xy
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
@@ -118,7 +119,8 @@ class Sy_api {
 						kind:'move',
 						idle_select:Sy.cbt_isv_STATE_IDLE_xy,
 						move_destination:selected_xy,
-						preferred_path:preferredPath
+						preferred_path:preferredPath,
+						target_select:prevCh.point_xy
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
@@ -173,10 +175,10 @@ class Sy_api {
 		}
 		if(Sy_api.#networking){
 			Sy_api.#networking.send({
-				kind:'target',
+				kind:'move',
 				idle_select:Sy.cbt_isv_STATE_IDLE_xy,
 				move_destination:Sy.cbt_isv_STATE_DISPLAY_MOVE_xy,
-				target_select:slectedTgt,
+				target_select:Bit.SET_XY(x,y),
 				preferred_path:preferredPath
 			});
 		}
