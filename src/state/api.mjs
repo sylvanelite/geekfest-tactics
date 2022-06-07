@@ -12,6 +12,7 @@ import { Bit } from "./bit.mjs";
 import { PRNG } from "./prng.mjs";
 
 class Sy_api {
+	static #networking = null;
 	static #renderer = null;
 	static #rendererBlocked=false;
 //////////////gameplay methods
@@ -81,13 +82,19 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
+				if(Sy_api.#networking){
+					Sy_api.#networking.send({
+						kind:'move',
+						idle_select:Sy.cbt_isv_STATE_IDLE_xy,
+						move_destination:selected_xy,
+						preferred_path:preferredPath
+					});
+				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
-				if(eot){
-					if(Sy_api.#renderer){
-						Sy_api.#rendererBlocked = true;
-						await Sy_api.#renderer.enqueue_drawTurnToggle();
-						Sy_api.#rendererBlocked = false;
-					}
+				if(eot && Sy_api.#renderer){
+					Sy_api.#rendererBlocked = true;
+					await Sy_api.#renderer.enqueue_drawTurnToggle();
+					Sy_api.#rendererBlocked = false;
 				}
 			}
 			return true;
@@ -106,13 +113,19 @@ class Sy_api {
 			}
 			Sy.cbtDoMove(prevCh);
 			if(prevCh.hasMoved){//path cut short by !!
+				if(Sy_api.#networking){
+					Sy_api.#networking.send({
+						kind:'move',
+						idle_select:Sy.cbt_isv_STATE_IDLE_xy,
+						move_destination:selected_xy,
+						preferred_path:preferredPath
+					});
+				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
-				if(eot){
-					if(Sy_api.#renderer){
-						Sy_api.#rendererBlocked = true;
-						await Sy_api.#renderer.enqueue_drawTurnToggle();
-						Sy_api.#rendererBlocked = false;
-					}
+				if(eot && Sy_api.#renderer){
+					Sy_api.#rendererBlocked = true;
+					await Sy_api.#renderer.enqueue_drawTurnToggle();
+					Sy_api.#rendererBlocked = false;
 				}
 			}
 			return true;
@@ -157,6 +170,15 @@ class Sy_api {
 				Sy_api.#rendererBlocked = false;
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);//TODO: battle tgt can be ally
+		}
+		if(Sy_api.#networking){
+			Sy_api.#networking.send({
+				kind:'target',
+				idle_select:Sy.cbt_isv_STATE_IDLE_xy,
+				move_destination:Sy.cbt_isv_STATE_DISPLAY_MOVE_xy,
+				target_select:slectedTgt,
+				preferred_path:preferredPath
+			});
 		}
 		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
 		if(eot&&Sy_api.#renderer){
@@ -429,6 +451,9 @@ class Sy_api {
 	}
 	static api_setRenderer(renderer){
 		Sy_api.#renderer = renderer;
+	}
+	static api_setNetworking(networking){
+		Sy_api.#networking = networking;
 	}
 	static api_isAwaiting(){
 		return (Sy_api.#renderer && Sy_api.#rendererBlocked);

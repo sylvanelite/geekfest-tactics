@@ -45,16 +45,10 @@ class Network{
 	static #connectionOpen(e){
 		console.log("conn: open",e);
 		//TODO: if host, send init to client?
-		
-		//can now do:
-		/*
-			// Send messages
-			conn.send('Hello!');
-		*/
 	}
 	static #connectionData(e){
 		console.log("conn: data",e);
-		//TODO: hancle data
+		//TODO: handle data
 	}
 	
 	static host(){
@@ -100,9 +94,17 @@ class Network{
 		});
 		
 	}
+	static send(message){
+		if(!Network.#connection){
+			console.warn("no connection established.",message);
+			return;
+		}
+		//TODO: or if conn not open?
+		Network.#connection.send(message);
+	}
 	//used by external components to tell if networking has been activated
 	static isEnabled(){
-		if(Network.#peer){
+		if(Network.#peer && Network.#connection){//TODO: should conn check be isEstablished()? instead
 			return true;
 		}
 		return false;
