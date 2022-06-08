@@ -51,7 +51,6 @@ class Animator{
 	static draw_Movement(ctx,animation){
 		ui_background.drawTerrain(ctx);
 		
-		const chs = Sy_api.api_get_allCharacters();
 		const lerpUnit = (ch)=>{
 			//lerp to destination
 			const [startx,starty] = Bit.GET_XY(animation.data.xy_from);
@@ -61,16 +60,10 @@ class Animator{
 			const lerpy = Animator.lerp(starty,endy,duration);
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
-		console.log(chs);
-		for(const ch of chs){
-			if(ch.point_xy == animation.data.xy_ch){
-				lerpUnit(ch);
-		console.log('lerp',ch);
-			}else{
-				ui_background.drawUnit(ctx,ch);
-		console.log('draw',ch);
-			}
-		}
+		const isLerpUnit = (ch)=>{
+			return (ch.point_xy == animation.data.xy_ch);
+		};
+		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		
 	}
 	static draw_Battle(ctx,animation){
@@ -82,7 +75,6 @@ class Animator{
 			const duration = animation.duration/animation.totalDuration;
 			const lerpx = Animator.lerp(startx,endx,duration);
 			const lerpy = Animator.lerp(starty,endy,duration);
-			console.log(ch);
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
 		//TODO: could also reset player 'hasMoved' state
@@ -92,14 +84,10 @@ class Animator{
 		const defUnit = Sy_api.api_getCharacterAtPosition(dx,dy);
 		const defState = defUnit.player_state;
 		defUnit.player_state = animation.data.targetStats.player_state;
-		const chs = Sy_api.api_get_allCharacters();
-		for(const ch of chs){
-			if(ch.point_xy == animation.data.ch.point_xy){
-				lerpUnit(ch);
-			}else{
-				ui_background.drawUnit(ctx,ch);
-			}
-		}
+		const isLerpUnit = (ch)=>{
+			return (ch.point_xy == animation.data.ch.point_xy);
+		};
+		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		defUnit.player_state = defState;
 	}
 	static draw_ToggleTurn(ctx,animation){

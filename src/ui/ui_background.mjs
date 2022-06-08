@@ -47,10 +47,6 @@ class ui_background{
 		//otherwise, it's an enemy turn
 		//flip the renderer (assume that if control source is non-local, then player is local
 		//                  (may not be a good assumption, e.g. if AI v AI?)
-		
-		//TODO: causes flicker if you are enemy & opponent is on network/cbt_player
-		
-		
 		const otherPlayer = (Sy.cbt_CurrentPlayerState==cbt_PLAYER?cbt_ENEMY:cbt_PLAYER);
 		Sy.cbt_CurrentPlayerState = otherPlayer;//set it so that the renderer and API think the player is in control
 		Sy.resetFog(Sy.FOG_ENABLED);//blank out the controller's fog
@@ -156,13 +152,17 @@ class ui_background{
 		const [x,y] = Bit.GET_XY(ch.point_xy);
 		ui_background.drawUnitAtPosition(ctx,ch,x,y);
 	}
-	static drawUnits(ctx){
+	static drawUnits(ctx,funcHasCustomDraw,funcCustomDraw){
 		//-- don't reveal fog unless the control source is local for the controller
 		const backup = ui_background.#backupFog();
 		ui_background.#applyPlayerFog();
 		const chs = Sy_api.api_get_allCharacters();
 		for(const ch of chs){
-			ui_background.drawUnit(ctx,ch);
+			if(funcHasCustomDraw!=null&&funcHasCustomDraw(ch)){
+				funcCustomDraw(ch)
+			}else{
+				ui_background.drawUnit(ctx,ch);
+			}
 		}
 		ui_background.#restoreFog(backup);
 	}
