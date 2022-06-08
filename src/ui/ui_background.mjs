@@ -47,6 +47,10 @@ class ui_background{
 		//otherwise, it's an enemy turn
 		//flip the renderer (assume that if control source is non-local, then player is local
 		//                  (may not be a good assumption, e.g. if AI v AI?)
+		
+		//TODO: causes flicker if you are enemy & opponent is on network/cbt_player
+		
+		
 		const otherPlayer = (Sy.cbt_CurrentPlayerState==cbt_PLAYER?cbt_ENEMY:cbt_PLAYER);
 		Sy.cbt_CurrentPlayerState = otherPlayer;//set it so that the renderer and API think the player is in control
 		Sy.resetFog(Sy.FOG_ENABLED);//blank out the controller's fog

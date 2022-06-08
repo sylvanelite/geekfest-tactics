@@ -32,7 +32,7 @@ class ui_displayMove{
 			Sy_api.api_mov_cancel();
 			return;
 		}
-		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
+		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			console.log("cell out of bounds: ",cell.x,cell.y);
 			return;
 		}
@@ -49,7 +49,7 @@ class ui_displayMove{
 	}
 	static move(){
 		const cell = Renderer.getMouseCell();
-		if(cell.x>Sy_api.api_getMapWidth()||cell.y>Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
+		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			return;//cell out of bounds
 		}
 		const [chx,chy] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
