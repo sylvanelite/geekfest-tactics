@@ -409,7 +409,6 @@ class Sy_api {
 			height:Sy.MAP_HEIGHT,
 			currentState:Sy.cbt_CurrentState,//int
 			currentPlayerState:Sy.cbt_CurrentPlayerState,//int
-			xy:Sy.cbt_xy,//int
 			isv_STATE_IDLE_xy:Sy.cbt_isv_STATE_IDLE_xy,//int
 			isv_STATE_DISPLAY_MOVE_xy:Sy.cbt_isv_STATE_DISPLAY_MOVE_xy,//int
 			terrain:terrainCopy,
@@ -430,7 +429,6 @@ class Sy_api {
 		//all globals that aren't const
 		Sy.cbt_CurrentState=savedState.currentState;//int
 		Sy.cbt_CurrentPlayerState=savedState.currentPlayerState;//int
-		Sy.cbt_xy = savedState.xy;//int
 		Sy.cbt_isv_STATE_IDLE_xy = savedState.isv_STATE_IDLE_xy;//int
 		Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = savedState.isv_STATE_DISPLAY_MOVE_xy;//int
 		//all global arrays

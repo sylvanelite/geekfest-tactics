@@ -2,7 +2,6 @@
 import { Sy_api } from './state/api.js';
 import {Network}from './renderer/network.mjs';
 window.Network=Network;//TODO: use this...
-Sy_api.api_setNetworking(Network);//TODO: only set if joined/enabled/established
 
 
 import {

@@ -2,6 +2,7 @@
 import { Peer } from "peerjs";
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
+import { cbt_PLAYER, cbt_ENEMY } from "../state/consts.mjs";
 
 //used to sync peer-to-peer calls
 class Network{
@@ -46,11 +47,6 @@ class Network{
 	}
 	static #connectionOpen(e){
 		console.log("conn: open",e);
-		//if host, send init to client.
-		if(Network.isHost()){
-			const state= Sy_api.api_cloneState();
-			Network.send({kind:'sync',state});
-		}
 	}
 	static async #connectionData(data){
 		console.log("conn: data",data);
@@ -62,6 +58,25 @@ class Network{
 		switch(data.kind){//TODO: use switch consts
 			case 'sync':{
 				Sy_api.api_setState(data.state);
+				break;
+			}
+			case 'join':{
+				if(!Network.isHost()){
+					console.warn("got join pack, but is not the host");
+					break;
+				}
+				//merge client characters with your game's characters
+				const hostState = Sy_api.api_cloneState();
+				const pCh = hostState.varCharacters.filter((x)=>{
+					return x.player_state == cbt_PLAYER;
+				});
+				const eCh = data.state.varCharacters.filter((x)=>{
+					return x.player_state == cbt_ENEMY;
+				});
+				const allCh = pCh.concat(eCh);
+				//TODO: set eCh starting positions?
+				hostState.varCharacters = allCh;
+				Network.send({kind:'sync',state:hostState});
 				break;
 			}
 			case 'move':{
@@ -78,12 +93,12 @@ class Network{
 				console.log("unknown packet",data);
 				break;
 		}
-		
 		Sy_api.api_setNetworking(Network);
 		
 	}
 	
 	static host(){
+		Sy_api.api_setNetworking(Network);
 		Network.#isHost = true;
 		const hostId = Network.#getId();
 		console.log("host: "+hostId);
@@ -102,6 +117,7 @@ class Network{
 		peer.on('open',Network.#peerOpen);
 	}
 	static join(hostId){
+		Sy_api.api_setNetworking(Network);
 		Network.#isHost = false;
 		const joinId = Network.#getId();
 		console.log("joining:"+hostId+" as "+joinId);
@@ -119,7 +135,11 @@ class Network{
 			Network.#peerOpen(e);
 			Network.#connection = peer.connect(Network.#gameId+hostId);
 			const conn = Network.#connection;
-			conn.on('open',Network.#connectionOpen);
+			conn.on('open',(e)=>{
+				Network.#connectionOpen(e);
+				//push join player's characters to the host
+				Network.send({kind:'join',state:Sy_api.api_cloneState()});
+			});
 			conn.on('close',Network.#connectionClose);
 			conn.on('error',Network.#connectionError);
 			conn.on('data',Network.#connectionData);
