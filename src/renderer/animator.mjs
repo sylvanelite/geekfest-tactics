@@ -108,7 +108,7 @@ class Animator{
 		const [startx,starty] = Bit.GET_XY(xy_from);
 		const [endx,endy] = Bit.GET_XY(xy_to);
 		const distance = Math.abs(endx-startx)+Math.abs(endy-starty);
-		const moveSpeed = distance*12;
+		const moveSpeed = distance*4;
 		const animation={
 			kind:ANIMATION.MOVE,
 			data:{xy_ch,xy_from,xy_to},
