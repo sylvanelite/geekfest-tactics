@@ -46,7 +46,11 @@ class Network{
 	}
 	static #connectionOpen(e){
 		console.log("conn: open",e);
-		//TODO: if host, send init to client?
+		//if host, send init to client.
+		if(Network.isHost()){
+			const state= Sy_api.api_cloneState();
+			Network.send({kind:'sync',state});
+		}
 	}
 	static async #connectionData(data){
 		console.log("conn: data",data);
@@ -55,8 +59,12 @@ class Network{
 		//TODO: less hacky way of handling data
 		//      to prevent infinite loops, do not let the API send network requests on a packet recieved
 		Sy_api.api_setNetworking(null);
-		switch(data.kind){
-			case 'move':{//TODO: use consts
+		switch(data.kind){//TODO: use switch consts
+			case 'sync':{
+				Sy_api.api_setState(data.state);
+				break;
+			}
+			case 'move':{
 				const [idlex,idley] = Bit.GET_XY(data.idle_select);
 				const [movx,movy] = Bit.GET_XY(data.move_destination);
 				const [tgtx,tgty] = Bit.GET_XY(data.target_select);

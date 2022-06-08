@@ -388,10 +388,10 @@ class Sy_api {
 	//used to save/restore/sync state
 	static api_cloneState(){
 		//deep copy of globals
-		const terrainCopy=Sy.cbt_terrain.slice();
-		const moveCopy=Sy.cbt_move.slice();
-		const atkCopy = Sy.cbt_attack.slice();//slice is shallow copy, should be ok since it's ints
-		const fogCopy = Sy.cbt_fog.slice();
+		const terrainCopy=Array.from(Sy.cbt_terrain);//Uint32Array doesn't serailiase well, convert to plain array
+		const moveCopy= Array.from(Sy.cbt_move);
+		const atkCopy = Array.from(Sy.cbt_attack);
+		const fogCopy = Array.from(Sy.cbt_fog);
 		//ch needs deep copy
 		const chCopy = Array(Sy.cbt_varCharacters.length);
 		let i=0;
@@ -434,11 +434,11 @@ class Sy_api {
 		Sy.cbt_isv_STATE_IDLE_xy = savedState.isv_STATE_IDLE_xy;//int
 		Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = savedState.isv_STATE_DISPLAY_MOVE_xy;//int
 		//all global arrays
-		Sy.cbt_terrain = savedState.terrain;
-		Sy.cbt_move = savedState.move;
-		Sy.cbt_attack = savedState.attack;
-		Sy.cbt_fog = savedState.fog;
+		Sy.cbt_terrain = Uint32Array.from(savedState.terrain);//convert plain array back to int views
+		Sy.cbt_move = Uint32Array.from(savedState.move);
+		Sy.cbt_attack = Uint32Array.from(savedState.attack);
 		Sy.setFogEnabled(savedState.fogEnabled);
+		Sy.cbt_fog = Uint32Array.from(savedState.fog);
 		Sy.cbt_varCharacters = savedState.varCharacters;
 		PRNG.RNG_A = savedState.rngA;
 		PRNG.RNG_B = savedState.rngB;
