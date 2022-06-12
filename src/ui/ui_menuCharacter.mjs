@@ -1627,7 +1627,7 @@ const portraits = {
 		"hair_back_7.png",
 		],
 		female:[
-		"back_headgear_1.png",//TODO: helmet?
+		//"back_headgear_1.png",//TODO: helmet?
 		"backhair_0.png",
 		"backhair_1.png",
 		"backhair_5.png",
@@ -2061,15 +2061,13 @@ class ui_menuCharacter{
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
-			const scale = 0.3;
-			const torsoX = Math.abs(offsets[ch.gender].torso.x);
-			const torsoY = Math.abs(offsets[ch.gender].torso.y);
-			const x = (torsoX+offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
-			const y = (torsoY-offsets[ch.gender][draw].y)*scale;
+			const scale = 0.35;
+			const x = (offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
+			const y = (-offsets[ch.gender][draw].y)*scale;
 			
 			const sprite = Renderer.getSprite(
 				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+300,y+200,img.width,img.height,0,0
+				x+128,y+500,img.width,img.height,0,0
 			);
 			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
 		}
