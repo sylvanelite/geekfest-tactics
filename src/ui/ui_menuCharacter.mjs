@@ -1933,6 +1933,34 @@ class ui_menuCharacter{
 	}
 	static shuffleCharacter(){
 		console.log("shuffle");
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		/*front_arm:4,
+		back_arm:4,
+		torso:4,
+		back:4,
+		weapon:4,
+		headgear:4,
+		
+		base_hair:4,
+		back_hair:4,
+		front_hair:4,
+		ear:4,
+		eyebrow:4,
+		eyes:4,
+		mouth:4,
+		nose:4,
+		head:4,
+		
+		*/
+		
+		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
+					  'eyes','nose','eyebrow','mouth','ear',
+					  'front_hair','headgear','front_arm'];
+		for(const draw of drawOrder){
+			const sprList = portraits[draw][ch.gender];
+			const sprIdx = Math.floor(Math.random()*sprList.length);
+			ch[draw]=sprIdx;
+		}
 	}
 	static swapGender(){
 		console.log("gender");
