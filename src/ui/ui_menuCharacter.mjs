@@ -1577,7 +1577,7 @@ const portraits = {
 		"front_arm_8x.png",
 		"front_arm_9.png",
 		"front_arm_10.png",
-		"front_arm_10x.png",
+		"front_arm_10x.png",//TODO: seems to have different coords?
 		"front_arm_11.png",
 		"front_arm_11x.png",
 		"front_arm_12.png"
@@ -1775,7 +1775,7 @@ class ui_menuCharacter{
 	static #selectedChIdx = 0;
 	static #ch = [{
 		isUnlocked:true,
-		gender:'male',
+		gender:'female',
 		front_arm:0,
 		back_arm:0,
 		torso:0,
@@ -1947,6 +1947,86 @@ class ui_menuCharacter{
 	//selectColour
 	
 	static drawCharacter(chIdx,ctx){
+		
+		/*
+		female:
+                    <object_ref id="0" name="wing_front_0" folder="24" file="0" abs_x="-601" abs_y="943" abs_angle="0" abs_scale_x="0.9" abs_scale_y="0.9" abs_a="1" timeline="18" key="0" z_index="0"/>
+                    <object_ref id="1" name="wing_back_0" folder="24" file="1" abs_x="-84" abs_y="920" abs_angle="0" abs_scale_x="0.9" abs_scale_y="0.9" abs_a="1" timeline="19" key="0" z_index="1"/>
+                    <object_ref id="2" name="cape_back_patch" folder="22" file="79" abs_x="-343.181818" abs_y="522.727273" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="17" key="0" z_index="2"/>
+                    <object_ref id="3" name="cape_back_0" folder="22" file="76" abs_x="-463" abs_y="518" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="14" key="0" z_index="3"/>
+                    <object_ref id="5" name="cape_0_top_back" folder="22" file="77" abs_x="-477" abs_y="682" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="15" key="0" z_index="5"/>
+                   
+				   <object_ref id="6" name="back_headgear_1_000" folder="22" file="21" abs_x="-461" abs_y="927" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="6"/>
+                   <object_ref id="9" name="necklace_0_000" folder="22" file="99" abs_x="-282" abs_y="615.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="9"/>
+                    
+                    <object_ref id="16" name="head_scar_0" folder="22" file="101" abs_x="-162" abs_y="867.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="23" key="0" z_index="16"/>
+                    
+                    <object_ref id="19" name="earrings_0" folder="22" file="97" abs_x="-238" abs_y="829" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="19"/>
+
+                    <object_ref id="22" name="cape_0_top" folder="22" file="78" abs_x="-468" abs_y="679" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="16" key="0" z_index="22"/>
+                    <object_ref id="23" name="front_arm_10x" folder="22" file="66" abs_x="-477" abs_y="669" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="23"/>
+    
+		*/
+		/*
+		male:
+		
+                    <object_ref id="0" name="wing_back_0" folder="23" file="19" abs_x="-54" abs_y="1020" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="16" key="0" z_index="0"/>
+                    <object_ref id="1" name="wing_front_0" folder="23" file="20" abs_x="-640" abs_y="1031" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="17" key="0" z_index="1"/>
+                    <object_ref id="2" name="cape_back_patch" folder="23" file="100" abs_x="-274" abs_y="538" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="23" key="0" z_index="2"/>
+                    <object_ref id="4" name="cape_back_0" folder="23" file="13" abs_x="-401.965024" abs_y="520.732936" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="13" key="0" z_index="4"/>
+                    <object_ref id="5" name="cape_0_top_back" folder="23" file="16" abs_x="-407" abs_y="696" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="12" key="0" z_index="5"/>
+                    
+                    <object_ref id="9" name="NECKLACE_0" folder="23" file="18" abs_x="-192" abs_y="621" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="15" key="0" z_index="9"/>
+                    <object_ref id="10" name="torso_2_overlay_000" folder="23" file="41" abs_x="-321" abs_y="757" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="10"/>
+                    <object_ref id="11" name="cape_0_top" folder="23" file="12" abs_x="-400.849312" abs_y="691.857728" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="11"/>
+                  
+                    <object_ref id="13" name="head_shading_0" folder="23" file="32" abs_x="-60" abs_y="867" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="13"/>
+                    <object_ref id="14" name="head_scar_0" folder="23" file="108" abs_x="-83" abs_y="857.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="24" key="0" z_index="14"/>
+                    
+                    <object_ref id="18" name="facial_hair_0" folder="23" file="17" abs_x="-126" abs_y="717" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="14" key="0" z_index="18"/>
+					<object_ref id="24" name="front_arm_2" folder="23" file="39" abs_x="-414.9998" abs_y="637.99978" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="24"/>
+					<object_ref id="22" name="hair_front_0" folder="23" file="6" abs_x="-409.615716" abs_y="1063.305619" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="10" key="0" z_index="22"/>
+
+		*/                    
+
+
+
+
+
+		//from abs_x above...
+		const offsets = {
+			female:{
+				'back_hair':{x:-722,y:1227},
+				'back_arm':{x:-31,y:641},
+				'torso':{x:-353.941834,y:683.037442},
+				'head':{x:-192,y:910},//aprox:162,-224 relative to torso
+				'front_arm':{x:-478,y:665},
+				'mouth':{x:-27.08839,y:591.026974},
+				'eyes':{x:-67,y:754},
+				'eyebrow':{x:-65,y:754},
+				'nose':{x:19.968252,y:658.266716},
+				'base_hair':{x:-358,y:1175},
+				'ear':{x:-254.000016,y:860.99999},
+				'front_hair':{x:-303,y:1044},
+				'headgear':{x:-310,y:1023},
+			},
+			male:{
+				'back_hair':{x:-293.948416,y:974.511},
+				'back_arm':{x:41.00015,y:532.999776},
+				'torso':{x:-320.677944,y:760.809035},
+				'head':{x:-59.999917,y:858.999872},//aprox:162,-224 relative to torso
+				'front_arm':{x:-414.9998,y:637.99978},
+				'mouth':{x:56.00005,y:616.000033},
+				'eyes':{x:59.00008,y:722.000036},
+				'eyebrow':{x:32.000092,y:761.000024},
+				'nose':{x:107.999936,y:695.000054},
+				'base_hair':{x:-328.194154,y:1044.862415},
+				'ear':{x:-139.00004,y:770.000036},
+				'front_hair':{x:-303,y:1044},
+				'headgear':{x:-448.962599,y:1406.98906},
+			}
+		};
+		
 		const ch = ui_menuCharacter.#ch[chIdx];
 		
 		const getSprData = (name,gender)=>{
@@ -1969,9 +2049,9 @@ class ui_menuCharacter{
 		back:0,//todo
 		weapon:0,//todo
 		*/
-		const drawOrder = ['back_arm','back_hair','head','base_hair',
+		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
 					  'eyes','nose','eyebrow','mouth','ear',
-					  'torso','front_hair','headgear','front_arm'];
+					  'front_hair','headgear','front_arm'];
 		for(const draw of drawOrder){
 			if(draw == 'front_hair' && ch.gender == 'male'){continue;}//special case: m has no hair front.
 			
@@ -1981,11 +2061,17 @@ class ui_menuCharacter{
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
+			const scale = 0.3;
+			const torsoX = Math.abs(offsets[ch.gender].torso.x);
+			const torsoY = Math.abs(offsets[ch.gender].torso.y);
+			const x = (torsoX+offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
+			const y = (torsoY-offsets[ch.gender][draw].y)*scale;
+			
 			const sprite = Renderer.getSprite(
 				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				0,128,img.width,img.height,0,0
+				x+300,y+200,img.width,img.height,0,0
 			);
-			Renderer.drawSpriteScaled(sprite,img.width/2,img.height/2,ctx);
+			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
 		}
 		
 	}
