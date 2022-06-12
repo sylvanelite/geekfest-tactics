@@ -1685,7 +1685,7 @@ class ui_menuCharacter{
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_shuffle,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_gender,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_start,ctx);
-		ui_menuCharacter.drawCharacter(0,ctx);//TODO: ch idx
+		ui_menuCharacter.drawCharacter(ui_menuCharacter.#selectedChIdx,ctx);//TODO: ch idx
 		
 		for(let i=0;i<5;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_character;
@@ -1772,7 +1772,7 @@ class ui_menuCharacter{
 		
 	}
 	
-	
+	static #selectedChIdx = 0;
 	static #ch = [{
 		isUnlocked:true,
 		gender:'male',
@@ -1792,6 +1792,86 @@ class ui_menuCharacter{
 		mouth:0,
 		nose:0,
 		head:0,
+		
+	},{
+		isUnlocked:true,
+		gender:'male',
+		front_arm:1,
+		back_arm:1,
+		torso:1,
+		back:1,
+		weapon:1,
+		headgear:1,
+		
+		base_hair:1,
+		back_hair:1,
+		front_hair:1,
+		ear:1,
+		eyebrow:1,
+		eyes:1,
+		mouth:1,
+		nose:1,
+		head:1,
+		
+	},{
+		isUnlocked:true,
+		gender:'male',
+		front_arm:2,
+		back_arm:2,
+		torso:2,
+		back:2,
+		weapon:2,
+		headgear:2,
+		
+		base_hair:2,
+		back_hair:2,
+		front_hair:2,
+		ear:2,
+		eyebrow:2,
+		eyes:2,
+		mouth:2,
+		nose:2,
+		head:2,
+		
+	},{
+		isUnlocked:true,
+		gender:'male',
+		front_arm:3,
+		back_arm:3,
+		torso:3,
+		back:3,
+		weapon:3,
+		headgear:3,
+		
+		base_hair:3,
+		back_hair:3,
+		front_hair:3,
+		ear:3,
+		eyebrow:3,
+		eyes:3,
+		mouth:3,
+		nose:3,
+		head:3,
+		
+	},{
+		isUnlocked:true,
+		gender:'male',
+		front_arm:4,
+		back_arm:4,
+		torso:4,
+		back:4,
+		weapon:4,
+		headgear:4,
+		
+		base_hair:4,
+		back_hair:4,
+		front_hair:4,
+		ear:4,
+		eyebrow:4,
+		eyes:4,
+		mouth:4,
+		nose:4,
+		head:4,
 		
 	},
 		
@@ -1830,6 +1910,8 @@ class ui_menuCharacter{
 	}
 	static selectCharacter(ch){
 		console.log("switch to ch:",ch);
+		//TODO: if unlocked...
+		ui_menuCharacter.#selectedChIdx = ch;
 	}
 	static selectArmFront(item){
 		console.log("arm f: ",item);		
@@ -1854,6 +1936,12 @@ class ui_menuCharacter{
 	}
 	static swapGender(){
 		console.log("gender");
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		if(ch.gender == 'male'){
+			ch.gender = 'female';
+		}else{
+			ch.gender = 'male';
+		}
 	}
 	
 	//selectColour
@@ -1886,8 +1974,11 @@ class ui_menuCharacter{
 					  'torso','front_hair','headgear','front_arm'];
 		for(const draw of drawOrder){
 			if(draw == 'front_hair' && ch.gender == 'male'){continue;}//special case: m has no hair front.
-			const sprIdx = ch[draw];
-			const sprName = portraits[draw][ch.gender][sprIdx];
+			
+			const sprList = portraits[draw][ch.gender];
+			const sprIdx = ch[draw]%sprList.length;
+			if(ch[draw]>=sprList.length){console.log("out of range...");}
+			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
 			const sprite = Renderer.getSprite(
