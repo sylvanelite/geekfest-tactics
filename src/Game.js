@@ -1,6 +1,7 @@
 
 import { Sy_api } from './state/api.js';
 import {Network}from './renderer/network.mjs';
+import {Menu,MENU_STATE}from './renderer/menu.mjs';
 window.Network=Network;//TODO: use this...
 
 
@@ -15,7 +16,13 @@ import {
 const GAME_STATE={
 	BATTLE_IDLE: cbt_STATE_IDLE,
 	BATTLE_MOVE: cbt_STATE_DISPLAY_MOVE,
-	BATTLE_TARGET: cbt_STATE_SELECT_WEAPON_TARGET
+	BATTLE_TARGET: cbt_STATE_SELECT_WEAPON_TARGET,
+	
+	//... these should be ints to be consistent with above. maybe put into consts.js?
+	MENU_SPLASH:MENU_STATE.SPLASH,
+	MENU_CHARACTER:MENU_STATE.CHARACTER,
+	MENU_MAP:MENU_STATE.MAP
+	
 };
 
 const CONTROL_SOURCE={
@@ -27,20 +34,27 @@ const CONTROL_SOURCE={
 
 class GameState {
 	static getCurrentState(){
-		//todo: if not in battle, return non-battle states.
+		//if not in battle, return non-battle states.
+		if(Menu.isInMenu()){
+			return Menu.getMenuState();
+		}
 		return Sy_api.api_getCurrentState();
 	}
 	static getControlSource(){
+		//check if in the menu
+		if(Menu.isInMenu()){
+			return CONTROL_SOURCE.LOCAL;
+		}
 		if(Sy_api.api_isAwaiting()){
 			return CONTROL_SOURCE.AWAIT;
 		}
+		//in game, return player control sources
 		const playerState = Sy_api.api_getCurrentPlayerState();
-		//TODO: check if in battle
 		if(playerState==cbt_PLAYER){
 			return GameState.getControlSourceForPlayer(playerState);
 		}
 		if(playerState==cbt_ENEMY){
-			//TODO: check network, local, etc
+			//check network, local, etc
 			return GameState.getControlSourceForPlayer(playerState);
 		}
 		//default: local

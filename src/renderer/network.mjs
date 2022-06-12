@@ -49,7 +49,8 @@ class Network{
 	}
 	static async #connectionData(data){
 		console.log("conn: data",data);
-		//TODO: handle data
+		//TODO: check control source. warn if not network? 
+		//      add method to close() network when mission over
 		
 		//TODO: less hacky way of handling data
 		//      to prevent infinite loops, do not let the API send network requests on a packet recieved

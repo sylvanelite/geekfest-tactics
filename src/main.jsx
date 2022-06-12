@@ -11,11 +11,14 @@ import { ui_idle } from './ui/ui_idle.js';
 import { ui_displayMove } from './ui/ui_displayMove.js';
 import { ui_selectTarget } from './ui/ui_selectTarget.js';
 
+import { ui_menuSplash } from './ui/ui_menuSplash.js';
+import { ui_menuCharacter } from './ui/ui_menuCharacter.js';
+import { ui_menuMap } from './ui/ui_menuMap.js';
+
 import { Sy_api } from './state/api.js';
 import { Sy } from './state/main.js';
 import { Sy_AI } from './state/ai.js';
 
-//https://www.gamedeveloper.com/programming/making-a-game-boy-game-in-2017-a-quot-sheep-it-up-quot-post-mortem-part-1-2-
 const DEBUG_ENABLED = true;
 if(DEBUG_ENABLED){
 	window.Sy = Sy;
@@ -42,6 +45,15 @@ class Logic{
 		const state = GameState.getCurrentState();
 		//draw BG here? or higher up?
 		switch(state){
+			case GAME_STATE.MENU_SPLASH:
+				ui_menuSplash.draw(ctx);
+			return;
+			case GAME_STATE.MENU_CHARACTER:
+				ui_menuCharacter.draw(ctx);
+			return;
+			case GAME_STATE.MENU_MAP:
+				ui_menuMap.draw(ctx);
+			return;
 			case GAME_STATE.BATTLE_IDLE:
 				ui_idle.draw(ctx);//always draw idle?
 			return;
@@ -65,6 +77,15 @@ class Logic{
 		}
 		const state = GameState.getCurrentState();
 		switch(state){
+			case GAME_STATE.MENU_SPLASH:
+				ui_menuSplash.click(e);
+			return;
+			case GAME_STATE.MENU_CHARACTER:
+				ui_menuCharacter.click(e);
+			return;
+			case GAME_STATE.MENU_MAP:
+				ui_menuMap.click(e);
+			return;
 			case GAME_STATE.BATTLE_IDLE:
 				ui_idle.click(e);
 			return;
