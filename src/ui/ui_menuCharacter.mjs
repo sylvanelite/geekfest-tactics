@@ -1605,7 +1605,7 @@ const portraits = {
 		"base_hair_2.png",
 		"base_hair_3.png",
 		"base_hair_4.png",
-		"base_hair_5.png",
+		//"base_hair_5.png",//sticks through hats
 		"base_hair_6.png",
 		"base_hair_7.png",
 		//"hair_front_0.png",//TODO: this is front, not base?
@@ -2085,16 +2085,14 @@ class ui_menuCharacter{
 		for(const draw of drawOrder){
 			if(draw == 'front_hair' /*&& ch.gender == 'male'*/){continue;}//special case: m has no hair front.
 			if(draw=='base_hair' && ch.gender == 'female'){
-				console.log(portraits.base_hair.female,portraits.base_hair.female.length-1,ch.base_hair);
 				ch.base_hair = portraits.base_hair.female.length-1;
-				
 			}
 			
 			
 			//TODO: female base hair=headgear?
 			const sprList = portraits[draw][ch.gender];
 			const sprIdx = ch[draw]%sprList.length;
-			if(ch[draw]>=sprList.length){console.log("out of range...");}
+			//if(ch[draw]>=sprList.length){console.log("out of range...");}
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
