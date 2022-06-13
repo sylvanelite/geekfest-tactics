@@ -74,6 +74,7 @@ class ui_displayMove{
 			Sy_api.api_getAttackForCell(cell.x,cell.y)){
 			const eCh = Sy_api.api_getCharacterAtPosition(cell.x,cell.y);
 			if(eCh.player_state != cbt_NO_PLAYER_STATE && eCh.player_state != ch.player_state){
+				const atkCellCh = Sy_api.api_getCharacterAtPosition(lastX,lastY);
 			   if(!(Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)>=ch.min_range&&
 				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
 					//reset to a valid attack path

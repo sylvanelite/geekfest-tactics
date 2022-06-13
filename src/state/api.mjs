@@ -42,6 +42,21 @@ class Sy_api {
 		const cellCh = Sy.getCharacterAtPosition(x,y);
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
 											   Bit.GET_Y(Sy.cbt_isv_STATE_IDLE_xy));
+		//validate that the preferredPath last cell is movable
+		if(preferredPath){
+			const lastCell = preferredPath[preferredPath.length-1];
+			const [lastX,lastY] = Bit.GET_XY(lastCell);
+			const pathChCell = Sy.getCharacterAtPosition(lastX,lastY);
+			if(lastCell!=prevCh.point_xy){
+				//if moving the character, check it's a blue cell with no other player in it
+				if(Sy.getMoveForCell(lastX,lastY) == 0||
+				  pathChCell.player_state!=cbt_NO_PLAYER_STATE){
+					console.log("blocked mov path cell");
+					  return false;
+				}
+			}
+		}
+		
 		const movePathfind = async (final_xy)=>{
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = final_xy;
 			Sy_api.#rendererBlocked = true;
@@ -109,6 +124,7 @@ class Sy_api {
 			cellCh.player_state != cbt_NO_PLAYER_STATE  &&
 			Sy.getAttackForCell(x,y) != 0) {
 			const attackPosition = Sy.getMoveCellFromAttack(x, y, prevCh);
+			console.log(attackPosition,preferredPath);
 			//set the mov cursor to the spot the player moves from, but leave the currnet cursor on the target
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
@@ -487,6 +503,7 @@ class Sy_api {
 		if(Sy_api.#menu){
 			Sy_api.#menu.endGame(playerAlive);
 		}
+		//TODO: await animation?
 		return true;
 	}
 }
