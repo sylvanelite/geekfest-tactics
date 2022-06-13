@@ -1,6 +1,7 @@
 
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
+import { Network }from './renderer/network.mjs';
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { st_Character, cbt_ENEMY,cbt_PLAYER } from "../state/consts.mjs";
@@ -15,10 +16,24 @@ class ui_menuMap{
 			'ui/map.png',
 			695,355,267,137,0,0
 		),
+		btn_multiHost:Renderer.getSprite(
+			'ui/map.png',
+			719,21,85,46,0,0
+		),
+		btn_multiJoin:Renderer.getSprite(
+			'ui/map.png',
+			632,21,85,46,0,0
+		),
 	};
+	static #hostId = "";
 	
 	static draw(ctx){
 		Renderer.drawSprite(ui_menuMap.#sprites.bg_map,ctx);
+		if(Network.isHost()){
+			ctx.fillText(ui_menuMap.#hostId,
+				ui_menuMap.#sprites.btn_multiHost.x,
+				ui_menuMap.#sprites.btn_multiHost.y+16);
+		}
 	}
 	static click(e){
 		//TODO: disable until selecting a map
@@ -28,6 +43,18 @@ class ui_menuMap{
 			const units = ui_menuMap.getUnits();
 			Sy_api.api_generateRoom(42,terrain,units);
 			Menu.setMenuState(MENU_STATE.PLAYING);
+		}
+		//TODO: check if already joining/hosting?
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
+			Sy_api.api_setNetwork(Network);
+			ui_menuMap.#hostId = Network.host();
+		}
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiJoin)){
+			Sy_api.api_setNetwork(Network);
+			const hostId = prompt("Enter host ID to join: ");
+			if(hostId){
+				Network.join(hostId.toUpperCase());
+			}
 		}
 	}
 	//TODO: host/join NW implementation buttons

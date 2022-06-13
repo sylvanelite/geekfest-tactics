@@ -24,6 +24,7 @@ class Menu{
 	
 	static endGame(victory){
 		Menu.setMenuState(MENU_STATE.CHARACTER);
+		//TODO: if network, disconnect?
 	}
 }
 

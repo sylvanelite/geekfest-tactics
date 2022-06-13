@@ -115,6 +115,7 @@ class Network{
 			conn.on('data',Network.#connectionData);
 		});
 		peer.on('open',Network.#peerOpen);
+		return hostId;
 	}
 	static join(hostId){
 		Sy_api.api_setNetworking(Network);
