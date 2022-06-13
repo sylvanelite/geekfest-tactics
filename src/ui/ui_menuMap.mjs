@@ -21,6 +21,7 @@ class ui_menuMap{
 		Renderer.drawSprite(ui_menuMap.#sprites.bg_map,ctx);
 	}
 	static click(e){
+		//TODO: disable until selecting a map
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
 			//start game, apply stats
 			const terrain = ui_menuMap.getTerrain();
@@ -29,6 +30,8 @@ class ui_menuMap{
 			Menu.setMenuState(MENU_STATE.PLAYING);
 		}
 	}
+	//TODO: host/join NW implementation buttons
+	
 	//TODO: actually set the data based on the map
 	static getUnits(){
 		const ch0 = new st_Character();

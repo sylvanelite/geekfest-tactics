@@ -21,6 +21,10 @@ class Menu{
 	static isInMenu(){
 		return Menu.#menuState != MENU_STATE.PLAYING;
 	}
+	
+	static endGame(victory){
+		Menu.setMenuState(MENU_STATE.CHARACTER);
+	}
 }
 
 

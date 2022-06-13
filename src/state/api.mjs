@@ -14,6 +14,7 @@ import { PRNG } from "./prng.mjs";
 class Sy_api {
 	static #networking = null;
 	static #renderer = null;
+	static #menu = null;
 	static #rendererBlocked=false;
 //////////////gameplay methods
 	//NOTE: need a guard check when calling these to ensure it's the correct turn & x,y in bounds
@@ -92,6 +93,9 @@ class Sy_api {
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
+				if(Sy_api.#checkGameOver()){//TODO:game over?
+					return true;
+				}
 				if(eot && Sy_api.#renderer){
 					Sy_api.#rendererBlocked = true;
 					await Sy_api.#renderer.enqueue_drawTurnToggle();
@@ -124,6 +128,9 @@ class Sy_api {
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
+				if(Sy_api.#checkGameOver()){//TODO:game over?
+					return true;
+				}
 				if(eot && Sy_api.#renderer){
 					Sy_api.#rendererBlocked = true;
 					await Sy_api.#renderer.enqueue_drawTurnToggle();
@@ -183,6 +190,9 @@ class Sy_api {
 			});
 		}
 		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
+		if(Sy_api.#checkGameOver()){//TODO:game over?
+			return true;
+		}
 		if(eot&&Sy_api.#renderer){
 			Sy_api.#rendererBlocked = true;
 			await Sy_api.#renderer.enqueue_drawTurnToggle();
@@ -449,14 +459,35 @@ class Sy_api {
 	static api_render(){
 		Sy_api.#renderer.render();
 	}
+	static api_isAwaiting(){
+		return (Sy_api.#renderer && Sy_api.#rendererBlocked);
+	}
+	
 	static api_setRenderer(renderer){
 		Sy_api.#renderer = renderer;
 	}
 	static api_setNetworking(networking){
 		Sy_api.#networking = networking;
 	}
-	static api_isAwaiting(){
-		return (Sy_api.#renderer && Sy_api.#rendererBlocked);
+	static api_setMenu(menu){
+		Sy_api.#menu = menu;
+	}
+	
+	static #checkGameOver(){
+		const playerAlive =  Sy.cbt_varCharacters.some((ch)=>{
+			return ch.player_state == cbt_PLAYER;
+		});
+		const enemyAlive =  Sy.cbt_varCharacters.some((ch)=>{
+			return ch.player_state == cbt_ENEMY;
+		});
+		if(playerAlive && enemyAlive){
+			return false;
+		}
+		//TODO: other things, like exp?
+		if(Sy_api.#menu){
+			Sy_api.#menu.endGame(playerAlive);
+		}
+		return true;
 	}
 }
 export { Sy_api };
