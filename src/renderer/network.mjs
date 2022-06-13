@@ -168,7 +168,22 @@ class Network{
 		}
 		return false;
 	}
-	
+	static getStatus(){
+		if(!Network.#peer){
+			return "disabled";
+		}
+		if(!Network.#peer.open){
+			return "connecting...";
+		}
+		if(!Network.#connection){
+			return "waiting for other player...";
+		}
+		if(Network.#peer.connections.length==0){
+			return "waiting for peer...";
+		}
+		//TODO: check that the game is synced?
+		return "connected";
+	}
 }
 
 

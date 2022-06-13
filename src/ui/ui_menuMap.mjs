@@ -1,7 +1,7 @@
 
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
-import { Network }from './renderer/network.mjs';
+import { Network }from '../renderer/network.mjs';
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { st_Character, cbt_ENEMY,cbt_PLAYER } from "../state/consts.mjs";
@@ -26,17 +26,35 @@ class ui_menuMap{
 		),
 	};
 	static #hostId = "";
+	static #selectedMap = 0;
 	
 	static draw(ctx){
 		Renderer.drawSprite(ui_menuMap.#sprites.bg_map,ctx);
 		if(Network.isHost()){
+			ctx.font="12px monospace";
+			ctx.fillStle="black";
 			ctx.fillText(ui_menuMap.#hostId,
-				ui_menuMap.#sprites.btn_multiHost.x,
-				ui_menuMap.#sprites.btn_multiHost.y+16);
+				ui_menuMap.#sprites.btn_multiHost.x+46,
+				ui_menuMap.#sprites.btn_multiHost.y+40.5);
+		}
+		const nwStatus = Network.getStatus();
+		if(nwStatus!="disabled"){
+			ctx.fillText(nwStatus,
+				ui_menuMap.#sprites.btn_multiHost.x+46+85,
+				ui_menuMap.#sprites.btn_multiHost.y+64.5);
+			if(nwStatus=="connected"){
+				Menu.setMenuState(MENU_STATE.PLAYING);
+			}
 		}
 	}
 	static click(e){
-		//TODO: disable until selecting a map
+		//TODO: select a map, set terrain
+		
+		//disable until selecting a map
+		if(ui_menuMap.#selectedMap<0){
+			alert("plese select a map before starting a game");
+			return;
+		}
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
 			//start game, apply stats
 			const terrain = ui_menuMap.getTerrain();
@@ -46,11 +64,11 @@ class ui_menuMap{
 		}
 		//TODO: check if already joining/hosting?
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
-			Sy_api.api_setNetwork(Network);
+			Sy_api.api_setNetworking(Network);
 			ui_menuMap.#hostId = Network.host();
 		}
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiJoin)){
-			Sy_api.api_setNetwork(Network);
+			Sy_api.api_setNetworking(Network);
 			const hostId = prompt("Enter host ID to join: ");
 			if(hostId){
 				Network.join(hostId.toUpperCase());
