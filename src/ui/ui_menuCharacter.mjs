@@ -2083,8 +2083,15 @@ class ui_menuCharacter{
 					  'eyes','nose','eyebrow','mouth','ear',
 					  'front_hair','headgear','front_arm'];
 		for(const draw of drawOrder){
-			if(draw == 'front_hair' && ch.gender == 'male'){continue;}//special case: m has no hair front.
+			if(draw == 'front_hair' /*&& ch.gender == 'male'*/){continue;}//special case: m has no hair front.
+			if(draw=='base_hair' && ch.gender == 'female'){
+				console.log(portraits.base_hair.female,portraits.base_hair.female.length-1,ch.base_hair);
+				ch.base_hair = portraits.base_hair.female.length-1;
+				
+			}
 			
+			
+			//TODO: female base hair=headgear?
 			const sprList = portraits[draw][ch.gender];
 			const sprIdx = ch[draw]%sprList.length;
 			if(ch[draw]>=sprList.length){console.log("out of range...");}
