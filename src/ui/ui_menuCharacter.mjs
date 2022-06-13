@@ -1608,7 +1608,7 @@ const portraits = {
 		"base_hair_5.png",
 		"base_hair_6.png",
 		"base_hair_7.png",
-		"hair_front_0.png",//TODO: this is front, not base?
+		//"hair_front_0.png",//TODO: this is front, not base?
 		],
 		female:[
 		"base_hair_0.png",
@@ -1699,11 +1699,10 @@ class ui_menuCharacter{
 		}
 		for(let i=0;i<8;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_icon;
-			//front arm
+			//arm
 			spr.y=117;
 			spr.x=413+i*33;
 			Renderer.drawSprite(spr,ctx);
-			//back arm
 			spr.y=150;
 			Renderer.drawSprite(spr,ctx);
 			//head
@@ -1713,7 +1712,7 @@ class ui_menuCharacter{
 			spr.y=240;
 			Renderer.drawSprite(spr,ctx);
 			//back
-			spr.y=285;
+			spr.y=273;
 			Renderer.drawSprite(spr,ctx);
 			//reset
 			spr.x = 413;
@@ -1740,16 +1739,15 @@ class ui_menuCharacter{
 		}
 		for(let i=0;i<8;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_icon;
-			//front arm
+			//arm
 			spr.y=117;
 			spr.x=413+i*33;
 			if(Renderer.isMouseOver(spr)){
-				ui_menuCharacter.selectArmFront(i);
+				ui_menuCharacter.selectArm(i);
 			}
-			//back arm
 			spr.y=150;
 			if(Renderer.isMouseOver(spr)){
-				ui_menuCharacter.selectArmBack(i);
+				ui_menuCharacter.selectArm(i+8);
 			}
 			//head
 			spr.y=195;
@@ -1761,10 +1759,9 @@ class ui_menuCharacter{
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectTorso(i);
 			}
-			//back
-			spr.y=285;
+			spr.y=273;
 			if(Renderer.isMouseOver(spr)){
-				ui_menuCharacter.selectBack(i);
+				ui_menuCharacter.selectTorso(i+8);
 			}
 			//reset
 			spr.x = 413;
@@ -1913,20 +1910,24 @@ class ui_menuCharacter{
 		//TODO: if unlocked...
 		ui_menuCharacter.#selectedChIdx = ch;
 	}
-	static selectArmFront(item){
-		console.log("arm f: ",item);		
-	}
-	static selectArmBack(item){
-		console.log("arm b: ",item);
+	static selectArm(item){
+		console.log("arm f: ",item);//TODO: "if unlocked"
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		const sprList = portraits.front_arm[ch.gender];
+		ch.front_arm=item;
+		ch.back_arm=item;
 	}
 	static selectHead(item){
 		console.log("head: ",item);
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		const sprList = portraits.headgear[ch.gender];
+		ch.headgear=item;
 	}
 	static selectTorso(item){
 		console.log("torso: ",item);
-	}
-	static selectBack(item){
-		console.log("back: ",item);
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		const sprList = portraits.torso[ch.gender];
+		ch.torso=item;
 	}
 	static selectWeapon(item){
 		console.log("weapon: ",item);
@@ -1953,9 +1954,10 @@ class ui_menuCharacter{
 		
 		*/
 		
-		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
+		const drawOrder = [//'back_arm','torso','front_arm','headgear'
+		'back_hair','head','base_hair',
 					  'eyes','nose','eyebrow','mouth','ear',
-					  'front_hair','headgear','front_arm'];
+					  'front_hair'];
 		for(const draw of drawOrder){
 			const sprList = portraits[draw][ch.gender];
 			const sprIdx = Math.floor(Math.random()*sprList.length);
