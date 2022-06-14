@@ -1710,8 +1710,10 @@ class ui_menuCharacter{
 			//torso
 			spr.y=240;
 			Renderer.drawSprite(spr,ctx);
-			//back
 			spr.y=273;
+			Renderer.drawSprite(spr,ctx);
+			//accessories
+			spr.y=318;
 			Renderer.drawSprite(spr,ctx);
 			//reset
 			spr.x = 413;
@@ -1761,6 +1763,11 @@ class ui_menuCharacter{
 			spr.y=273;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectTorso(i+8);
+			}
+			//accessories
+			spr.y=318;
+			if(Renderer.isMouseOver(spr)){
+				ui_menuCharacter.selectAccessory(i);
 			}
 			//reset
 			spr.x = 413;
@@ -1953,31 +1960,45 @@ class ui_menuCharacter{
 		const sprList = portraits.torso[ch.gender];
 		ch.torso=item;
 	}
+	static selectAccessory(item){
+		console.log("accessory: ",item);
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		if(item == 0||item == 1){//wing
+			if(ch.a_wing == item){
+				ch.a_wing = -1;//clear selection
+			}else{
+				ch.a_wing = item;//set selection
+			}			
+		}
+		if(item == 2||item == 3){//necklace
+			if(ch.a_necklace == item-2){
+				ch.a_necklace = -1;//clear selection
+			}else{
+				ch.a_necklace = item-2;//set selection
+			}	
+		}
+		if(item == 4||item == 5){//cape
+			if(ch.a_cape == item-4){
+				ch.a_cape = -1;//clear selection
+			}else{
+				ch.a_cape = item-4;//set selection
+			}			
+		}
+		if(item == 6||item == 7){//face
+			if(ch.a_face == item-6){
+				ch.a_face = -1;//clear selection
+			}else{
+				ch.a_face = item-6;//set selection
+			}			
+		}
+		
+	}
 	static selectWeapon(item){
 		console.log("weapon: ",item);
 	}
 	static shuffleCharacter(){
 		console.log("shuffle");
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
-		/*front_arm:4,
-		back_arm:4,
-		torso:4,
-		back:4,
-		weapon:4,
-		headgear:4,
-		
-		base_hair:4,
-		back_hair:4,
-		front_hair:4,
-		ear:4,
-		eyebrow:4,
-		eyes:4,
-		mouth:4,
-		nose:4,
-		head:4,
-		
-		*/
-		
 		const drawOrder = [//'back_arm','torso','front_arm','headgear'
 		'back_hair','head','base_hair',
 					  'eyes','nose','eyebrow','mouth','ear',
@@ -2004,23 +2025,17 @@ class ui_menuCharacter{
 		
 		/*
 		female:
-		          
 				   <object_ref id="6" name="back_headgear_1_000" folder="22" file="21" abs_x="-461" abs_y="927" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="6"/>
-                    
                     <object_ref id="16" name="head_scar_0" folder="22" file="101" abs_x="-162" abs_y="867.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="23" key="0" z_index="16"/>
-                    
                     <object_ref id="23" name="front_arm_10x" folder="22" file="66" abs_x="-477" abs_y="669" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="23"/>
     
 		*/
 		/*
-		male:
-                    
+		male:     
                     <object_ref id="10" name="torso_2_overlay_000" folder="23" file="41" abs_x="-321" abs_y="757" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="10"/>
-                  
                     <object_ref id="13" name="head_shading_0" folder="23" file="32" abs_x="-60" abs_y="867" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="13"/>
                     <object_ref id="14" name="head_scar_0" folder="23" file="108" abs_x="-83" abs_y="857.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="24" key="0" z_index="14"/>
-                    
-					<object_ref id="24" name="front_arm_2" folder="23" file="39" abs_x="-414.9998" abs_y="637.99978" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="24"/>
+             		<object_ref id="24" name="front_arm_2" folder="23" file="39" abs_x="-414.9998" abs_y="637.99978" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="24"/>
 					<object_ref id="22" name="hair_front_0" folder="23" file="6" abs_x="-409.615716" abs_y="1063.305619" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="10" key="0" z_index="22"/>
 
 		*/                    
@@ -2171,7 +2186,7 @@ class ui_menuCharacter{
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
 			const [ix,iy] = (ch.gender=="male"?[-192,621]:[-282,615.5]);
-			const img = (ch.a_cape == 0?
+			const img = (ch.a_necklace == 0?
 				getSprData("necklace_0.png",ch.gender):
 				getSprData("necklace_1.png",ch.gender));
 			const x = ix*scale;//353,683 are dims of torso?
