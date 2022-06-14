@@ -1432,10 +1432,9 @@ const female_data={
 const portraits = {
 	torso:{
 		male:[
-		"torso_0.png",
-		"torso_1.png",
 		"torso_2.png",//TODO; 2 overlay
 		"torso_2x.png",//TODO; 2x overlay
+		"torso_1.png",
 		"torso_3.png",
 		"torso_3x.png",
 		"torso_4.png",
@@ -1449,12 +1448,12 @@ const portraits = {
 		"torso_9x.png",
 		"torso_10.png",
 		"torso_11.png",
+		"torso_0.png",
 		],
 		female:[
-		"torso_0.png",
-		"torso_1.png",
 		"torso_2.png",
 		"torso_2x.png",
+		"torso_1.png",
 		"torso_3.png",
 		"torso_4.png",
 		"torso_4x.png",
@@ -1470,6 +1469,7 @@ const portraits = {
 		"torso_11.png",
 		"torso_11x.png",
 		"torso_12.png",
+		"torso_0.png",
 		],
 	},
 	nose:{
@@ -1495,11 +1495,10 @@ const portraits = {
 	},
 	back_arm:{
 		male:[
-		"back_arm_0.png",
-		"back_arm_1.png",
-		"back_arm_1x.png",
 		"back_arm_2.png",
 		"back_arm_2x.png",
+		"back_arm_1.png",
+		"back_arm_1x.png",
 		"back_arm_3.png",
 		"back_arm_3x.png",
 		"back_arm_4.png",
@@ -1515,12 +1514,12 @@ const portraits = {
 		"back_arm_9x.png",
 		"back_arm_10.png",
 		"back_arm_11.png",
+		"back_arm_0.png",
 		],
 		female:[
-		"back_arm_0.png",
-		"back_arm_1.png",
 		"back_arm_2.png",
 		"back_arm_2x.png",
+		"back_arm_1.png",
 		"back_arm_3.png",
 		"back_arm_4.png",
 		"back_arm_4x.png",
@@ -1535,16 +1534,16 @@ const portraits = {
 		"back_arm_10x.png",
 		"back_arm_11.png",
 		"back_arm_11x.png",
-		"back_arm_12.png"
+		"back_arm_12.png",
+		"back_arm_0.png",
 		],
 	},
 	front_arm:{
 		male:[
-		"front_arm_0.png",
-		"front_arm_1.png",
-		"front_arm_1x.png",
 		"front_arm_2.png",
 		"front_arm_2x.png",
+		"front_arm_1.png",
+		"front_arm_1x.png",
 		"front_arm_3.png",
 		"front_arm_3x.png",
 		"front_arm_4.png",
@@ -1560,12 +1559,12 @@ const portraits = {
 		"front_arm_9x.png",
 		"front_arm_10.png",
 		"front_arm_11.png",
+		"front_arm_0.png",
 		],
 		female:[
-		"front_arm_0.png",
-		"front_arm_1.png",
 		"front_arm_2.png",
 		"front_arm_2x.png",
+		"front_arm_1.png",
 		"front_arm_3.png",
 		"front_arm_4.png",
 		"front_arm_4x.png",
@@ -1580,7 +1579,8 @@ const portraits = {
 		"front_arm_10x.png",//TODO: seems to have different coords?
 		"front_arm_11.png",
 		"front_arm_11x.png",
-		"front_arm_12.png"
+		"front_arm_12.png",
+		"front_arm_0.png",
 		],
 	},
 	ear:{
