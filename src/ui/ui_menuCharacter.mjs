@@ -1674,6 +1674,29 @@ const portraits = {
 		"headgear_11.png",
 		"headgear_12.png",
 		]
+	},
+	accessories:{
+		//wing,wing,necklace,necklace,cape,cape,facial hair/earring,facial hair/earring
+		male:[
+		"wing1",
+		"wing2",
+		"necklace1",
+		"necklace2",
+		"cape1",
+		"cape2",
+		"face1",
+		"face2",
+		],
+		female:[
+		"wing1",
+		"wing2",
+		"necklace1",
+		"necklace2",
+		"cape1",
+		"cape2",
+		"face1",
+		"face2"
+		]
 	}
 	
 };
@@ -1789,6 +1812,11 @@ class ui_menuCharacter{
 		mouth:0,
 		nose:0,
 		head:0,
+
+		a_wing:0,
+		a_necklace:0,
+		a_cape:0,
+		a_face:0,
 		
 	},{
 		isUnlocked:true,
@@ -1809,6 +1837,11 @@ class ui_menuCharacter{
 		mouth:1,
 		nose:1,
 		head:1,
+
+		a_wing:1,
+		a_necklace:1,
+		a_cape:1,
+		a_face:1,
 		
 	},{
 		isUnlocked:true,
@@ -1829,6 +1862,11 @@ class ui_menuCharacter{
 		mouth:2,
 		nose:2,
 		head:2,
+
+		a_wing:-1,
+		a_necklace:-1,
+		a_cape:-1,
+		a_face:-1,
 		
 	},{
 		isUnlocked:true,
@@ -1849,6 +1887,11 @@ class ui_menuCharacter{
 		mouth:3,
 		nose:3,
 		head:3,
+
+		a_wing:-1,
+		a_necklace:-1,
+		a_cape:-1,
+		a_face:-1,
 		
 	},{
 		isUnlocked:true,
@@ -1869,6 +1912,11 @@ class ui_menuCharacter{
 		mouth:4,
 		nose:4,
 		head:4,
+
+		a_wing:-1,
+		a_necklace:-1,
+		a_cape:-1,
+		a_face:-1,
 		
 	},
 		
@@ -1980,12 +2028,6 @@ class ui_menuCharacter{
 		
 		/*
 		female:
-                    <object_ref id="0" name="wing_front_0" folder="24" file="0" abs_x="-601" abs_y="943" abs_angle="0" abs_scale_x="0.9" abs_scale_y="0.9" abs_a="1" timeline="18" key="0" z_index="0"/>
-                    <object_ref id="1" name="wing_back_0" folder="24" file="1" abs_x="-84" abs_y="920" abs_angle="0" abs_scale_x="0.9" abs_scale_y="0.9" abs_a="1" timeline="19" key="0" z_index="1"/>
-                    <object_ref id="2" name="cape_back_patch" folder="22" file="79" abs_x="-343.181818" abs_y="522.727273" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="17" key="0" z_index="2"/>
-                    <object_ref id="3" name="cape_back_0" folder="22" file="76" abs_x="-463" abs_y="518" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="14" key="0" z_index="3"/>
-                    <object_ref id="5" name="cape_0_top_back" folder="22" file="77" abs_x="-477" abs_y="682" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="15" key="0" z_index="5"/>
-                   
 				   <object_ref id="6" name="back_headgear_1_000" folder="22" file="21" abs_x="-461" abs_y="927" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="6"/>
                    <object_ref id="9" name="necklace_0_000" folder="22" file="99" abs_x="-282" abs_y="615.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="9"/>
                     
@@ -1993,22 +2035,14 @@ class ui_menuCharacter{
                     
                     <object_ref id="19" name="earrings_0" folder="22" file="97" abs_x="-238" abs_y="829" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="19"/>
 
-                    <object_ref id="22" name="cape_0_top" folder="22" file="78" abs_x="-468" abs_y="679" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="16" key="0" z_index="22"/>
                     <object_ref id="23" name="front_arm_10x" folder="22" file="66" abs_x="-477" abs_y="669" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="23"/>
     
 		*/
 		/*
 		male:
-		
-                    <object_ref id="0" name="wing_back_0" folder="23" file="19" abs_x="-54" abs_y="1020" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="16" key="0" z_index="0"/>
-                    <object_ref id="1" name="wing_front_0" folder="23" file="20" abs_x="-640" abs_y="1031" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="17" key="0" z_index="1"/>
-                    <object_ref id="2" name="cape_back_patch" folder="23" file="100" abs_x="-274" abs_y="538" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="23" key="0" z_index="2"/>
-                    <object_ref id="4" name="cape_back_0" folder="23" file="13" abs_x="-401.965024" abs_y="520.732936" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="13" key="0" z_index="4"/>
-                    <object_ref id="5" name="cape_0_top_back" folder="23" file="16" abs_x="-407" abs_y="696" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="12" key="0" z_index="5"/>
                     
                     <object_ref id="9" name="NECKLACE_0" folder="23" file="18" abs_x="-192" abs_y="621" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="15" key="0" z_index="9"/>
                     <object_ref id="10" name="torso_2_overlay_000" folder="23" file="41" abs_x="-321" abs_y="757" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="10"/>
-                    <object_ref id="11" name="cape_0_top" folder="23" file="12" abs_x="-400.849312" abs_y="691.857728" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="11"/>
                   
                     <object_ref id="13" name="head_shading_0" folder="23" file="32" abs_x="-60" abs_y="867" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="13"/>
                     <object_ref id="14" name="head_scar_0" folder="23" file="108" abs_x="-83" abs_y="857.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="24" key="0" z_index="14"/>
@@ -2075,10 +2109,102 @@ class ui_menuCharacter{
 			}
 			
 		};
+		const scale = 0.35;
+		const sprY = 500;
+		const sprX = 128;
 		/*
-		back:0,//todo
-		weapon:0,//todo
+		
+		
+	accessories:{
+		//wing,wing,necklace,necklace,cape,cape,facial hair/earring,facial hair/earring
+		male:[
+		"wing1",
+		"wing2",
+		"necklace1",
+		"necklace2",
+		"cape1",
+		"cape2",
+		"face1",
+		"face2",
+		],
+		female:[
+		"wing1",
+		"wing2",
+		"necklace1",
+		"necklace2",
+		"cape1",
+		"cape2",
+		"face1",
+		"face2"
+		]
+		
+		a_wing:-1,
+		a_necklace:-1,
+		a_cape:-1,
+		a_face:-1,
+	}
 		*/
+		//special case: accessories (back)
+		if(ch.a_wing>=0){
+			const [bx,by] = (ch.gender=="male"?[-54,1020]:[-84,920]);
+			const [fx,fy] = (ch.gender=="male"?[-640,1031]:[-601,943]);
+			const wingBack = "wing_back_"+ch.a_wing+".png";
+			const wingFront = "wing_front_"+ch.a_wing+".png";
+			const imgBack = getSprData(wingBack,"male");//only M has wing sprites		
+			const imgFront = getSprData(wingFront,"male");	
+			for(const imgObj of [{i:imgBack,x:bx,y:by},{i:imgFront,x:fx,y:fy}]){
+				const img = imgObj.i;
+				const x = imgObj.x*scale;//353,683 are dims of torso?
+				const y = (-imgObj.y)*scale;
+				const sprite = Renderer.getSprite(
+					'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
+					x+sprX,y+sprY,img.width,img.height,0,0
+				);
+				Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+			}
+		}
+		if(ch.a_cape>=0){
+			const [ix,iy] = (ch.gender=="male"?[-401.965024,518]:[-463,520.732936]);
+			const img = (ch.a_cape == 0?
+				getSprData("cape_back_0.png",ch.gender):
+				getSprData("cape_back_3.png",ch.gender));
+			const x = ix*scale;//353,683 are dims of torso?
+			const y = (-iy)*scale;
+			const sprite = Renderer.getSprite(
+				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
+				x+sprX,y+sprY,img.width,img.height,0,0
+			);
+			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+			
+			const [px,py] = (ch.gender=="male"?[-274,538]:[-343.181818,522.727273]);
+			const imgPatch = (ch.a_cape == 0?
+				getSprData("cape_back_patch.png",ch.gender):
+				getSprData("cape_back_patch.png",ch.gender));
+			const xPatch = px*scale;//353,683 are dims of torso?
+			const yPatch = (-py)*scale;
+			const spritePatch = Renderer.getSprite(
+				'RPG_Heroes_Pack/RPG_pack_128/'+imgPatch.name,
+				xPatch+sprX,yPatch+sprY,imgPatch.width,imgPatch.height,0,0
+			);
+			Renderer.drawSpriteScaled(spritePatch,imgPatch.width*scale,imgPatch.height*scale,ctx);
+			
+			//f,m
+			
+			const [tx,ty] = (ch.gender=="male"?[-407,696]:[-477,682]);
+			const imgTop = (ch.a_cape == 0?
+				getSprData("cape_0_top_back.png",ch.gender):
+				getSprData("cape_3_top_back.png",ch.gender));
+			const xTop = tx*scale;//353,683 are dims of torso?
+			const yTop = (-ty)*scale;
+			const spriteTop = Renderer.getSprite(
+				'RPG_Heroes_Pack/RPG_pack_128/'+imgTop.name,
+				xTop+sprX,yTop+sprY,imgTop.width,imgTop.height,0,0
+			);
+			Renderer.drawSpriteScaled(spriteTop,imgTop.width*scale,imgTop.height*scale,ctx);
+			
+		}
+		
+		//draw portrait
 		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
 					  'eyes','nose','eyebrow','mouth','ear',
 					  'front_hair','headgear','front_arm'];
@@ -2087,8 +2213,6 @@ class ui_menuCharacter{
 			if(draw=='base_hair' && ch.gender == 'female'){
 				ch.base_hair = portraits.base_hair.female.length-1;
 			}
-			
-			
 			//TODO: female base hair=headgear?
 			const sprList = portraits[draw][ch.gender];
 			const sprIdx = ch[draw]%sprList.length;
@@ -2096,13 +2220,26 @@ class ui_menuCharacter{
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
-			const scale = 0.35;
 			const x = (offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
 			const y = (-offsets[ch.gender][draw].y)*scale;
 			
 			const sprite = Renderer.getSprite(
 				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+128,y+500,img.width,img.height,0,0
+				x+sprX,y+sprY,img.width,img.height,0,0
+			);
+			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+		}
+		//special case: accessories (front)
+		if(ch.a_cape>=0){
+			const [ix,iy] = (ch.gender=="male"?[-400.849312,691.857728]:[-468,679]);
+			const img = (ch.a_cape == 0?
+				getSprData("cape_0_top.png",ch.gender):
+				getSprData("cape_3_top.png",ch.gender));
+			const x = ix*scale;//353,683 are dims of torso?
+			const y = (-iy)*scale;
+			const sprite = Renderer.getSprite(
+				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
+				x+sprX,y+sprY,img.width,img.height,0,0
 			);
 			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
 		}
