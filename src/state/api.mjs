@@ -43,7 +43,7 @@ class Sy_api {
 		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
 											   Bit.GET_Y(Sy.cbt_isv_STATE_IDLE_xy));
 		//validate that the preferredPath last cell is movable
-		if(preferredPath){
+		if(preferredPath && preferredPath.length>0){
 			const lastCell = preferredPath[preferredPath.length-1];
 			const [lastX,lastY] = Bit.GET_XY(lastCell);
 			const pathChCell = Sy.getCharacterAtPosition(lastX,lastY);
