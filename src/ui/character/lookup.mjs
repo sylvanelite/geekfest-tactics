@@ -49,6 +49,45 @@ const getTorso = (base)=>{
 	};
 };
 const getBackArm = (base)=>{//'back' is the left arm
+	if(base == "1x"){
+		return {
+			up:{folder:'left_arms',frames:[
+				['back_arm1_0x.png'],
+				['back_arm1_1x.png'],
+				['back_arm1_2x.png'],
+			]},
+			down:{folder:'left_arms',frames:[
+				['forward_arm1_0x.png'],
+				['forward_arm1_1x.pngg'],
+				['forward_arm1_2x.png'],
+			]},
+			left:{folder:'left_arms',frames:[
+				['side_arm1_0x.png'],
+				['side_arm1_1x.png'],
+				['side_arm1_2x.pngg'],
+			]},
+		};
+	}
+	if(base == "2x"){
+		return {
+			up:{folder:'left_arms',frames:[
+				['back_arm2_0x.png'],
+				['back_arm2_1x.png'],
+				['back_arm2_2x.png'],
+			]},
+			down:{folder:'left_arms',frames:[
+				['forward_arm2_0x.png'],
+				['forward_arm2_1x.pngg'],
+				['forward_arm2_2x.png'],
+			]},
+			left:{folder:'left_arms',frames:[
+				['side_arm2_0x.png'],
+				['side_arm2_1x.png'],
+				['side_arm2_2x.pngg'],
+			]},
+		};
+	}
+	
 	return {
 		up:{folder:'left_arms',frames:[
 			['back_arm'+base+'_0.png'],
@@ -68,8 +107,45 @@ const getBackArm = (base)=>{//'back' is the left arm
 	};
 };
 const getFrontArm = (base)=>{//'front' is the right arm
+	if(base == "1x"){
+		return {
+			up:{folder:'right_arms',frames:[
+				['back_arm1_0x.png'],
+				['back_arm1_1x.png'],
+				['back_arm1_2x.png'],
+			]},
+			down:{folder:'right_arms',frames:[
+				['forward_arm1_0x.png'],
+				['forward_arm1_1x.pngg'],
+				['forward_arm1_2x.png'],
+			]},
+			left:{folder:'right_arms',frames:[
+				['side_arm1_0x.png'],
+				['side_arm1_1x.png'],
+				['side_arm1_2x.pngg'],
+			]},
+		};
+	}
+	if(base == "2x"){
+		return {
+			up:{folder:'right_arms',frames:[
+				['back_arm2_0x.png'],
+				['back_arm2_1x.png'],
+				['back_arm2_2x.png'],
+			]},
+			down:{folder:'right_arms',frames:[
+				['forward_arm2_0x.png'],
+				['forward_arm2_1x.pngg'],
+				['forward_arm2_2x.png'],
+			]},
+			left:{folder:'right_arms',frames:[
+				['side_arm2_0x.png'],
+				['side_arm2_1x.png'],
+				['side_arm2_2x.pngg'],
+			]},
+		};
+	}
 	return {
-		folder:'right_arms',
 		up:{folder:'right_arms',frames:[
 			['back_arm'+base+'_0.png'],
 			['back_arm'+base+'_1.png'],
@@ -305,7 +381,7 @@ const portraitLookup = {
 	male:{
 		//torso
 		"torso_2.png":getTorso('2'),
-		"torso_2x.png":getTorso('22'),
+		"torso_2x.png":getTorso('2x'),
 		"torso_1.png":getTorso('1'),
 		"torso_3.png":getTorso('3'),
 		"torso_3x.png":getTorso('3x'),
