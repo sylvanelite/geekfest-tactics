@@ -2347,11 +2347,15 @@ class ui_menuCharacter{
 				spritesheet.sprite.width,spritesheet.sprite.height,
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
-			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index});			
-			//TODO: if abs_scale_x==-1
+			const flipped = offsets.abs_scale_x == -1;
+			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped});
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		for(const sprite of spritesToDraw){
+			if(sprite.flipped){
+				Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
+				continue;
+			}
 			Renderer.drawSprite(sprite.sprite,ctx);
 		}
 	}

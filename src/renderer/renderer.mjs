@@ -99,6 +99,47 @@ class Renderer{
 				destH);
 		}
 	}
+	//TODO: should this be paramaterised?
+	/*
+	
+                Fes.R.varCtx.imageSmoothingEnabled = true;
+                const px = floorX- Fes.R.screenX;
+                const py = floorY- Fes.R.screenY;
+                ctx.save();
+                ctx.translate(Math.floor(px), Math.floor(py));
+                if(ecs.components.cbtState.facing[entity] == CBTStateMachine.FACING.RIGHT){
+                    ctx.scale(-1, 1);
+                }
+                ctx.drawImage(img,
+                    Math.floor(frame.x),
+                    Math.floor(frame.y),
+                    Math.floor(frame.width),
+                    Math.floor(frame.height),
+                    Math.floor(-frame.anchorX*CBTStateMachine.ANIMATION_SCALE),
+                    Math.floor(-frame.anchorY*CBTStateMachine.ANIMATION_SCALE),
+                    Math.floor(frame.width*CBTStateMachine.ANIMATION_SCALE),
+                    Math.floor(frame.height*CBTStateMachine.ANIMATION_SCALE));
+                //only render this while debugging:
+                //CBTStateMachine.drawHitboxes(ctx,frame,-frame.anchorX*CBTStateMachine.ANIMATION_SCALE,-frame.anchorY*CBTStateMachine.ANIMATION_SCALE);
+                ctx.restore();
+                Fes.R.varCtx.imageSmoothingEnabled = false;
+	*/
+	static drawSpriteFlippedH=(sprite,ctx)=>{
+		const img = Renderer.#getImageData(sprite.url);
+		if(img.loaded){
+			
+            ctx.save();
+            ctx.translate(sprite.x-sprite.width+Renderer.width, 0);//-sprite.y);
+            ctx.scale(-1, 1);
+			ctx.drawImage(img.data,
+				sprite.sx,sprite.sy,sprite.width,sprite.height,
+				-sprite.width+Renderer.width,
+				sprite.y,
+				sprite.width,
+				sprite.height);
+			ctx.restore();
+		}
+	}
 	static getSprite(
 		url,
 		x,y,width,height,
