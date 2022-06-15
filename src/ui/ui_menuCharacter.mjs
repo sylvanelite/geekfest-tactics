@@ -2329,8 +2329,9 @@ class ui_menuCharacter{
 		
 		//TODO: back_arm_, font_arm_ -> leg_,leg_back_,leg_cover_
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'left';//down, up, left
-		const spritesheets = Composer.compose(chDraw,direction,0);
+		const direction = 'up';//down, up, left
+		const spritesheets = Composer.compose(chDraw,direction,Math.floor(ff));
+		ff+=0.01;
 		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
 		for(const spritesheet of spritesheets){
@@ -2361,7 +2362,7 @@ class ui_menuCharacter{
 	}
 	
 }
-
+let ff =0;//TODO: animations!
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
 //https://draeton.github.io/stitches/
