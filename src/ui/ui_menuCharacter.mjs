@@ -1719,6 +1719,14 @@ class ui_menuCharacter{
 		}
 	}
 	static click(e){
+		//--
+		ui_menuCharacter.composeCharacterSprite(0);
+		ui_menuCharacter.composeCharacterSprite(1);
+		ui_menuCharacter.composeCharacterSprite(2);
+		ui_menuCharacter.composeCharacterSprite(3);
+		ui_menuCharacter.composeCharacterSprite(4);
+		//--
+		
 		
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_shuffle)){
 			ui_menuCharacter.shuffleCharacter();
@@ -2222,7 +2230,91 @@ class ui_menuCharacter{
 	
 	static composeCharacterSprite(chIdx){
 		const ch = ui_menuCharacter.#ch[chIdx];
-		const folder = ch.gender;
+		
+		
+		const getSprData = (name,gender)=>{
+			const source = (gender == 'male'?male_data:female_data);
+			const search = (gender == 'male'?"male_portraits":"female_portraits")+"/"+name;
+			//TODO: use map instead of linear lookup
+			for(const portrait of source.file){
+				if(portrait.name == search){
+					const width = parseInt(portrait.width,10);
+					const height = parseInt(portrait.height,10);
+					return {
+						name:portrait.name,
+						width,height
+					};
+				}
+			}
+			
+		};
+		const drawable = [];
+		
+		//special case: accessories (back)
+		if(ch.a_wing>=0){
+			const wingBack = "wing_back_"+ch.a_wing+".png";
+			const wingFront = "wing_front_"+ch.a_wing+".png";
+			const imgBack = getSprData(wingBack,"male");//only M has wing sprites		
+			const imgFront = getSprData(wingFront,"male");	
+			drawable.push(imgBack.name,imgFront.name);
+		}
+		if(ch.a_cape>=0){
+			const img = (ch.a_cape == 0?
+				getSprData("cape_back_0.png",ch.gender):
+				getSprData("cape_back_3.png",ch.gender));	
+			drawable.push(img.name);
+			const imgPatch = (ch.a_cape == 0?
+				getSprData("cape_back_patch.png",ch.gender):
+				getSprData("cape_back_patch.png",ch.gender));
+			drawable.push(imgPatch.name);
+			
+			//f,m
+			
+			const imgTop = (ch.a_cape == 0?
+				getSprData("cape_0_top_back.png",ch.gender):
+				getSprData("cape_3_top_back.png",ch.gender));
+			drawable.push(imgTop.name);
+		}
+		
+		//draw portrait
+		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
+					  'eyes','nose','eyebrow','mouth','ear',
+					  'headgear','front_arm'];
+		for(const draw of drawOrder){
+			if(draw=='base_hair' && ch.gender == 'female'){
+				ch.base_hair = portraits.base_hair.female.length-1;
+			}
+			//TODO: female base hair=headgear?
+			const sprList = portraits[draw][ch.gender];
+			const sprIdx = ch[draw]%sprList.length;
+			//if(ch[draw]>=sprList.length){console.log("out of range...");}
+			const sprName = sprList[sprIdx]
+			const img = getSprData(sprName,ch.gender);
+			drawable.push(img.name);
+		}
+		//special case: accessories (front)
+		if(ch.a_necklace>=0){
+			const img = (ch.a_necklace == 0?
+				getSprData("necklace_0.png",ch.gender):
+				getSprData("necklace_1.png",ch.gender));
+			drawable.push(img.name);
+			
+		}
+		if(ch.a_cape>=0){
+			const img = (ch.a_cape == 0?
+				getSprData("cape_0_top.png",ch.gender):
+				getSprData("cape_3_top.png",ch.gender));
+			drawable.push(img.name);
+		}
+		if(ch.a_face>=0){
+			const img = (ch.gender=="male"?
+				(ch.a_face == 0?getSprData("facial_hair_0.png",ch.gender):getSprData("facial_hair_2.png",ch.gender)):
+				(ch.a_face == 0?getSprData("earrings_0.png",ch.gender):getSprData("earrings_1.png",ch.gender)));
+			drawable.push(img.name);
+		}
+		
+		const chDraw = {gender:ch.gender,portraits:drawable};
+		Composer.compose(chDraw);
 		
 	}
 	
