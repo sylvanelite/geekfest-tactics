@@ -176,6 +176,13 @@ const getHairfront = (base)=>{
 	};
 };
 const getHeadgear = (base)=>{
+	if(base=='2'){//only M has headgear 2, sprite does not exist. return hair instead
+		return {
+			up:{folder:'hair_back',frames:[['hair_back_3a.png']]},
+			down:{folder:'hair_front',frames:[['hair_base_3.png']]},
+			left:{folder:'left_hair',frames:[['left_hair_3a.png']]},
+		};
+	}
 	return {
 		up:{folder:'head_gear',frames:[['headgear_back_'+base+'.png']]},
 		down:{folder:'head_gear',frames:[['headgear_front_'+base+'.png']]},
