@@ -43,7 +43,7 @@ import female_torso from "./data/female_torso.mjs";
 import female_wings from "./data/female_wings.mjs";
 import { portraitLookup } from "./lookup.mjs";
 
-const sprites_male = {male_cape_back,
+const sprites = {male_cape_back,
 male_cape_front,
 male_cape_side,
 male_eyebrows,
@@ -86,18 +86,43 @@ female_right_leg,
 female_torso,
 female_wings};
 
-//TODO: get sprite by name, make more efficient by doing reverse lookup
-
+//get sprite by name, TODO:make more efficient by removing linear search
+                          //can make a new const above at file-load that lookups by "name" directly
+const getSpriteByFilename = (atlas,name)=>{
+	if(name.indexOf('.')<0){return null;}
+	const nameNoExtension = name.split('.')[0];
+	const results = atlas.filter((x)=>{
+		return x.name == nameNoExtension;
+	});
+	if(results.length==0){return null;}
+	return results[0];
+};
 
 class Composer{
-	static compose(ch){
+	static compose(ch,direction='down',frame=0){//todo:direction,frame
+		const result = [];
 		for(const imageName of ch.portraits){
 			const fileNamePart=imageName.split('/');
 			if(fileNamePart.length<2){continue;}//broken ref, skip
 			const fileName = fileNamePart[1];
 			const src = portraitLookup[ch.gender];
-			console.log(src[fileName],fileName);
+			const spriteSheetIndex = src[fileName];
+			if(!spriteSheetIndex){continue;}//sprites with no lookup, e.g. nose, etc
+			const lookupData = spriteSheetIndex[direction];
+			const spritesheetFolder = lookupData.folder;
+			const spritesheetFrames = lookupData.frames;
+			if(spritesheetFrames.length==0){continue;}//no data for that image (e.g. looking away from camera)
+			const atlasFileName = ch.gender+"_"+spritesheetFolder;
+			const renderAtlas = sprites[atlasFileName];
+			frame%=spritesheetFrames.length;
+			for(const spriteName of spritesheetFrames[frame]){
+				const spr = getSpriteByFilename(renderAtlas,spriteName);
+				if(spr){
+					result.push({sprite:spr,imageName:atlasFileName+".png",folder:spritesheetFolder});//TODO: depth?
+				}
+			}			
 		}
+		return result;
 	}
 }
 

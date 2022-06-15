@@ -1428,6 +1428,7 @@ const female_data={
     ]
 };
 
+
 const portraits = {
 	torso:{
 		male:[
@@ -1676,10 +1677,80 @@ const portraits = {
 	},
 };
 
-//TODO: cape, necklace, wings
+const spriteTilePositions =  {	
+	left: {
+		cape_back: {abs_x:-5.5 ,abs_y:128 ,z_index:10},
+		cape_front: null,//none
+		cape_side: { abs_x:-64 ,abs_y:128 ,z_index:22},
+		eyebrows:  { abs_x:-26 ,abs_y:115 ,z_index:15},
+		eyes: {abs_x:-26 ,abs_y:115 ,z_index:14},
+		facial_hair: null,//TODO: from M
+		hair_back: {abs_x:-10.5 ,abs_y:129 ,z_index:11},
+		hair_front: { abs_x:-58 ,abs_y:127 ,z_index:17},
+		head: { abs_x:-26 ,abs_y:115 ,z_index:12},
+		head_gear: {abs_x:-64 ,abs_y:124.5 ,z_index:19},
+		left_arms: { abs_x:-37 ,abs_y:82 ,z_index:23},
+		left_hair: {abs_x:-62 ,abs_y:127 ,z_index:16},
+		left_leg: { abs_x:-12 ,abs_y:37.5 ,z_index:8},
+		leg_covers_back: null,//none
+		leg_covers_front: null,//none
+		leg_covers_side: {abs_x:-36 ,abs_y:41.5 ,z_index:9},
+		necklaces: {abs_x:-38.5 ,abs_y:95 ,z_index:7},
+		right_arms: {abs_x:1 ,abs_y:93.5 ,z_index:4},
+		right_leg: { abs_x:-34.5 ,abs_y:38 ,z_index:3},
+		torso: {abs_x:57 ,abs_y:117 ,z_index:21},// abs_scale_x:-1  
+	},
+	up:{
+		cape_back:{ abs_x:-64 ,abs_y:128 ,z_index:12},
+		cape_front:{ abs_x:-64 ,abs_y:128 ,z_index:13},
+		cape_side:null,//none
+		eyebrows:null,//none
+		eyes:null,//none
+		facial_hair:null,//none
+		hair_back:{ abs_x:-63 ,abs_y:125 ,z_index:17},
+		hair_front:{ abs_x:-63 ,abs_y:124 ,z_index:3},
+		head:{abs_x:-33 ,abs_y:131 ,z_index:15},
+		head_gear:{abs_x:-64 ,abs_y:124.5 ,z_index:19},
+		left_arms:{ abs_x:-47.5 ,abs_y:85.5 ,z_index:4},
+		left_hair:null,//none
+		left_leg:{abs_x:-26.5 ,abs_y:40 ,z_index:7},
+		leg_covers_back:{abs_x:-44 ,abs_y:42 ,z_index:10},
+		leg_covers_front:null,//none
+		leg_covers_side:null,//none
+		necklaces:{ abs_x:-39.5 ,abs_y:88 ,z_index:11},
+		right_arms:{abs_x:46 ,abs_y:83  ,z_index:8},// abs_scale_x:-1 
+		right_leg:{abs_x:35 ,abs_y:36.5    ,z_index:9},//abs_scale_x:-1
+		torso:{ abs_x:-18 ,abs_y:80 ,z_index:5},
+		wings:{abs_x:-62 ,abs_y:120 ,z_index:21},//and: {abs_x:62 ,abs_y:117  abs_scale_x:-1  ,z_index:22}
+	},
+	down:{
+		cape_back:{ abs_x:-64 ,abs_y:128 ,z_index:3},
+		cape_front:{abs_x:-64 ,abs_y:128 ,z_index:13},
+		cape_side:null,//
+		eyebrows:{abs_x:-34 ,abs_y:126 ,z_index:21},
+		eyes:{ abs_x:-34 ,abs_y:126 ,z_index:20},
+		facial_hair:null,//TODO:
+		hair_back:{abs_x:-64 ,abs_y:128 ,z_index:4},
+		hair_front:{abs_x:-67 ,abs_y:125 ,z_index:22},
+		head:{abs_x:-35 ,abs_y:126 ,z_index:16},
+		head_gear:{ abs_x:-64 ,abs_y:120.5 ,z_index:24},
+		left_arms:{abs_x:-47 ,abs_y:88 ,z_index:8},
+		left_hair:null,//none
+		left_leg:{ abs_x:-31 ,abs_y:40 ,z_index:7},
+		leg_covers_back:null,//none
+		leg_covers_front:{ abs_x:-33 ,abs_y:37 ,z_index:10},
+		leg_covers_side:null,//none
+		necklaces:{abs_x:-39.5 ,abs_y:98 ,z_index:12},
+		right_arms:{ abs_x:47 ,abs_y:87   ,z_index:11},//abs_scale_x:-1 
+		right_leg:{ abs_x:30 ,abs_y:40  ,z_index:9},// abs_scale_x:-1 
+		torso:{ abs_x:-26 ,abs_y:83 ,z_index:5},
+		wings:{abs_x:-62 ,abs_y:120 ,z_index:2},//and:,{abs_x:62 ,abs_y:119  abs_scale_x:-1  ,z_index:1}
+	}
+};
 	
 class ui_menuCharacter{
 	static draw(ctx){
+		
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_shuffle,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_gender,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_start,ctx);
@@ -1717,17 +1788,17 @@ class ui_menuCharacter{
 			//reset
 			spr.x = 413;
 		}
+		
+		
+		//--
+		ui_menuCharacter.composeCharacterSprite(ctx,0);
+		ui_menuCharacter.composeCharacterSprite(ctx,1);
+		ui_menuCharacter.composeCharacterSprite(ctx,2);
+		ui_menuCharacter.composeCharacterSprite(ctx,3);
+		ui_menuCharacter.composeCharacterSprite(ctx,4);
+		//--
 	}
 	static click(e){
-		//--
-		ui_menuCharacter.composeCharacterSprite(0);
-		ui_menuCharacter.composeCharacterSprite(1);
-		ui_menuCharacter.composeCharacterSprite(2);
-		ui_menuCharacter.composeCharacterSprite(3);
-		ui_menuCharacter.composeCharacterSprite(4);
-		//--
-		
-		
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_shuffle)){
 			ui_menuCharacter.shuffleCharacter();
 		}
@@ -2228,7 +2299,7 @@ class ui_menuCharacter{
 		}
 	}
 	
-	static composeCharacterSprite(chIdx){
+	static composeCharacterSprite(ctx,chIdx){
 		const ch = ui_menuCharacter.#ch[chIdx];
 		
 		
@@ -2314,62 +2385,34 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		Composer.compose(chDraw);
-		
+		const direction = 'down';//up, left
+		const spritesheets = Composer.compose(chDraw,direction,0);
+		const [destX,destY] = [300+chIdx*48,300];
+		const spritesToDraw = [];
+		for(const spritesheet of spritesheets){
+			const offsets = spriteTilePositions[direction][spritesheet.folder];
+			if(!offsets){continue;}
+			const sprite = Renderer.getSprite(
+				'character_spritesheet/'+spritesheet.imageName,
+				destX+offsets.abs_x,destY+(-offsets.abs_y),
+				spritesheet.sprite.width,spritesheet.sprite.height,
+				spritesheet.sprite.x,spritesheet.sprite.y
+			);
+			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index});
+		}
+		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
+		for(const sprite of spritesToDraw){
+			Renderer.drawSprite(sprite.sprite,ctx);
+		}
 	}
 	
 }
+
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
 //https://draeton.github.io/stitches/
 //https://amakaseev.github.io/sprite-sheet-packer/
-/*
 //48px size
 
-male_cape_back
-male_cape_front
-male_cape_side
-male_eyebrows
-male_eyes
-male_facial_hair
-male_hair_back
-male_hair_front
-male_head
-male_head_gear
-male_left_arms
-male_left_hair
-male_left_leg
-male_leg_covers_back
-male_leg_covers_front
-male_leg_covers_side
-male_necklaces
-male_right_arms
-male_right_leg
-male_torso
-male_wings
-
-female_cape_back
-female_cape_front
-female_cape_side
-female_earrings
-female_eyebrows
-female_eyes
-female_hair_back
-female_hair_front
-female_head
-female_head_gear
-female_left_arms
-female_left_hair
-female_left_leg
-female_leg_covers_back
-female_leg_covers_front
-female_leg_covers_side
-female_necklaces
-female_right_arms
-female_right_leg
-female_torso
-female_wings
-
-*/
 
 export {ui_menuCharacter};

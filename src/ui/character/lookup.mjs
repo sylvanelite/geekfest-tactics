@@ -42,7 +42,7 @@ const getTorso = (base)=>{
 			['chest_front_'+base+'.png',
 			'pelvis_front_'+base+'.png']
 		]},
-		right:{folder:'torso',frames:[
+		left:{folder:'torso',frames:[
 			['chest_side_'+base+'.png',
 			'pelvis_side_'+base+'.png']
 		]},
@@ -60,7 +60,7 @@ const getBackArm = (base)=>{//'back' is the left arm
 			['forward_arm'+base+'_1.png'],
 			['forward_arm'+base+'_2.png'],
 		]},
-		right:{folder:'left_arms',frames:[
+		left:{folder:'left_arms',frames:[
 			['side_arm'+base+'_0.png'],
 			['side_arm'+base+'_1.png'],
 			['side_arm'+base+'_2.png'],
@@ -80,7 +80,7 @@ const getFrontArm = (base)=>{//'front' is the right arm
 			['forward_arm'+base+'_1.png'],
 			['forward_arm'+base+'_2.png'],
 		]},
-		right:{folder:'right_arms',frames:[
+		left:{folder:'right_arms',frames:[
 			['side_arm'+base+'_0.png'],
 			['side_arm'+base+'_1.png'],
 			['side_arm'+base+'_2.png'],
@@ -97,7 +97,7 @@ const getEar = (base)=>{//'front' is the right arm
 			down:{folder:'head',frames:[
 				['elf_ears_front.png'],
 			]},
-			right:{folder:'head',frames:[
+			left:{folder:'head',frames:[
 				['elf_ears_side.png'],
 			]},
 		};
@@ -105,21 +105,21 @@ const getEar = (base)=>{//'front' is the right arm
 	return {
 		up:{folder:'head',frames:[]},
 		down:{folder:'head',frames:[]},
-		right:{folder:'head',frames:[]},//built in to head sprite, nothing to do
+		left:{folder:'head',frames:[]},//built in to head sprite, nothing to do
 	};
 };
 const getHead = ()=>{
 	return {
 		up:{folder:'head',frames:[['head_back.png']]},
 		down:{folder:'head',frames:[['head_front.png']]},
-		right:{folder:'head',frames:[['head_side.png']]},
+		left:{folder:'head',frames:[['head_side.png']]},
 	};
 };
 const getEyes = ()=>{
 	return {
 		up:{folder:'eyes',frames:[]},//obscured?
 		down:{folder:'eyes',frames:[['eyes_forward_0.png','eyes_down_0.png']]},
-		right:{folder:'eyes',frames:[['eyes_side_0.png']]},
+		left:{folder:'eyes',frames:[['eyes_side_0.png']]},
 	};
 };
 const getBaseHair = (base)=>{
@@ -132,7 +132,7 @@ const getBaseHair = (base)=>{
 		down:{folder:'hair_back',frames:[
 			['hair_back_'+base+'a.png'],
 		]},
-		right:{folder:'hair_back',frames:[
+		left:{folder:'hair_back',frames:[
 			['hair_back_'+base+'a.png'],
 		]},
 	};
@@ -143,7 +143,7 @@ const getBackhairF = (base)=>{
 			['hair_backhair_'+base+'.png'],
 		]},
 		down:{folder:'hair_back',frames:[]},//obscured?
-		right:{folder:'hair_back',frames:[
+		left:{folder:'hair_back',frames:[
 			['hair_backhair_'+base+'a.png'],
 		]},
 	};
@@ -158,28 +158,28 @@ const getBackhairM = (base)=>{
 	return {
 		up:{folder:'hair_back',frames:[ ]},
 		down:{folder:'hair_back',frames:[ ]},
-		right:{folder:'hair_back',frames:[ ]},
+		left:{folder:'hair_back',frames:[ ]},
 	};
 };
 const getEyebrows = ()=>{
 	return {//F: doesn't have eyebrows 1,2 so just return 0 for all
 		up:{folder:'eyebrows',frames:[ ]},
 		down:{folder:'eyebrows',frames:[['eyebrows_forward_0.png']]},
-		right:{folder:'eyebrows',frames:[['eyebrows_side_0.png']]},
+		left:{folder:'eyebrows',frames:[['eyebrows_side_0.png']]},
 	};
 };
 const getHairfront = (base)=>{
 	return {
 		up:{folder:'hair_front',frames:[['hair_front_'+base+'.png']]},
 		down:{folder:'hair_front',frames:[]},
-		right:{folder:'hair_front',frames:[['hair_front_'+base+'a.png']]},
+		left:{folder:'hair_front',frames:[['hair_front_'+base+'a.png']]},
 	};
 };
 const getHeadgear = (base)=>{
 	return {
 		up:{folder:'head_gear',frames:[['headgear_back_'+base+'.png']]},
 		down:{folder:'head_gear',frames:[['headgear_front_'+base+'.png']]},
-		right:{folder:'head_gear',frames:[['helmet_fside_'+base+'.png']]},
+		left:{folder:'head_gear',frames:[['helmet_fside_'+base+'.png']]},
 	};
 };
 const getCape = (base)=>{
@@ -196,7 +196,7 @@ const getCape = (base)=>{
 				['cape_back_'+base+"_0.png",'cape_front_'+base+"_0.png"],
 				['cape_back_'+base+"_1.png",'cape_front_'+base+"_1.png"]
 		]},
-		right:{
+		left:{
 			folder:'cape_side',
 			frames:[
 				['cape_back_'+base+"_0.png",'cape_right_'+base+"_0.png"],
@@ -208,28 +208,28 @@ const getFacehair = (base)=>{
 	return {
 		up:{folder:'facial_hair',frames:[['Facial_hair_back_'+base+'.png']]},
 		down:{folder:'facial_hair',frames:[['Facial_hair_front_'+base+'.png']]},
-		right:{folder:'facial_hair',frames:[['Facial_hair_side'+base+'.png']]},
+		left:{folder:'facial_hair',frames:[['Facial_hair_side'+base+'.png']]},
 	};
 };
 const getNecklace = (base)=>{
 	return {
 		up:{folder:'necklaces',frames:[['necklace_back_'+base+'.png']]},
 		down:{folder:'necklaces',frames:[['necklace_front_'+base+'.png']]},
-		right:{folder:'necklaces',frames:[['necklace_side_'+base+'.png']]},
+		left:{folder:'necklaces',frames:[['necklace_side_'+base+'.png']]},
 	};
 };
 const getWingBack = (base)=>{
 	return {
 		up:{folder:'wings',frames:[['wings_back_'+base+'.png']]},
 		down:{folder:'wings',frames:[['wings_front_'+base+'.png']]},
-		right:{folder:'wings',frames:[['wings_side_'+base+'.png']]},
+		left:{folder:'wings',frames:[['wings_side_'+base+'.png']]},
 	};
 };
 const getWingFront = (base)=>{//TODO: flip the wing?
 	return {
 		up:{folder:'wings',frames:[['wings_back_'+base+'.png']]},
 		down:{folder:'wings',frames:[['wings_front_'+base+'.png']]},
-		right:{folder:'wings',frames:[['wings_side_'+base+'.png']]},
+		left:{folder:'wings',frames:[['wings_side_'+base+'.png']]},
 	};
 };
 
@@ -247,7 +247,7 @@ const getBackLeg = (base)=>{//'back' is the left arm
 			['leg_front'+base+'_1.png'],
 			['leg_front'+base+'_2.png'],
 		]},
-		right:{folder:'left_leg',frames:[
+		left:{folder:'left_leg',frames:[
 			['leg_side'+base+'_0.png'],
 			['leg_side'+base+'_1.png'],
 			['leg_side'+base+'_2.png'],
@@ -266,7 +266,7 @@ const getFrontLeg = (base)=>{//'front' is the right arm
 			['leg_front'+base+'_1.png'],
 			['leg_front'+base+'_2.png'],
 		]},
-		right:{folder:'right_leg',frames:[
+		left:{folder:'right_leg',frames:[
 			['leg_side'+base+'_0.png'],
 			['leg_side'+base+'_1.png'],
 			['leg_side'+base+'_2.png'],
@@ -285,7 +285,7 @@ const getLegCover = (base)=>{
 			['leg_covers'+base+'_1.png'],
 			['leg_covers'+base+'_2.png'],
 		]},
-		right:{folder:'leg_covers_side',frames:[
+		left:{folder:'leg_covers_side',frames:[
 			['leg_covers'+base+'_0.png'],
 			['leg_covers'+base+'_1.png'],
 			['leg_covers'+base+'_2.png'],
