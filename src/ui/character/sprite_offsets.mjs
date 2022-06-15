@@ -26,8 +26,8 @@ const spriteTilePositions = {
 		},
 		left:{
 			wings :{abs_x:59 ,abs_y:117 ,abs_scale_x:-1 ,z_index:2},
-			left_leg :{abs_x:-34.5 ,abs_y:38 ,z_index:3},
-			left_arms :{abs_x:1 ,abs_y:93.5 ,z_index:4},
+			left_leg :{abs_x:-24 ,abs_y:38 ,z_index:3},//{abs_x:-34.5 ,abs_y:38 ,z_index:3},
+			left_arms :{abs_x:-37 ,abs_y:82 ,z_index:4},//{abs_x:1 ,abs_y:93.5 ,z_index:4},
 			torso :{abs_x:-18 ,abs_y:81 ,z_index:5},//chest
 			pelvis :{abs_x:-12 ,abs_y:45.5 ,z_index:6},//pelvis
 			necklaces :{abs_x:-38.5 ,abs_y:95 ,z_index:7},
@@ -97,8 +97,8 @@ const spriteTilePositions = {
 		},
 		left:{
 			wings :{abs_x:59 ,abs_y:119 ,abs_scale_x:-1 ,z_index:2},
-			left_leg :{abs_x:-34.5 ,abs_y:38 ,z_index:3},
-			left_arms :{abs_x:-1 ,abs_y:91.5 ,z_index:4},
+			left_leg :{abs_x:-24 ,abs_y:38 ,z_index:3},//{abs_x:-34.5 ,abs_y:38 ,z_index:3},
+			left_arms :{abs_x:-42 ,abs_y:80 ,z_index:4},//{abs_x:-1 ,abs_y:91.5 ,z_index:4},
 			torso :{abs_x:-21 ,abs_y:80 ,z_index:5},//chest
 			pelvis :{abs_x:-14 ,abs_y:45.5 ,z_index:6},//pelvis
 			necklaces :{abs_x:-41.5 ,abs_y:94 ,z_index:7},
