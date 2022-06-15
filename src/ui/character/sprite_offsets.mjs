@@ -7,7 +7,7 @@ const spriteTilePositions = {
 			cape_back:{abs_x:-64 ,abs_y:128 ,z_index:3},
 			//hair_back :{abs_x:-64 ,abs_y:128 ,z_index:4},
 			torso:{abs_x:-26 ,abs_y:83 ,z_index:5},//chest
-			//torso :{abs_x:-26 ,abs_y:47 ,z_index:6},//pelvis
+			pelvis :{abs_x:-26 ,abs_y:47 ,z_index:6},//pelvis
 			left_leg :{abs_x:-31 ,abs_y:40 ,z_index:7},
 			left_arms :{abs_x:-47 ,abs_y:88 ,z_index:8},
 			right_arm :{abs_x:30 ,abs_y:40 ,abs_scale_x:-1 ,z_index:9},
@@ -29,7 +29,7 @@ const spriteTilePositions = {
 			left_leg :{abs_x:-34.5 ,abs_y:38 ,z_index:3},
 			left_arms :{abs_x:1 ,abs_y:93.5 ,z_index:4},
 			torso :{abs_x:-18 ,abs_y:81 ,z_index:5},//chest
-			//torso :{abs_x:-12 ,abs_y:45.5 ,z_index:6},//pelvis
+			pelvis :{abs_x:-12 ,abs_y:45.5 ,z_index:6},//pelvis
 			necklaces :{abs_x:-38.5 ,abs_y:95 ,z_index:7},
 			right_leg :{abs_x:-12 ,abs_y:37.5 ,z_index:8},
 			leg_covers_side :{abs_x:-36 ,abs_y:41.5 ,z_index:9},
@@ -76,7 +76,7 @@ const spriteTilePositions = {
 			cape_back :{abs_x:-64 ,abs_y:128 ,z_index:3},
 			//hair_back :{abs_x:-64 ,abs_y:128 ,z_index:4},
 			torso :{abs_x:-26.407208 ,abs_y:86.33412 ,z_index:5},//chest
-			//torso :{abs_x:-26 ,abs_y:50 ,z_index:6},//pelvis
+			pelvis :{abs_x:-26 ,abs_y:50 ,z_index:6},//pelvis
 			left_leg :{abs_x:-30 ,abs_y:40 ,z_index:7},
 			left_arms :{abs_x:-47 ,abs_y:89 ,z_index:8},
 			right_leg :{abs_x:30 ,abs_y:40 ,abs_scale_x:-1 ,z_index:9},
@@ -100,7 +100,7 @@ const spriteTilePositions = {
 			left_leg :{abs_x:-34.5 ,abs_y:38 ,z_index:3},
 			left_arms :{abs_x:-1 ,abs_y:91.5 ,z_index:4},
 			torso :{abs_x:-21 ,abs_y:80 ,z_index:5},//chest
-			//torso :{abs_x:-14 ,abs_y:45.5 ,z_index:6},//pelvis
+			pelvis :{abs_x:-14 ,abs_y:45.5 ,z_index:6},//pelvis
 			necklaces :{abs_x:-41.5 ,abs_y:94 ,z_index:7},
 			right_leg :{abs_x:-13 ,abs_y:37.5 ,z_index:8},
 			leg_covers_side :{abs_x:-36 ,abs_y:41.5 ,z_index:9},
@@ -124,7 +124,7 @@ const spriteTilePositions = {
 			//hair_back :{abs_x:-64 ,abs_y:127 ,z_index:4},
 			left_arms :{abs_x:-50.5 ,abs_y:89.5 ,z_index:5},
 			torso :{abs_x:-18 ,abs_y:86 ,z_index:6},//chest
-			//torso :{abs_x:-17.5 ,abs_y:44 ,z_index:7},//pelvis
+			pelvis :{abs_x:-17.5 ,abs_y:44 ,z_index:7},//pelvis
 			left_leg :{abs_x:-26.5 ,abs_y:40 ,z_index:8},
 			right_arms :{abs_x:46 ,abs_y:87 ,abs_scale_x:-1 ,z_index:9},
 			right_leg :{abs_x:35 ,abs_y:36.5 ,abs_scale_x:-1 ,z_index:10},

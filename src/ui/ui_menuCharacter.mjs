@@ -2293,6 +2293,17 @@ class ui_menuCharacter{
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			drawable.push(img.name);
+			//special cases, since portrait doesn't have legs, add legs that are the same as the arms
+			if(draw == 'back_arm'){
+				const back_leg = img.name.replace('back_arm_','leg_back_');
+				drawable.push(back_leg);
+			}
+			if(draw == 'front_arm'){}
+				const front_leg = img.name.replace('front_arm_','leg_');
+				const leg_cover = img.name.replace('front_arm_','leg_cover_');
+				drawable.push(front_leg);
+				drawable.push(leg_cover);
+			
 		}
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
@@ -2323,7 +2334,14 @@ class ui_menuCharacter{
 		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
 		for(const spritesheet of spritesheets){
-			const offsets = spriteTilePositions[ch.gender][direction][spritesheet.folder];
+			let offsets = spriteTilePositions[ch.gender][direction][spritesheet.folder];
+			if(spritesheet.folder=='torso'){
+			//console.log(spritesheet.imageName);
+			}
+			if(spritesheet.imageName.indexOf('pelvis')>=0){
+				offsets = spriteTilePositions[ch.gender][direction].pelvis;
+				console.log(offsets);
+			}
 			if(!offsets){continue;}
 			const sprite = Renderer.getSprite(
 				'character_spritesheet/128px/'+spritesheet.imageName,
@@ -2331,7 +2349,7 @@ class ui_menuCharacter{
 				spritesheet.sprite.width,spritesheet.sprite.height,
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
-			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index});
+			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index});			
 			//TODO: if abs_scale_x==-1
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
