@@ -2315,16 +2315,18 @@ class ui_menuCharacter{
 			drawable.push(img.name);
 		}
 		
+		
+		//TODO: back_arm_, font_arm_ -> leg_,leg_back_,leg_cover_
 		const chDraw = {gender:ch.gender,portraits:drawable};
 		const direction = 'down';//up, left
 		const spritesheets = Composer.compose(chDraw,direction,0);
-		const [destX,destY] = [300+chIdx*48,300];
+		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
 		for(const spritesheet of spritesheets){
-			const offsets = spriteTilePositions[direction][spritesheet.folder];
+			const offsets = spriteTilePositions[ch.gender][direction][spritesheet.folder];
 			if(!offsets){continue;}
 			const sprite = Renderer.getSprite(
-				'character_spritesheet/'+spritesheet.imageName,
+				'character_spritesheet/128px/'+spritesheet.imageName,
 				destX+offsets.abs_x,destY+(-offsets.abs_y),
 				spritesheet.sprite.width,spritesheet.sprite.height,
 				spritesheet.sprite.x,spritesheet.sprite.y

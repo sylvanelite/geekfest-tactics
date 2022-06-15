@@ -1,1 +1,1 @@
-export default [{"name":"eyebrows_side_0","x":24,"y":0,"width":16,"height":19},{"name":"eyebrows_forward_0","x":0,"y":0,"width":23,"height":24}]
+export default [{"name":"eyebrows_side_0","x":69,"y":0,"width":48,"height":56},{"name":"eyebrows_forward_0","x":0,"y":0,"width":68,"height":72}]
