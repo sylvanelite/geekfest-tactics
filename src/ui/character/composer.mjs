@@ -42,7 +42,7 @@ import female_right_leg from "./data/female_right_leg.mjs";
 import female_torso from "./data/female_torso.mjs";
 import female_wings from "./data/female_wings.mjs";
 
-const sprites = [male_cape_back,
+const sprites_male = [male_cape_back,
 male_cape_front,
 male_cape_side,
 male_eyebrows,
@@ -62,8 +62,9 @@ male_necklaces,
 male_right_arms,
 male_right_leg,
 male_torso,
-male_wings,
-female_cape_back,
+male_wings];
+
+const sprites_female = [female_cape_back,
 female_cape_front,
 female_cape_side,
 female_earrings,
@@ -84,6 +85,13 @@ female_right_arms,
 female_right_leg,
 female_torso,
 female_wings];
+
+const spritesByName = {
+	male:{},
+	female:{}
+};
+//TODO: get sprite by name, make more efficient by doing reverse lookup
+
 
 class Composer{
 	

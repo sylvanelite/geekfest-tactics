@@ -1610,12 +1610,12 @@ const portraits = {
 		//"hair_front_0.png",//TODO: this is front, not base?
 		],
 		female:[
-		"base_hair_0.png",
+		/*"base_hair_0.png",
 		"base_hair_2.png",
 		"base_hair_3.png",
 		"base_hair_4.png",
 		"base_hair_5.png",
-		"base_hair_6.png",
+		"base_hair_6.png",*/
 		"base_hair_for_helmets.png",//TODO: helmet?
 		],
 	},
@@ -2156,9 +2156,8 @@ class ui_menuCharacter{
 		//draw portrait
 		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
 					  'eyes','nose','eyebrow','mouth','ear',
-					  'front_hair','headgear','front_arm'];
+					  'headgear','front_arm'];
 		for(const draw of drawOrder){
-			if(draw == 'front_hair' /*&& ch.gender == 'male'*/){continue;}//special case: m has no hair front.
 			if(draw=='base_hair' && ch.gender == 'female'){
 				ch.base_hair = portraits.base_hair.female.length-1;
 			}
