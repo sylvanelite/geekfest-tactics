@@ -2329,7 +2329,7 @@ class ui_menuCharacter{
 		
 		//TODO: back_arm_, font_arm_ -> leg_,leg_back_,leg_cover_
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'down';//down, up, left
+		const direction = 'left';//down, up, left
 		const spritesheets = Composer.compose(chDraw,direction,0);
 		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
