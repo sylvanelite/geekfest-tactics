@@ -179,7 +179,7 @@ const getHeadgear = (base)=>{
 	return {
 		up:{folder:'head_gear',frames:[['headgear_back_'+base+'.png']]},
 		down:{folder:'head_gear',frames:[['headgear_front_'+base+'.png']]},
-		left:{folder:'head_gear',frames:[['helmet_fside_'+base+'.png']]},
+		left:{folder:'head_gear',frames:[['helmet_side_'+base+'.png']]},
 	};
 };
 const getCape = (base)=>{

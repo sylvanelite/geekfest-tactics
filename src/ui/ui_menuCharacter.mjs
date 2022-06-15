@@ -2,6 +2,7 @@
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
+import { spriteTilePositions } from "./character/sprite_offsets.mjs";
 const male_data={
     "file": [
       {
@@ -1677,77 +1678,7 @@ const portraits = {
 	},
 };
 
-const spriteTilePositions =  {	
-	left: {
-		cape_back: {abs_x:-5.5 ,abs_y:128 ,z_index:10},
-		cape_front: null,//none
-		cape_side: { abs_x:-64 ,abs_y:128 ,z_index:22},
-		eyebrows:  { abs_x:-26 ,abs_y:115 ,z_index:15},
-		eyes: {abs_x:-26 ,abs_y:115 ,z_index:14},
-		facial_hair: null,//TODO: from M
-		hair_back: {abs_x:-10.5 ,abs_y:129 ,z_index:11},
-		hair_front: { abs_x:-58 ,abs_y:127 ,z_index:17},
-		head: { abs_x:-26 ,abs_y:115 ,z_index:12},
-		head_gear: {abs_x:-64 ,abs_y:124.5 ,z_index:19},
-		left_arms: { abs_x:-37 ,abs_y:82 ,z_index:23},
-		left_hair: {abs_x:-62 ,abs_y:127 ,z_index:16},
-		left_leg: { abs_x:-12 ,abs_y:37.5 ,z_index:8},
-		leg_covers_back: null,//none
-		leg_covers_front: null,//none
-		leg_covers_side: {abs_x:-36 ,abs_y:41.5 ,z_index:9},
-		necklaces: {abs_x:-38.5 ,abs_y:95 ,z_index:7},
-		right_arms: {abs_x:1 ,abs_y:93.5 ,z_index:4},
-		right_leg: { abs_x:-34.5 ,abs_y:38 ,z_index:3},
-		torso: {abs_x:57 ,abs_y:117 ,z_index:21},// abs_scale_x:-1  
-	},
-	up:{
-		cape_back:{ abs_x:-64 ,abs_y:128 ,z_index:12},
-		cape_front:{ abs_x:-64 ,abs_y:128 ,z_index:13},
-		cape_side:null,//none
-		eyebrows:null,//none
-		eyes:null,//none
-		facial_hair:null,//none
-		hair_back:{ abs_x:-63 ,abs_y:125 ,z_index:17},
-		hair_front:{ abs_x:-63 ,abs_y:124 ,z_index:3},
-		head:{abs_x:-33 ,abs_y:131 ,z_index:15},
-		head_gear:{abs_x:-64 ,abs_y:124.5 ,z_index:19},
-		left_arms:{ abs_x:-47.5 ,abs_y:85.5 ,z_index:4},
-		left_hair:null,//none
-		left_leg:{abs_x:-26.5 ,abs_y:40 ,z_index:7},
-		leg_covers_back:{abs_x:-44 ,abs_y:42 ,z_index:10},
-		leg_covers_front:null,//none
-		leg_covers_side:null,//none
-		necklaces:{ abs_x:-39.5 ,abs_y:88 ,z_index:11},
-		right_arms:{abs_x:46 ,abs_y:83  ,z_index:8},// abs_scale_x:-1 
-		right_leg:{abs_x:35 ,abs_y:36.5    ,z_index:9},//abs_scale_x:-1
-		torso:{ abs_x:-18 ,abs_y:80 ,z_index:5},
-		wings:{abs_x:-62 ,abs_y:120 ,z_index:21},//and: {abs_x:62 ,abs_y:117  abs_scale_x:-1  ,z_index:22}
-	},
-	down:{
-		cape_back:{ abs_x:-64 ,abs_y:128 ,z_index:3},
-		cape_front:{abs_x:-64 ,abs_y:128 ,z_index:13},
-		cape_side:null,//
-		eyebrows:{abs_x:-34 ,abs_y:126 ,z_index:21},
-		eyes:{ abs_x:-34 ,abs_y:126 ,z_index:20},
-		facial_hair:null,//TODO:
-		hair_back:{abs_x:-64 ,abs_y:128 ,z_index:4},
-		hair_front:{abs_x:-67 ,abs_y:125 ,z_index:22},
-		head:{abs_x:-35 ,abs_y:126 ,z_index:16},
-		head_gear:{ abs_x:-64 ,abs_y:120.5 ,z_index:24},
-		left_arms:{abs_x:-47 ,abs_y:88 ,z_index:8},
-		left_hair:null,//none
-		left_leg:{ abs_x:-31 ,abs_y:40 ,z_index:7},
-		leg_covers_back:null,//none
-		leg_covers_front:{ abs_x:-33 ,abs_y:37 ,z_index:10},
-		leg_covers_side:null,//none
-		necklaces:{abs_x:-39.5 ,abs_y:98 ,z_index:12},
-		right_arms:{ abs_x:47 ,abs_y:87   ,z_index:11},//abs_scale_x:-1 
-		right_leg:{ abs_x:30 ,abs_y:40  ,z_index:9},// abs_scale_x:-1 
-		torso:{ abs_x:-26 ,abs_y:83 ,z_index:5},
-		wings:{abs_x:-62 ,abs_y:120 ,z_index:2},//and:,{abs_x:62 ,abs_y:119  abs_scale_x:-1  ,z_index:1}
-	}
-};
-	
+
 class ui_menuCharacter{
 	static draw(ctx){
 		
@@ -2399,6 +2330,7 @@ class ui_menuCharacter{
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
 			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index});
+			//TODO: if abs_scale_x==-1
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		for(const sprite of spritesToDraw){
