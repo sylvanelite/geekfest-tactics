@@ -1,8 +1,7 @@
 
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
-
-
+import { Composer } from "./character/composer.mjs";
 const male_data={
     "file": [
       {
@@ -2040,10 +2039,6 @@ class ui_menuCharacter{
 
 		*/                    
 
-
-
-
-
 		//from abs_x above...
 		const offsets = {
 			female:{
@@ -2226,6 +2221,64 @@ class ui_menuCharacter{
 		}
 	}
 	
+	static composeCharacterSprite(chIdx){
+		const ch = ui_menuCharacter.#ch[chIdx];
+		const folder = ch.gender;
+		
+	}
 	
 }
+//https://www.leshylabs.com/apps/sstool/
+//https://www.codeandweb.com/free-sprite-sheet-packer
+//https://draeton.github.io/stitches/
+//https://amakaseev.github.io/sprite-sheet-packer/
+/*
+//48px size
+
+male_cape_back
+male_cape_front
+male_cape_side
+male_eyebrows
+male_eyes
+male_facial_hair
+male_hair_back
+male_hair_front
+male_head
+male_head_gear
+male_left_arms
+male_left_hair
+male_left_leg
+male_leg_covers_back
+male_leg_covers_front
+male_leg_covers_side
+male_necklaces
+male_right_arms
+male_right_leg
+male_torso
+male_wings
+
+female_cape_back
+female_cape_front
+female_cape_side
+female_earrings
+female_eyebrows
+female_eyes
+female_hair_back
+female_hair_front
+female_head
+female_head_gear
+female_left_arms
+female_left_hair
+female_left_leg
+female_leg_covers_back
+female_leg_covers_front
+female_leg_covers_side
+female_necklaces
+female_right_arms
+female_right_leg
+female_torso
+female_wings
+
+*/
+
 export {ui_menuCharacter};
