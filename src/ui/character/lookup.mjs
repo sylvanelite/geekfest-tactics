@@ -36,15 +36,15 @@ const getTorso = (base)=>{
 	return {
 		up:{folder:'torso',frames:[
 			['chest_back_'+base+'.png',
-			'pelvis_back_'+base+'.png']
+			'pelvis_back_'+base.replace('x','')+'.png']
 		]},
 		down:{folder:'torso',frames:[
 			['chest_front_'+base+'.png',
-			'pelvis_front_'+base+'.png']
+			'pelvis_front_'+base.replace('x','')+'.png']
 		]},
 		left:{folder:'torso',frames:[
 			['chest_side_'+base+'.png',
-			'pelvis_side_'+base+'.png']
+			'pelvis_side_'+base.replace('x','')+'.png']
 		]},
 	};
 };

@@ -2336,11 +2336,9 @@ class ui_menuCharacter{
 		for(const spritesheet of spritesheets){
 			let offsets = spriteTilePositions[ch.gender][direction][spritesheet.folder];
 			if(spritesheet.folder=='torso'){
-			//console.log(spritesheet.imageName);
-			}
-			if(spritesheet.imageName.indexOf('pelvis')>=0){
-				offsets = spriteTilePositions[ch.gender][direction].pelvis;
-				console.log(offsets);
+				if(spritesheet.sprite.name.indexOf('pelvis')>=0){
+					offsets = spriteTilePositions[ch.gender][direction].pelvis;
+				}
 			}
 			if(!offsets){continue;}
 			const sprite = Renderer.getSprite(
