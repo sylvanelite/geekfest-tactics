@@ -1722,6 +1722,7 @@ class ui_menuCharacter{
 		
 		
 		//--
+		ff+=0.1;
 		ui_menuCharacter.composeCharacterSprite(ctx,0);
 		ui_menuCharacter.composeCharacterSprite(ctx,1);
 		ui_menuCharacter.composeCharacterSprite(ctx,2);
@@ -2269,9 +2270,6 @@ class ui_menuCharacter{
 				getSprData("cape_back_patch.png",ch.gender):
 				getSprData("cape_back_patch.png",ch.gender));
 			drawable.push(imgPatch.name);
-			
-			//f,m
-			
 			const imgTop = (ch.a_cape == 0?
 				getSprData("cape_0_top_back.png",ch.gender):
 				getSprData("cape_3_top_back.png",ch.gender));
@@ -2298,12 +2296,12 @@ class ui_menuCharacter{
 				const back_leg = img.name.replace('back_arm_','leg_back_');
 				drawable.push(back_leg);
 			}
-			if(draw == 'front_arm'){}
+			if(draw == 'front_arm'){
 				const front_leg = img.name.replace('front_arm_','leg_');
 				const leg_cover = img.name.replace('front_arm_','leg_cover_');
 				drawable.push(front_leg);
 				drawable.push(leg_cover);
-			
+			}
 		}
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
@@ -2326,12 +2324,10 @@ class ui_menuCharacter{
 			drawable.push(img.name);
 		}
 		
-		
-		//TODO: back_arm_, font_arm_ -> leg_,leg_back_,leg_cover_
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'up';//down, up, left
+		const direction = 'down';//down, up, left
 		const spritesheets = Composer.compose(chDraw,direction,Math.floor(ff));
-		ff+=0.01;
+
 		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
 		for(const spritesheet of spritesheets){
