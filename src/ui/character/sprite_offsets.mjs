@@ -51,10 +51,10 @@ const spriteTilePositions = {
 			//hair_front :{abs_x:-63 ,abs_y:124 ,z_index:3},
 			left_arms :{abs_x:-47.5 ,abs_y:85.5 ,z_index:4},
 			torso :{abs_x:-18 ,abs_y:80 ,z_index:5},//chest
-			torso :{abs_x:-18 ,abs_y:42 ,z_index:6},//pelvis
-			right_leg :{abs_x:-26.5 ,abs_y:40 ,z_index:7},
+			pelvis :{abs_x:-18 ,abs_y:42 ,z_index:6},//pelvis
+			right_leg :{abs_x:-26.5 ,abs_y:40 ,z_index:6},
 			right_arms :{abs_x:47.5 ,abs_y:85.5 ,abs_scale_x:-1 ,z_index:8},//{abs_x:46 ,abs_y:83 ,abs_scale_x:-1 ,z_index:8},
-			left_leg :{abs_x:26.5 ,abs_y:40 ,z_index:9,abs_scale_x:-1},//{abs_x:35 ,abs_y:36.5 ,abs_scale_x:-1 ,z_index:9},
+			left_leg :{abs_x:26.5 ,abs_y:40 ,z_index:6,abs_scale_x:-1},//{abs_x:35 ,abs_y:36.5 ,abs_scale_x:-1 ,z_index:9},
 			leg_covers_back :{abs_x:-44 ,abs_y:42 ,z_index:7},
 			necklaces :{abs_x:-39.5 ,abs_y:88 ,z_index:11},
 			cape_back :{abs_x:-64 ,abs_y:128 ,z_index:12},

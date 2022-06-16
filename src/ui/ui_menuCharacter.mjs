@@ -2325,7 +2325,7 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'down';//down, up, left
+		const direction = 'up';//down, up, left
 		const spritesheets = Composer.compose(chDraw,direction,Math.floor(frameCount));
 
 		const [destX,destY] = [50+chIdx*200,300];
@@ -2393,14 +2393,24 @@ class ui_menuCharacter{
 				}
 			}
 			if(direction == 'up'){
-				if(spritesheet.folder=="left_leg"){
+				if(spritesheet.folder=="left_leg"&&ch.gender=='male'){
 					if(Math.floor(frameCount)%3==0){
 						offsets.abs_x=-34;
 					}
 				}
-				if(spritesheet.folder=="right_leg"){
+				if(spritesheet.folder=="right_leg"&&ch.gender=='male'){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=34;
+					}
+				}
+				if(spritesheet.folder=="left_leg"&&ch.gender=='female'){
 					if(Math.floor(frameCount)%3==0){
 						offsets.abs_x=34;
+					}
+				}
+				if(spritesheet.folder=="right_leg"&&ch.gender=='female'){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-34;
 					}
 				}
 			}

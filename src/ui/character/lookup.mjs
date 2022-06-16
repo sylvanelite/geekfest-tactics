@@ -346,19 +346,19 @@ const getBackLeg = (base)=>{//'back' is the left leg
 const getFrontLeg = (base)=>{//'front' is the right leg
 	return {
 		up:{folder:'right_leg',frames:[
-			['leg_back'+base+'_2.png'],
 			['leg_back'+base+'_0.png'],
 			['leg_back'+base+'_1.png'],
+			['leg_back'+base+'_2.png'],
 		]},
 		down:{folder:'right_leg',frames:[
-			['leg_front'+base+'_2.png'],
 			['leg_front'+base+'_0.png'],
 			['leg_front'+base+'_1.png'],
+			['leg_front'+base+'_2.png'],
 		]},
 		left:{folder:'right_leg',frames:[
-			['leg_side'+base+'_2.png'],
 			['leg_side'+base+'_0.png'],
 			['leg_side'+base+'_1.png'],
+			['leg_side'+base+'_2.png'],
 		]},
 	};
 };
