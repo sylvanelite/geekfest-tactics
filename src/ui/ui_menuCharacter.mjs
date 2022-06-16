@@ -2424,11 +2424,16 @@ class ui_menuCharacter{
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		for(const sprite of spritesToDraw){
+			const by = sprite.sprite.y;
+			if((Math.floor(frameCount)%3)==1){
+				sprite.sprite.y+=6;
+			}
 			if(sprite.flipped){
 				Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
 				continue;
 			}
 			Renderer.drawSprite(sprite.sprite,ctx);
+			sprite.sprite.y = by;
 		}
 	}
 	
