@@ -2325,7 +2325,7 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'up';//down, up, left
+		const direction = 'left';//down, up, left
 		const spritesheets = Composer.compose(chDraw,direction,Math.floor(frameCount));
 
 		const [destX,destY] = [50+chIdx*200,300];
@@ -2359,36 +2359,36 @@ class ui_menuCharacter{
 					}
 				}
 				if(spritesheet.folder=="right_leg"){
-					if(Math.floor(frameCount)%3==2){
+					if(Math.floor(frameCount)%3==0){
 						offsets.abs_x=-14;
 					}
 					if(Math.floor(frameCount)%3==1){
 						offsets.abs_x=-16;
 					}
-					if(Math.floor(frameCount)%3==0){
+					if(Math.floor(frameCount)%3==2){
 						offsets.abs_x=-28;
 					}
 				}
 				if(spritesheet.folder=="left_arms"){
 					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-10000;
+						offsets.abs_x=-16;
 					}
 					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-10000;
+						offsets.abs_x=-18;
 					}
 					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-10000;
+						offsets.abs_x=-32;
 					}
 				}
 				if(spritesheet.folder=="right_arms"){
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-10000;
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-16;
 					}
 					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-10000;
+						offsets.abs_x=-32;
 					}
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-10000;
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-18;
 					}
 				}
 			}
