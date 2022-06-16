@@ -2325,7 +2325,7 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'down';//down, up, left
+		const direction = 'left';//down, up, left
 		const spritesheets = Composer.compose(chDraw,direction,Math.floor(ff));
 
 		const [destX,destY] = [50+chIdx*200,300];
