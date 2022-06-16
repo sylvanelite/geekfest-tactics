@@ -47,11 +47,7 @@ class ui_menuCharacter{
 		
 		
 		//--
-		ui_menuCharacter.drawCharacterSprite(ctx,0);
-		ui_menuCharacter.drawCharacterSprite(ctx,1);
-		ui_menuCharacter.drawCharacterSprite(ctx,2);
-		ui_menuCharacter.drawCharacterSprite(ctx,3);
-		ui_menuCharacter.drawCharacterSprite(ctx,4);
+		ui_menuCharacter.drawCharacterSprites(ctx);
 		//--
 	}
 	static click(e){
@@ -566,23 +562,39 @@ class ui_menuCharacter{
 		}
 	}
 	
-	static drawCharacterSprite(ctx,chIdx){
-		const ch = ui_menuCharacter.#ch[chIdx];
-		const spritesToDraw = ch.sprites.down[2];
-		if(!spritesToDraw){return;}
-		for(const sprite of spritesToDraw){
-			const [bx,by] = [sprite.sprite.x,sprite.sprite.y];
-			sprite.sprite.x+=300+chIdx*100;
-			sprite.sprite.y+=200;
-			if(sprite.flipped){
-				Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
+	static #frameCount = 0;
+	static drawCharacterSprites(ctx,){
+		ui_menuCharacter.#frameCount +=0.1;
+		let direction = "down";
+		if(Math.floor(ui_menuCharacter.#frameCount)%30>10){
+			direction="left";
+		}
+		if(Math.floor(ui_menuCharacter.#frameCount)%30>20){
+			direction="up";
+		}
+		for(let chIdx=0;chIdx<5;chIdx+=1){
+			const ch = ui_menuCharacter.#ch[chIdx];
+			const frameLength = ch.sprites[direction].length;
+			const frameIdx = Math.floor(ui_menuCharacter.#frameCount)%frameLength;
+			const spritesToDraw = ch.sprites[direction][frameIdx];
+			if(!spritesToDraw){return;}
+			for(const sprite of spritesToDraw){
+				const [bx,by] = [sprite.sprite.x,sprite.sprite.y];
+				sprite.sprite.x+=300+chIdx*100;
+				sprite.sprite.y+=200;
+				if(Math.floor(ui_menuCharacter.#frameCount)%3==1){
+					sprite.sprite.y+=4;
+				}
+				if(sprite.flipped){
+					Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
+					sprite.sprite.x=bx;
+					sprite.sprite.y=by;
+					continue;
+				}
+				Renderer.drawSprite(sprite.sprite,ctx);
 				sprite.sprite.x=bx;
 				sprite.sprite.y=by;
-				continue;
 			}
-			Renderer.drawSprite(sprite.sprite,ctx);
-			sprite.sprite.x=bx;
-			sprite.sprite.y=by;
 		}
 	}
 	

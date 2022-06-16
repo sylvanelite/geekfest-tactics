@@ -131,7 +131,7 @@ class Composer{
 	static generateSpritesForCharacter(ch){
 		const result = {};
 		const directions = ['left','down','up'];
-		const frames = [0,1,3];
+		const frames = [0,1,2];
 		for(const direction of directions){
 			result[direction]=[];
 			for(const frame of frames){
