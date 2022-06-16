@@ -287,18 +287,21 @@ class ui_menuCharacter{
 		const sprList = portraits.front_arm[ch.gender];
 		ch.front_arm=item;
 		ch.back_arm=item;
+		ui_menuCharacter.refreshSprites();
 	}
 	static selectHead(item){
 		console.log("head: ",item);
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const sprList = portraits.headgear[ch.gender];
 		ch.headgear=item;
+		ui_menuCharacter.refreshSprites();
 	}
 	static selectTorso(item){
 		console.log("torso: ",item);
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const sprList = portraits.torso[ch.gender];
 		ch.torso=item;
+		ui_menuCharacter.refreshSprites();
 	}
 	static selectAccessory(item){
 		console.log("accessory: ",item);
@@ -331,7 +334,7 @@ class ui_menuCharacter{
 				ch.a_face = item-6;//set selection
 			}			
 		}
-		
+		ui_menuCharacter.refreshSprites();
 	}
 	static selectWeapon(item){
 		console.log("weapon: ",item);
@@ -348,6 +351,7 @@ class ui_menuCharacter{
 			const sprIdx = Math.floor(Math.random()*sprList.length);
 			ch[draw]=sprIdx;
 		}
+		ui_menuCharacter.refreshSprites();
 	}
 	static swapGender(){
 		console.log("gender");
@@ -357,6 +361,7 @@ class ui_menuCharacter{
 		}else{
 			ch.gender = 'male';
 		}
+		ui_menuCharacter.refreshSprites();
 	}
 	
 	//selectColour
@@ -589,13 +594,18 @@ class ui_menuCharacter{
 		const spritesToDraw = Composer.generateSpritesForCharacter(ch);
 		ch.sprites = spritesToDraw;
 	}
+	
+	static refreshSprites(){
+		ui_menuCharacter.composeCharacterSprite(0);
+		ui_menuCharacter.composeCharacterSprite(1);
+		ui_menuCharacter.composeCharacterSprite(2);
+		ui_menuCharacter.composeCharacterSprite(3);
+		ui_menuCharacter.composeCharacterSprite(4);
+	}
 }
+//init sprites based on portraits
+ui_menuCharacter.refreshSprites();
 
-ui_menuCharacter.composeCharacterSprite(0);
-ui_menuCharacter.composeCharacterSprite(1);
-ui_menuCharacter.composeCharacterSprite(2);
-ui_menuCharacter.composeCharacterSprite(3);
-ui_menuCharacter.composeCharacterSprite(4);
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
 //https://draeton.github.io/stitches/
