@@ -2,7 +2,6 @@
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
-import { spriteTilePositions } from "./character/sprite_offsets.mjs";
 import { male_data, female_data, portraits } from "./character/data/portraits.mjs";
 
 class ui_menuCharacter{
@@ -48,12 +47,11 @@ class ui_menuCharacter{
 		
 		
 		//--
-		frameCount+=0.1;
-		ui_menuCharacter.composeCharacterSprite(ctx,0);
-		ui_menuCharacter.composeCharacterSprite(ctx,1);
-		ui_menuCharacter.composeCharacterSprite(ctx,2);
-		ui_menuCharacter.composeCharacterSprite(ctx,3);
-		ui_menuCharacter.composeCharacterSprite(ctx,4);
+		ui_menuCharacter.drawCharacterSprite(ctx,0);
+		ui_menuCharacter.drawCharacterSprite(ctx,1);
+		ui_menuCharacter.drawCharacterSprite(ctx,2);
+		ui_menuCharacter.drawCharacterSprite(ctx,3);
+		ui_menuCharacter.drawCharacterSprite(ctx,4);
 		//--
 	}
 	static click(e){
@@ -137,6 +135,8 @@ class ui_menuCharacter{
 		a_cape:0,
 		a_face:0,
 		
+		sprites:null
+		
 	},{
 		isUnlocked:true,
 		gender:'male',
@@ -162,6 +162,7 @@ class ui_menuCharacter{
 		a_cape:1,
 		a_face:1,
 		
+		sprites:null
 	},{
 		isUnlocked:true,
 		gender:'male',
@@ -187,6 +188,7 @@ class ui_menuCharacter{
 		a_cape:-1,
 		a_face:-1,
 		
+		sprites:null
 	},{
 		isUnlocked:true,
 		gender:'male',
@@ -212,6 +214,7 @@ class ui_menuCharacter{
 		a_cape:-1,
 		a_face:-1,
 		
+		sprites:null
 	},{
 		isUnlocked:true,
 		gender:'male',
@@ -237,6 +240,7 @@ class ui_menuCharacter{
 		a_cape:-1,
 		a_face:-1,
 		
+		sprites:null
 	},
 		
 	];
@@ -557,234 +561,41 @@ class ui_menuCharacter{
 		}
 	}
 	
-	static composeCharacterSprite(ctx,chIdx){
+	static drawCharacterSprite(ctx,chIdx){
+		const ch = ui_menuCharacter.#ch[chIdx];
+		const spritesToDraw = ch.sprites.down[2];
+		if(!spritesToDraw){return;}
+		for(const sprite of spritesToDraw){
+			const [bx,by] = [sprite.sprite.x,sprite.sprite.y];
+			sprite.sprite.x+=300+chIdx*100;
+			sprite.sprite.y+=200;
+			if(sprite.flipped){
+				Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
+				sprite.sprite.x=bx;
+				sprite.sprite.y=by;
+				continue;
+			}
+			Renderer.drawSprite(sprite.sprite,ctx);
+			sprite.sprite.x=bx;
+			sprite.sprite.y=by;
+		}
+	}
+	
+	static composeCharacterSprite(chIdx){
 		//TODO: compose these sprites, and save the result against ch.
 		//      that way, ch can be a lookup
 		//      this code is not particularly fast.
 		const ch = ui_menuCharacter.#ch[chIdx];
-		
-		
-		const getSprData = (name,gender)=>{
-			const source = (gender == 'male'?male_data:female_data);
-			const search = (gender == 'male'?"male_portraits":"female_portraits")+"/"+name;
-			//TODO: use map instead of linear lookup
-			for(const portrait of source.file){
-				if(portrait.name == search){
-					const width = parseInt(portrait.width,10);
-					const height = parseInt(portrait.height,10);
-					return {
-						name:portrait.name,
-						width,height
-					};
-				}
-			}
-			
-		};
-		const drawable = [];
-		
-		//special case: accessories (back)
-		if(ch.a_wing>=0){
-			const wingBack = "wing_back_"+ch.a_wing+".png";
-			const wingFront = "wing_front_"+ch.a_wing+".png";
-			const imgBack = getSprData(wingBack,"male");//only M has wing sprites		
-			const imgFront = getSprData(wingFront,"male");	
-			drawable.push(imgBack.name,imgFront.name);
-		}
-		if(ch.a_cape>=0){
-			const img = (ch.a_cape == 0?
-				getSprData("cape_back_0.png",ch.gender):
-				getSprData("cape_back_3.png",ch.gender));	
-			drawable.push(img.name);
-			const imgPatch = (ch.a_cape == 0?
-				getSprData("cape_back_patch.png",ch.gender):
-				getSprData("cape_back_patch.png",ch.gender));
-			drawable.push(imgPatch.name);
-			const imgTop = (ch.a_cape == 0?
-				getSprData("cape_0_top_back.png",ch.gender):
-				getSprData("cape_3_top_back.png",ch.gender));
-			drawable.push(imgTop.name);
-		}
-		
-		//draw portrait
-		const drawOrder = ['back_arm','back_hair','torso','head','base_hair',
-					  'eyes','nose','eyebrow','mouth','ear',
-					  'headgear','front_arm'];
-		for(const draw of drawOrder){
-			if(draw=='base_hair' && ch.gender == 'female'){
-				ch.base_hair = portraits.base_hair.female.length-1;
-			}
-			//TODO: female base hair=headgear?
-			const sprList = portraits[draw][ch.gender];
-			const sprIdx = ch[draw]%sprList.length;
-			//if(ch[draw]>=sprList.length){console.log("out of range...");}
-			const sprName = sprList[sprIdx]
-			const img = getSprData(sprName,ch.gender);
-			drawable.push(img.name);
-			//special cases, since portrait doesn't have legs, add legs that are the same as the arms
-			if(draw == 'back_arm'){
-				const back_leg = img.name.replace('back_arm_','leg_back_');
-				drawable.push(back_leg);
-			}
-			if(draw == 'front_arm'){
-				const front_leg = img.name.replace('front_arm_','leg_');
-				const leg_cover = img.name.replace('front_arm_','leg_cover_');
-				drawable.push(front_leg);
-				drawable.push(leg_cover);
-			}
-		}
-		//special case: accessories (front)
-		if(ch.a_necklace>=0){
-			const img = (ch.a_necklace == 0?
-				getSprData("necklace_0.png",ch.gender):
-				getSprData("necklace_1.png",ch.gender));
-			drawable.push(img.name);
-			
-		}
-		if(ch.a_cape>=0){
-			const img = (ch.a_cape == 0?
-				getSprData("cape_0_top.png",ch.gender):
-				getSprData("cape_3_top.png",ch.gender));
-			drawable.push(img.name);
-		}
-		if(ch.a_face>=0){
-			const img = (ch.gender=="male"?
-				(ch.a_face == 0?getSprData("facial_hair_0.png",ch.gender):getSprData("facial_hair_2.png",ch.gender)):
-				(ch.a_face == 0?getSprData("earrings_0.png",ch.gender):getSprData("earrings_1.png",ch.gender)));
-			drawable.push(img.name);
-		}
-		
-		const chDraw = {gender:ch.gender,portraits:drawable};
-		let direction = 'down';//down, up, left
-		if(Math.floor(frameCount)%30>10){
-			direction = 'left';
-		}if(Math.floor(frameCount)%30>20){
-			direction = 'up';
-		}
-		
-		
-		const spritesheets = Composer.compose(chDraw,direction,Math.floor(frameCount));
-
-		const [destX,destY] = [50+chIdx*200,300];
-		const spritesToDraw = [];
-		for(const spritesheet of spritesheets){
-			let offsetSrc = spriteTilePositions[ch.gender][direction][spritesheet.folder];
-			if(spritesheet.folder=='torso'){
-				if(spritesheet.sprite.name.indexOf('pelvis')>=0){
-					offsetSrc = spriteTilePositions[ch.gender][direction].pelvis;
-				}
-			}
-			if(!offsetSrc){continue;}
-			let offsets = {
-				abs_x:offsetSrc.abs_x,
-				abs_y:offsetSrc.abs_y,
-				z_index:offsetSrc.z_index,
-				flipped:offsetSrc.abs_scale_x == -1
-			};
-			
-			//kludge: left frames are not equal sizes, apply offsets frame-by-frame
-			if(direction == 'left'){
-				if(spritesheet.folder=="left_leg"){
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-14;
-					}
-					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-16;
-					}
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-28;
-					}
-				}
-				if(spritesheet.folder=="right_leg"){
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-14;
-					}
-					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-16;
-					}
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-28;
-					}
-				}
-				if(spritesheet.folder=="left_arms"){
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-16;
-					}
-					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-18;
-					}
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-32;
-					}
-				}
-				if(spritesheet.folder=="right_arms"){
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-16;
-					}
-					if(Math.floor(frameCount)%3==1){
-						offsets.abs_x=-32;
-					}
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-18;
-					}
-				}
-			}
-			if(direction == 'up'){
-				if(spritesheet.folder=="left_leg"&&ch.gender=='male'){
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=-34;
-					}
-				}
-				if(spritesheet.folder=="right_leg"&&ch.gender=='male'){
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=34;
-					}
-				}
-				if(spritesheet.folder=="left_leg"&&ch.gender=='female'){
-					if(Math.floor(frameCount)%3==0){
-						offsets.abs_x=34;
-					}
-				}
-				if(spritesheet.folder=="right_leg"&&ch.gender=='female'){
-					if(Math.floor(frameCount)%3==2){
-						offsets.abs_x=-34;
-					}
-				}
-			}
-			const sprite = Renderer.getSprite(
-				'character_spritesheet/128px/'+spritesheet.imageName,
-				destX+offsets.abs_x,destY+(-offsets.abs_y),
-				spritesheet.sprite.width,spritesheet.sprite.height,
-				spritesheet.sprite.x,spritesheet.sprite.y
-			);
-			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:offsets.flipped});
-			if(direction!='left'&&spritesheet.folder=='wings'){//other wing
-				const sprite = Renderer.getSprite(
-					'character_spritesheet/128px/'+spritesheet.imageName,
-					destX-offsets.abs_x,destY+(-offsets.abs_y),
-					spritesheet.sprite.width,spritesheet.sprite.height,
-					spritesheet.sprite.x,spritesheet.sprite.y
-				);
-				spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:!offsets.flipped});
-
-			}
-		}
-		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
-		for(const sprite of spritesToDraw){
-			const by = sprite.sprite.y;
-			if((Math.floor(frameCount)%3)==1){
-				sprite.sprite.y+=6;
-			}
-			if(sprite.flipped){
-				Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
-				continue;
-			}
-			Renderer.drawSprite(sprite.sprite,ctx);
-			sprite.sprite.y = by;
-		}
+		const spritesToDraw = Composer.generateSpritesForCharacter(ch);
+		ch.sprites = spritesToDraw;
 	}
-	
 }
-let frameCount =0;//TODO: animations!
+
+ui_menuCharacter.composeCharacterSprite(0);
+ui_menuCharacter.composeCharacterSprite(1);
+ui_menuCharacter.composeCharacterSprite(2);
+ui_menuCharacter.composeCharacterSprite(3);
+ui_menuCharacter.composeCharacterSprite(4);
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
 //https://draeton.github.io/stitches/
