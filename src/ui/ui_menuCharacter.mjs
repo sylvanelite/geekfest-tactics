@@ -2325,7 +2325,14 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'left';//down, up, left
+		let direction = 'down';//down, up, left
+		if(Math.floor(frameCount)%30>10){
+			direction = 'left';
+		}if(Math.floor(frameCount)%30>20){
+			direction = 'up';
+		}
+		
+		
 		const spritesheets = Composer.compose(chDraw,direction,Math.floor(frameCount));
 
 		const [destX,destY] = [50+chIdx*200,300];
@@ -2421,6 +2428,8 @@ class ui_menuCharacter{
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
 			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:offsets.flipped});
+			if(spritesheet.folder=='wing'){
+			}
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		for(const sprite of spritesToDraw){
