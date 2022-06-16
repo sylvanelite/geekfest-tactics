@@ -2428,7 +2428,15 @@ class ui_menuCharacter{
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
 			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:offsets.flipped});
-			if(spritesheet.folder=='wing'){
+			if(direction!='left'&&spritesheet.folder=='wings'){//other wing
+				const sprite = Renderer.getSprite(
+					'character_spritesheet/128px/'+spritesheet.imageName,
+					destX-offsets.abs_x,destY+(-offsets.abs_y),
+					spritesheet.sprite.width,spritesheet.sprite.height,
+					spritesheet.sprite.x,spritesheet.sprite.y
+				);
+				spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:!offsets.flipped});
+
 			}
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
