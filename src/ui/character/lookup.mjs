@@ -324,26 +324,26 @@ const getWingFront = (base)=>{//TODO: flip the wing?
 
 //NOTE: legs are not included in the portrait.
 //      assume they will match the arms
-const getBackLeg = (base)=>{//'back' is the left arm
+const getBackLeg = (base)=>{//'back' is the left leg
 	return {
 		up:{folder:'left_leg',frames:[
-			['leg_back'+base+'_0.png'],
-			['leg_back'+base+'_1.png'],
 			['leg_back'+base+'_2.png'],
+			['leg_back'+base+'_1.png'],
+			['leg_back'+base+'_0.png'],
 		]},
 		down:{folder:'left_leg',frames:[
-			['leg_front'+base+'_0.png'],
-			['leg_front'+base+'_1.png'],
 			['leg_front'+base+'_2.png'],
+			['leg_front'+base+'_1.png'],
+			['leg_front'+base+'_0.png'],
 		]},
 		left:{folder:'left_leg',frames:[
-			['leg_side'+base+'_0.png'],
-			['leg_side'+base+'_1.png'],
 			['leg_side'+base+'_2.png'],
+			['leg_side'+base+'_1.png'],
+			['leg_side'+base+'_0.png'],
 		]},
 	};
 };
-const getFrontLeg = (base)=>{//'front' is the right arm
+const getFrontLeg = (base)=>{//'front' is the right leg
 	return {
 		up:{folder:'right_leg',frames:[
 			['leg_back'+base+'_2.png'],

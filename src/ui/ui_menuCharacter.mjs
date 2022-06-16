@@ -1722,7 +1722,7 @@ class ui_menuCharacter{
 		
 		
 		//--
-		ff+=0.1;
+		frameCount+=0.1;
 		ui_menuCharacter.composeCharacterSprite(ctx,0);
 		ui_menuCharacter.composeCharacterSprite(ctx,1);
 		ui_menuCharacter.composeCharacterSprite(ctx,2);
@@ -2325,27 +2325,92 @@ class ui_menuCharacter{
 		}
 		
 		const chDraw = {gender:ch.gender,portraits:drawable};
-		const direction = 'left';//down, up, left
-		const spritesheets = Composer.compose(chDraw,direction,Math.floor(ff));
+		const direction = 'down';//down, up, left
+		const spritesheets = Composer.compose(chDraw,direction,Math.floor(frameCount));
 
 		const [destX,destY] = [50+chIdx*200,300];
 		const spritesToDraw = [];
 		for(const spritesheet of spritesheets){
-			let offsets = spriteTilePositions[ch.gender][direction][spritesheet.folder];
+			let offsetSrc = spriteTilePositions[ch.gender][direction][spritesheet.folder];
 			if(spritesheet.folder=='torso'){
 				if(spritesheet.sprite.name.indexOf('pelvis')>=0){
-					offsets = spriteTilePositions[ch.gender][direction].pelvis;
+					offsetSrc = spriteTilePositions[ch.gender][direction].pelvis;
 				}
 			}
-			if(!offsets){continue;}
+			if(!offsetSrc){continue;}
+			let offsets = {
+				abs_x:offsetSrc.abs_x,
+				abs_y:offsetSrc.abs_y,
+				z_index:offsetSrc.z_index,
+				flipped:offsetSrc.abs_scale_x == -1
+			};
+			
+			//kludge: left frames are not equal sizes, apply offsets frame-by-frame
+			if(direction == 'left'){
+				if(spritesheet.folder=="left_leg"){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-14;
+					}
+					if(Math.floor(frameCount)%3==1){
+						offsets.abs_x=-16;
+					}
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-28;
+					}
+				}
+				if(spritesheet.folder=="right_leg"){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-14;
+					}
+					if(Math.floor(frameCount)%3==1){
+						offsets.abs_x=-16;
+					}
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-28;
+					}
+				}
+				if(spritesheet.folder=="left_arms"){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-10000;
+					}
+					if(Math.floor(frameCount)%3==1){
+						offsets.abs_x=-10000;
+					}
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-10000;
+					}
+				}
+				if(spritesheet.folder=="right_arms"){
+					if(Math.floor(frameCount)%3==2){
+						offsets.abs_x=-10000;
+					}
+					if(Math.floor(frameCount)%3==1){
+						offsets.abs_x=-10000;
+					}
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-10000;
+					}
+				}
+			}
+			if(direction == 'up'){
+				if(spritesheet.folder=="left_leg"){
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=-34;
+					}
+				}
+				if(spritesheet.folder=="right_leg"){
+					if(Math.floor(frameCount)%3==0){
+						offsets.abs_x=34;
+					}
+				}
+			}
 			const sprite = Renderer.getSprite(
 				'character_spritesheet/128px/'+spritesheet.imageName,
 				destX+offsets.abs_x,destY+(-offsets.abs_y),
 				spritesheet.sprite.width,spritesheet.sprite.height,
 				spritesheet.sprite.x,spritesheet.sprite.y
 			);
-			const flipped = offsets.abs_scale_x == -1;
-			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped});
+			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:offsets.flipped});
 		}
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		for(const sprite of spritesToDraw){
@@ -2358,7 +2423,7 @@ class ui_menuCharacter{
 	}
 	
 }
-let ff =0;//TODO: animations!
+let frameCount =0;//TODO: animations!
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
 //https://draeton.github.io/stitches/
