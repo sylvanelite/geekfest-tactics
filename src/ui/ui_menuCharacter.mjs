@@ -563,7 +563,7 @@ class ui_menuCharacter{
 	}
 	
 	static #frameCount = 0;
-	static drawCharacterSprites(ctx,){
+	static drawCharacterSprites(ctx){
 		ui_menuCharacter.#frameCount +=0.1;
 		let direction = "down";
 		if(Math.floor(ui_menuCharacter.#frameCount)%30>10){
