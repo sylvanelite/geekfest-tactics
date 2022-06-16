@@ -114,8 +114,8 @@ class Composer{
 			if(spritesheetFrames.length==0){continue;}//no data for that image (e.g. looking away from camera)
 			const atlasFileName = ch.gender+"_"+spritesheetFolder;
 			const renderAtlas = sprites[atlasFileName];
-			frame%=spritesheetFrames.length;
-			for(const spriteName of spritesheetFrames[frame]){
+			const frameMod = frame%spritesheetFrames.length;
+			for(const spriteName of spritesheetFrames[frameMod]){
 				const spr = getSpriteByFilename(renderAtlas,spriteName);
 				if(spr){
 					result.push({sprite:spr,imageName:atlasFileName+".png",folder:spritesheetFolder});//TODO: depth?

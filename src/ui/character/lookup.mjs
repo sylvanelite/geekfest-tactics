@@ -113,38 +113,38 @@ const getFrontArm = (base)=>{//'front' is the right arm
 	if(base == "1x"){
 		return {
 			up:{folder:'right_arms',frames:[
+				['back_arm1_2x.png'],
 				['back_arm1_0x.png'],
 				['back_arm1_1x.png'],
-				['back_arm1_2x.png'],
 			]},
 			down:{folder:'right_arms',frames:[
-				['forward_arm1_0x.png'],
-				['forward_arm1_1x.pngg'],
 				['forward_arm1_2x.png'],
+				['forward_arm1_0x.pngg'],
+				['forward_arm1_1x.png'],
 			]},
 			left:{folder:'right_arms',frames:[
+				['side_arm1_2x.png'],
 				['side_arm1_0x.png'],
-				['side_arm1_1x.png'],
-				['side_arm1_2x.pngg'],
+				['side_arm1_1x.pngg'],
 			]},
 		};
 	}
 	if(base == "2x"){
 		return {
 			up:{folder:'right_arms',frames:[
+				['back_arm2_2x.png'],
 				['back_arm2_0x.png'],
 				['back_arm2_1x.png'],
-				['back_arm2_2x.png'],
 			]},
 			down:{folder:'right_arms',frames:[
-				['forward_arm2_0x.png'],
-				['forward_arm2_1x.pngg'],
 				['forward_arm2_2x.png'],
+				['forward_arm2_0x.pngg'],
+				['forward_arm2_1x.png'],
 			]},
 			left:{folder:'right_arms',frames:[
+				['side_arm2_2x.png'],
 				['side_arm2_0x.png'],
-				['side_arm2_1x.png'],
-				['side_arm2_2x.pngg'],
+				['side_arm2_1x.pngg'],
 			]},
 		};
 	}
@@ -153,19 +153,19 @@ const getFrontArm = (base)=>{//'front' is the right arm
 	}
 	return {
 		up:{folder:'right_arms',frames:[
+			['back_arm'+base+'_2.png'],
 			['back_arm'+base+'_0.png'],
 			['back_arm'+base+'_1.png'],
-			['back_arm'+base+'_2.png'],
 		]},
 		down:{folder:'right_arms',frames:[
+			['forward_arm'+base+'_2.png'],
 			['forward_arm'+base+'_0.png'],
 			['forward_arm'+base+'_1.png'],
-			['forward_arm'+base+'_2.png'],
 		]},
 		left:{folder:'right_arms',frames:[
+			['side_arm'+base+'_2.png'],
 			['side_arm'+base+'_0.png'],
 			['side_arm'+base+'_1.png'],
-			['side_arm'+base+'_2.png'],
 		]},
 	};
 };
@@ -346,19 +346,19 @@ const getBackLeg = (base)=>{//'back' is the left arm
 const getFrontLeg = (base)=>{//'front' is the right arm
 	return {
 		up:{folder:'right_leg',frames:[
+			['leg_back'+base+'_2.png'],
 			['leg_back'+base+'_0.png'],
 			['leg_back'+base+'_1.png'],
-			['leg_back'+base+'_2.png'],
 		]},
 		down:{folder:'right_leg',frames:[
+			['leg_front'+base+'_2.png'],
 			['leg_front'+base+'_0.png'],
 			['leg_front'+base+'_1.png'],
-			['leg_front'+base+'_2.png'],
 		]},
 		left:{folder:'right_leg',frames:[
+			['leg_side'+base+'_2.png'],
 			['leg_side'+base+'_0.png'],
 			['leg_side'+base+'_1.png'],
-			['leg_side'+base+'_2.png'],
 		]},
 	};
 };
