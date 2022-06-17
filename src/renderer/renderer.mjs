@@ -86,7 +86,9 @@ class Renderer{
 				sprite.y,
 				sprite.width,
 				sprite.height);
+			return true;
 		}
+		return false;
 	}
 	static drawSpriteScaled=(sprite,destW,destH,ctx)=>{
 		const img = Renderer.#getImageData(sprite.url);
@@ -97,7 +99,9 @@ class Renderer{
 				sprite.y,
 				destW,
 				destH);
+			return true;
 		}
+		return false;
 	}
 	//TODO: should this be paramaterised?
 	static drawSpriteFlippedH=(sprite,rendererW,ctx)=>{
@@ -114,7 +118,9 @@ class Renderer{
 				sprite.width,
 				sprite.height);
 			ctx.restore();
+			return true;
 		}
+		return false;
 	}
 	static getSprite(
 		url,

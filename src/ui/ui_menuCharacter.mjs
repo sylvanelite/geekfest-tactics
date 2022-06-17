@@ -599,6 +599,7 @@ class ui_menuCharacter{
 		
 		const directions = ['left','down','up'];
 		const frames = [0,1,2];
+		let allLoaded = false;
 		for(const direction of directions){
 			ch.canvases[direction]=[];
 			for(const frame of frames){
@@ -611,13 +612,17 @@ class ui_menuCharacter{
 					sprite.sprite.x+=canvas.width/2;
 					sprite.sprite.y+=canvas.height;
 					if(sprite.flipped){
-						Renderer.drawSpriteFlippedH(sprite.sprite,canvas.width,context);
+						allLoaded=Renderer.drawSpriteFlippedH(sprite.sprite,canvas.width,context);
 						continue;
 					}
-					Renderer.drawSprite(sprite.sprite,context);
+					allLoaded=Renderer.drawSprite(sprite.sprite,context);
 				}
 				ch.canvases[direction].push(canvas);
 			}
+		}
+		//images not loaded, flush the cache?
+		if(!allLoaded){
+			//ch.canvases = null;
 		}
 	}
 	
@@ -630,7 +635,7 @@ class ui_menuCharacter{
 	}
 }
 //init sprites based on portraits
-ui_menuCharacter.refreshSprites();
+ui_menuCharacter.refreshSprites();//TODO: call this after images have finished loading
 
 //https://www.leshylabs.com/apps/sstool/
 //https://www.codeandweb.com/free-sprite-sheet-packer
