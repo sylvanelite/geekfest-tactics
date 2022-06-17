@@ -144,11 +144,9 @@ class Renderer{
 	}
 	
 	static drawCanvasSprite(canvas,x,y,ctx){
-		//Renderer.#paletteShiftCanvas(canvas);
 		ctx.drawImage(canvas,x,y);
 	}
 	static drawCanvasSpriteFlippedH(canvas,x,y,ctx){
-		//Renderer.#paletteShiftCanvas(canvas);
 		ctx.save();
 		ctx.translate(x, 0);
 		ctx.scale(-1, 1);
@@ -181,7 +179,6 @@ class Renderer{
 	
 	static paletteShiftCanvas(canvas){
 		const paletteName = Renderer.#renderPalette;
-		
 		
 		const paletteData = {
 			GB:[
@@ -228,8 +225,8 @@ class Renderer{
 				{r:116,g:81 ,b:142},
 				{r:29 ,g:23 ,b:60 },
 			],
-		}
-			const colourDistance = (r1,g1,b1,rgb)=>{
+		};
+		const colourDistance = (r1,g1,b1,rgb)=>{
 			const drp2 = Math.pow(r1 - rgb.r, 2);
 			const dgp2 = Math.pow(g1 - rgb.g, 2);
 			const dbp2 = Math.pow(b1 - rgb.b, 2);
@@ -249,9 +246,6 @@ class Renderer{
 			}
 			return result;
 		};
-		
-		//TODO: use automatic lookup based on colour distance, cache results
-		
 		const ctx = canvas.getContext('2d');
 		const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
 		const data = imgData.data;

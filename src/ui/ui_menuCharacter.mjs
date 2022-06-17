@@ -365,24 +365,6 @@ class ui_menuCharacter{
 	//selectColour
 	
 	static drawCharacter(chIdx,ctx){
-		
-		/*
-		female:
-				   <object_ref id="6" name="back_headgear_1_000" folder="22" file="21" abs_x="-461" abs_y="927" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="11" key="0" z_index="6"/>
-                    <object_ref id="16" name="head_scar_0" folder="22" file="101" abs_x="-162" abs_y="867.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="23" key="0" z_index="16"/>
-                    <object_ref id="23" name="front_arm_10x" folder="22" file="66" abs_x="-477" abs_y="669" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="23"/>
-    
-		*/
-		/*
-		male:     
-                    <object_ref id="10" name="torso_2_overlay_000" folder="23" file="41" abs_x="-321" abs_y="757" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="22" key="0" z_index="10"/>
-                    <object_ref id="13" name="head_shading_0" folder="23" file="32" abs_x="-60" abs_y="867" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="20" key="0" z_index="13"/>
-                    <object_ref id="14" name="head_scar_0" folder="23" file="108" abs_x="-83" abs_y="857.5" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="24" key="0" z_index="14"/>
-             		<object_ref id="24" name="front_arm_2" folder="23" file="39" abs_x="-414.9998" abs_y="637.99978" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="21" key="0" z_index="24"/>
-					<object_ref id="22" name="hair_front_0" folder="23" file="6" abs_x="-409.615716" abs_y="1063.305619" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="10" key="0" z_index="22"/>
-
-		*/                    
-
 		//from abs_x above...
 		const offsets = {
 			female:{
@@ -421,80 +403,57 @@ class ui_menuCharacter{
 		
 		const getSprData = (name,gender)=>{
 			const source = (gender == 'male'?male_data:female_data);
-			const search = (gender == 'male'?"male_portraits":"female_portraits")+"/"+name;
+			const folder = (gender == 'male'?"male_portraits":"female_portraits");
+			const search = folder+"/"+name;
 			//TODO: use map instead of linear lookup
 			for(const portrait of source.file){
 				if(portrait.name == search){
-					const width = parseInt(portrait.width,10);
-					const height = parseInt(portrait.height,10);
 					return {
-						name:portrait.name,
-						width,height
+						folder:folder,
+						name:name
 					};
 				}
 			}
 			
 		};
-		const scale = 0.35;
+		const scale = 0.33;
 		const sprY = 500;
 		const sprX = 128;
 		//special case: accessories (back)
 		if(ch.a_wing>=0){
 			const [bx,by] = (ch.gender=="male"?[-54,1020]:[-84,920]);
 			const [fx,fy] = (ch.gender=="male"?[-640,1031]:[-601,943]);
-			const wingBack = "wing_back_"+ch.a_wing+".png";
-			const wingFront = "wing_front_"+ch.a_wing+".png";
+			const wingBack = "wing_back_"+ch.a_wing;
+			const wingFront = "wing_front_"+ch.a_wing;
 			const imgBack = getSprData(wingBack,"male");//only M has wing sprites		
 			const imgFront = getSprData(wingFront,"male");	
 			for(const imgObj of [{i:imgBack,x:bx,y:by},{i:imgFront,x:fx,y:fy}]){
 				const img = imgObj.i;
-				const x = imgObj.x*scale;//353,683 are dims of torso?
-				const y = (-imgObj.y)*scale;
-				const sprite = Renderer.getSprite(
-					'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-					x+sprX,y+sprY,img.width,img.height,0,0
-				);
-				Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+				const x = sprX+imgObj.x*scale;//353,683 are dims of torso?
+				const y = sprY+(-imgObj.y)*scale;
+				const sprite = Composer.composePortrait(img,x,y,scale);
+				Renderer.drawSprite(sprite,ctx);
 			}
 		}
 		if(ch.a_cape>=0){
 			const [ix,iy] = (ch.gender=="male"?[-401.965024,518]:[-463,520.732936]);
 			const img = (ch.a_cape == 0?
-				getSprData("cape_back_0.png",ch.gender):
-				getSprData("cape_back_3.png",ch.gender));
-			const x = ix*scale;//353,683 are dims of torso?
-			const y = (-iy)*scale;
-			const sprite = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+sprX,y+sprY,img.width,img.height,0,0
-			);
-			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+				getSprData("cape_back_0",ch.gender):
+				getSprData("cape_back_3",ch.gender));
+			const x = sprX+ix*scale;//353,683 are dims of torso?
+			const y = sprY+(-iy)*scale;
+			const sprite = Composer.composePortrait(img,x,y,scale);
+			Renderer.drawSprite(sprite,ctx);
 			
 			const [px,py] = (ch.gender=="male"?[-274,538]:[-343.181818,522.727273]);
 			const imgPatch = (ch.a_cape == 0?
-				getSprData("cape_back_patch.png",ch.gender):
-				getSprData("cape_back_patch.png",ch.gender));
-			const xPatch = px*scale;//353,683 are dims of torso?
-			const yPatch = (-py)*scale;
-			const spritePatch = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+imgPatch.name,
-				xPatch+sprX,yPatch+sprY,imgPatch.width,imgPatch.height,0,0
-			);
-			Renderer.drawSpriteScaled(spritePatch,imgPatch.width*scale,imgPatch.height*scale,ctx);
+				getSprData("cape_back_patch",ch.gender):
+				getSprData("cape_back_patch",ch.gender));
+			const xPatch = sprX+px*scale;//353,683 are dims of torso?
+			const yPatch = sprY+(-py)*scale;
+			const spritePatch = Composer.composePortrait(imgPatch,xPatch,yPatch,scale);
+			Renderer.drawSprite(spritePatch,ctx);
 			
-			//f,m
-			
-			const [tx,ty] = (ch.gender=="male"?[-407,696]:[-477,682]);
-			const imgTop = (ch.a_cape == 0?
-				getSprData("cape_0_top_back.png",ch.gender):
-				getSprData("cape_3_top_back.png",ch.gender));
-			const xTop = tx*scale;//353,683 are dims of torso?
-			const yTop = (-ty)*scale;
-			const spriteTop = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+imgTop.name,
-				xTop+sprX,yTop+sprY,imgTop.width,imgTop.height,0,0
-			);
-			Renderer.drawSpriteScaled(spriteTop,imgTop.width*scale,imgTop.height*scale,ctx);
 		}
 		
 		//draw portrait
@@ -512,55 +471,43 @@ class ui_menuCharacter{
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			
-			const x = (offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
-			const y = (-offsets[ch.gender][draw].y)*scale;
+			const x = sprX+(offsets[ch.gender][draw].x)*scale;//353,683 are dims of torso?
+			const y = sprY+(-offsets[ch.gender][draw].y)*scale;
 			
-			const sprite = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+sprX,y+sprY,img.width,img.height,0,0
-			);
-			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+			const sprite = Composer.composePortrait(img,x,y,scale);
+			Renderer.drawSprite(sprite,ctx);
 		}
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
 			const [ix,iy] = (ch.gender=="male"?[-192,621]:[-282,615.5]);
 			const img = (ch.a_necklace == 0?
-				getSprData("necklace_0.png",ch.gender):
-				getSprData("necklace_1.png",ch.gender));
-			const x = ix*scale;//353,683 are dims of torso?
-			const y = (-iy)*scale;
-			const sprite = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+sprX,y+sprY,img.width,img.height,0,0
-			);
-			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+				getSprData("necklace_0",ch.gender):
+				getSprData("necklace_1",ch.gender));
+			const x = sprX+ix*scale;//353,683 are dims of torso?
+			const y = sprY+(-iy)*scale;
+			const sprite = Composer.composePortrait(img,x,y,scale);
+			Renderer.drawSprite(sprite,ctx);
 			
 		}
 		if(ch.a_cape>=0){
 			const [ix,iy] = (ch.gender=="male"?[-400.849312,691.857728]:[-468,679]);
 			const img = (ch.a_cape == 0?
-				getSprData("cape_0_top.png",ch.gender):
-				getSprData("cape_3_top.png",ch.gender));
-			const x = ix*scale;//353,683 are dims of torso?
-			const y = (-iy)*scale;
-			const sprite = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+sprX,y+sprY,img.width,img.height,0,0
-			);
-			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+				getSprData("cape_0_top",ch.gender):
+				getSprData("cape_3_top",ch.gender));
+			const x = sprX+ix*scale;//353,683 are dims of torso?
+			const y = sprY+(-iy)*scale;
+			const sprite = Composer.composePortrait(img,x,y,scale);
+			Renderer.drawSprite(sprite,ctx);
 		}
 		if(ch.a_face>=0){
 			const [ix,iy] = (ch.gender=="male"?[-126,717]:[-238,829]);
 			const img = (ch.gender=="male"?
-				(ch.a_face == 0?getSprData("facial_hair_0.png",ch.gender):getSprData("facial_hair_2.png",ch.gender)):
-				(ch.a_face == 0?getSprData("earrings_0.png",ch.gender):getSprData("earrings_1.png",ch.gender)));
-			const x = ix*scale;//353,683 are dims of torso?
-			const y = (-iy)*scale;
-			const sprite = Renderer.getSprite(
-				'RPG_Heroes_Pack/RPG_pack_128/'+img.name,
-				x+sprX,y+sprY,img.width,img.height,0,0
-			);
-			Renderer.drawSpriteScaled(sprite,img.width*scale,img.height*scale,ctx);
+				(ch.a_face == 0?getSprData("facial_hair_0",ch.gender):getSprData("facial_hair_2",ch.gender)):
+				(ch.a_face == 0?getSprData("earrings_0",ch.gender):getSprData("earrings_1",ch.gender)));
+			const x = sprX+ix*scale;//353,683 are dims of torso?
+			const y = sprY+(-iy)*scale;
+			const sprite = Composer.composePortrait(img,x,y,scale);
+			Renderer.drawSprite(sprite,ctx);
 		}
 	}
 	

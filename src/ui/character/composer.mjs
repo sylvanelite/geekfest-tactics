@@ -45,6 +45,8 @@ import { portraitLookup } from "./lookup.mjs";
 import { male_data, female_data, portraits } from "./data/portraits.mjs";
 import { spriteTilePositions } from "./sprite_offsets.mjs";
 import { Renderer } from "../../renderer/renderer.mjs";
+import female_portraits from "./data/portraits/female_portraits.mjs";
+import male_portraits from "./data/portraits/male_portraits.mjs";
 
 const sprites = {male_cape_back,
 male_cape_front,
@@ -89,13 +91,16 @@ female_right_leg,
 female_torso,
 female_wings};
 
+const portraitSprites = {
+	female_portraits,
+	male_portraits
+};
+
 //get sprite by name, TODO:make more efficient by removing linear search
                           //can make a new const above at file-load that lookups by "name" directly
 const getSpriteByFilename = (atlas,name)=>{
-	if(name.indexOf('.')<0){return null;}
-	const nameNoExtension = name.split('.')[0];
 	const results = atlas.filter((x)=>{
-		return x.name == nameNoExtension;
+		return x.name == name;
 	});
 	if(results.length==0){return null;}
 	return results[0];
@@ -121,7 +126,7 @@ class Composer{
 			for(const spriteName of spritesheetFrames[frameMod]){
 				const spr = getSpriteByFilename(renderAtlas,spriteName);
 				if(spr){
-					result.push({sprite:spr,imageName:atlasFileName+".png",folder:spritesheetFolder});//TODO: depth?
+					result.push({sprite:spr,imageName:atlasFileName,folder:spritesheetFolder});
 				}
 			}			
 		}
@@ -162,24 +167,24 @@ class Composer{
 		
 		//special case: accessories (back)
 		if(ch.a_wing>=0){
-			const wingBack = "wing_back_"+ch.a_wing+".png";
-			const wingFront = "wing_front_"+ch.a_wing+".png";
+			const wingBack = "wing_back_"+ch.a_wing;
+			const wingFront = "wing_front_"+ch.a_wing;
 			const imgBack = getSprData(wingBack,"male");//only M has wing sprites		
 			const imgFront = getSprData(wingFront,"male");	
 			drawable.push(imgBack.name,imgFront.name);
 		}
 		if(ch.a_cape>=0){
 			const img = (ch.a_cape == 0?
-				getSprData("cape_back_0.png",ch.gender):
-				getSprData("cape_back_3.png",ch.gender));	
+				getSprData("cape_back_0",ch.gender):
+				getSprData("cape_back_3",ch.gender));	
 			drawable.push(img.name);
 			const imgPatch = (ch.a_cape == 0?
-				getSprData("cape_back_patch.png",ch.gender):
-				getSprData("cape_back_patch.png",ch.gender));
+				getSprData("cape_back_patch",ch.gender):
+				getSprData("cape_back_patch",ch.gender));
 			drawable.push(imgPatch.name);
 			const imgTop = (ch.a_cape == 0?
-				getSprData("cape_0_top_back.png",ch.gender):
-				getSprData("cape_3_top_back.png",ch.gender));
+				getSprData("cape_0_top_back",ch.gender):
+				getSprData("cape_3_top_back",ch.gender));
 			drawable.push(imgTop.name);
 		}
 		
@@ -213,21 +218,21 @@ class Composer{
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
 			const img = (ch.a_necklace == 0?
-				getSprData("necklace_0.png",ch.gender):
-				getSprData("necklace_1.png",ch.gender));
+				getSprData("necklace_0",ch.gender):
+				getSprData("necklace_1",ch.gender));
 			drawable.push(img.name);
 			
 		}
 		if(ch.a_cape>=0){
 			const img = (ch.a_cape == 0?
-				getSprData("cape_0_top.png",ch.gender):
-				getSprData("cape_3_top.png",ch.gender));
+				getSprData("cape_0_top",ch.gender):
+				getSprData("cape_3_top",ch.gender));
 			drawable.push(img.name);
 		}
 		if(ch.a_face>=0){
 			const img = (ch.gender=="male"?
-				(ch.a_face == 0?getSprData("facial_hair_0.png",ch.gender):getSprData("facial_hair_2.png",ch.gender)):
-				(ch.a_face == 0?getSprData("earrings_0.png",ch.gender):getSprData("earrings_1.png",ch.gender)));
+				(ch.a_face == 0?getSprData("facial_hair_0",ch.gender):getSprData("facial_hair_2",ch.gender)):
+				(ch.a_face == 0?getSprData("earrings_0",ch.gender):getSprData("earrings_1",ch.gender)));
 			drawable.push(img.name);
 		}
 		
@@ -324,7 +329,7 @@ class Composer{
 				}
 			}
 			const sprite = Renderer.getSprite(
-				'character_spritesheet/128px/'+spritesheet.imageName,
+				'character_spritesheet/128px/'+spritesheet.imageName+".png",
 				destX+offsets.abs_x,destY+(-offsets.abs_y),
 				spritesheet.sprite.width,spritesheet.sprite.height,
 				spritesheet.sprite.x,spritesheet.sprite.y
@@ -332,7 +337,7 @@ class Composer{
 			spritesToDraw.push({sprite:sprite,z_index:offsets.z_index,flipped:offsets.flipped});
 			if(direction!='left'&&spritesheet.folder=='wings'){//other wing
 				const sprite = Renderer.getSprite(
-					'character_spritesheet/128px/'+spritesheet.imageName,
+					'character_spritesheet/128px/'+spritesheet.imageName+".png",
 					destX-offsets.abs_x,destY+(-offsets.abs_y),
 					spritesheet.sprite.width,spritesheet.sprite.height,
 					spritesheet.sprite.x,spritesheet.sprite.y
@@ -344,6 +349,20 @@ class Composer{
 		spritesToDraw.sort((a,b)=>{return a.z_index-b.z_index;});
 		return spritesToDraw;
 	}
+
+
+	static composePortrait(sprData,x,y,scale){
+		const src = portraitSprites[sprData.folder];
+		const spritesheet = getSpriteByFilename(src,sprData.name);
+		const res = Renderer.getSprite(
+				'character_spritesheet/portrait/'+sprData.folder+".png",
+				x,y,
+				spritesheet.width*scale,spritesheet.height*scale,
+				spritesheet.x*scale,spritesheet.y*scale
+			);
+		return res;
+	}
+
 }
 
 export {Composer};
