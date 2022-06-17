@@ -58,13 +58,13 @@ const getBackArm = (base)=>{//'back' is the left arm
 			]},
 			down:{folder:'left_arms',frames:[
 				['forward_arm1_0x'],
-				['forward_arm1_1xg'],
+				['forward_arm1_1x'],
 				['forward_arm1_2x'],
 			]},
 			left:{folder:'left_arms',frames:[
 				['side_arm1_0x'],
 				['side_arm1_1x'],
-				['side_arm1_2xg'],
+				['side_arm1_2x'],
 			]},
 		};
 	}
@@ -77,13 +77,13 @@ const getBackArm = (base)=>{//'back' is the left arm
 			]},
 			down:{folder:'left_arms',frames:[
 				['forward_arm2_0x'],
-				['forward_arm2_1xg'],
+				['forward_arm2_1x'],
 				['forward_arm2_2x'],
 			]},
 			left:{folder:'left_arms',frames:[
 				['side_arm2_0x'],
 				['side_arm2_1x'],
-				['side_arm2_2xg'],
+				['side_arm2_2x'],
 			]},
 		};
 	}
@@ -119,7 +119,7 @@ const getFrontArm = (base)=>{//'front' is the right arm
 			]},
 			down:{folder:'right_arms',frames:[
 				['forward_arm1_2x'],
-				['forward_arm1_0xg'],
+				['forward_arm1_0x'],
 				['forward_arm1_1x'],
 			]},
 			left:{folder:'right_arms',frames:[
@@ -138,7 +138,7 @@ const getFrontArm = (base)=>{//'front' is the right arm
 			]},
 			down:{folder:'right_arms',frames:[
 				['forward_arm2_2x'],
-				['forward_arm2_0xg'],
+				['forward_arm2_0x'],
 				['forward_arm2_1x'],
 			]},
 			left:{folder:'right_arms',frames:[
