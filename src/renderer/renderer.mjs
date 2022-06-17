@@ -100,16 +100,16 @@ class Renderer{
 		}
 	}
 	//TODO: should this be paramaterised?
-	static drawSpriteFlippedH=(sprite,ctx)=>{
+	static drawSpriteFlippedH=(sprite,rendererW,ctx)=>{
 		const img = Renderer.#getImageData(sprite.url);
 		if(img.loaded){
 			
             ctx.save();
-            ctx.translate(sprite.x-sprite.width+Renderer.width, 0);
+            ctx.translate(sprite.x-sprite.width+rendererW, 0);
             ctx.scale(-1, 1);
 			ctx.drawImage(img.data,
 				sprite.sx,sprite.sy,sprite.width,sprite.height,
-				-sprite.width+Renderer.width,
+				-sprite.width+rendererW,
 				sprite.y,
 				sprite.width,
 				sprite.height);

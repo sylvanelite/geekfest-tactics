@@ -576,25 +576,13 @@ class ui_menuCharacter{
 			const ch = ui_menuCharacter.#ch[chIdx];
 			const frameLength = ch.sprites[direction].length;
 			const frameIdx = Math.floor(ui_menuCharacter.#frameCount)%frameLength;
-			const spritesToDraw = ch.sprites[direction][frameIdx];
-			if(!spritesToDraw){return;}
-			for(const sprite of spritesToDraw){
-				const [bx,by] = [sprite.sprite.x,sprite.sprite.y];
-				sprite.sprite.x+=300+chIdx*100;
-				sprite.sprite.y+=200;
-				if(Math.floor(ui_menuCharacter.#frameCount)%3==1){
-					sprite.sprite.y+=4;
-				}
-				if(sprite.flipped){
-					Renderer.drawSpriteFlippedH(sprite.sprite,ctx);
-					sprite.sprite.x=bx;
-					sprite.sprite.y=by;
-					continue;
-				}
-				Renderer.drawSprite(sprite.sprite,ctx);
-				sprite.sprite.x=bx;
-				sprite.sprite.y=by;
+			if(!ch.canvases){
+				return;
 			}
+			const canvToDraw = ch.canvases[direction][frameIdx];
+			if(!canvToDraw){return;}
+			const ybouce = (frameIdx==1?4:0);
+			ctx.drawImage(canvToDraw,300+chIdx*100,200+ybouce);
 		}
 	}
 	
@@ -603,8 +591,34 @@ class ui_menuCharacter{
 		//      that way, ch can be a lookup
 		//      this code is not particularly fast.
 		const ch = ui_menuCharacter.#ch[chIdx];
-		const spritesToDraw = Composer.generateSpritesForCharacter(ch);
-		ch.sprites = spritesToDraw;
+		const sprites = Composer.generateSpritesForCharacter(ch);
+		ch.sprites = sprites;
+		//compose down to a canvas
+		ch.canvases = null;
+		ch.canvases = {};
+		
+		const directions = ['left','down','up'];
+		const frames = [0,1,2];
+		for(const direction of directions){
+			ch.canvases[direction]=[];
+			for(const frame of frames){
+				const canvas = document.createElement('canvas');
+				canvas.width = 128;
+				canvas.height = 128;
+				const context = canvas.getContext('2d');
+				const spritesToDraw = ch.sprites[direction][frame];
+				for(const sprite of spritesToDraw){
+					sprite.sprite.x+=canvas.width/2;
+					sprite.sprite.y+=canvas.height;
+					if(sprite.flipped){
+						Renderer.drawSpriteFlippedH(sprite.sprite,canvas.width,context);
+						continue;
+					}
+					Renderer.drawSprite(sprite.sprite,context);
+				}
+				ch.canvases[direction].push(canvas);
+			}
+		}
 	}
 	
 	static refreshSprites(){
