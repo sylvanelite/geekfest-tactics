@@ -589,14 +589,10 @@ class ui_menuCharacter{
 				const x = 300+chIdx*100;
 				const y = 200+ybouce;
 			if(direction!="right"){
-				ctx.drawImage(canvToDraw,x,y);
+				Renderer.drawCanvasSprite(canvToDraw,x,y,ctx);
 			}else{
 				//right = flipped
-				ctx.save();
-				ctx.translate(x, 0);
-				ctx.scale(-1, 1);
-				ctx.drawImage(canvToDraw,-canvToDraw.width,y);
-				ctx.restore();
+				Renderer.drawCanvasSpriteFlippedH(canvToDraw,x,y,ctx);
 			}
 		}
 	}
@@ -651,11 +647,8 @@ class ui_menuCharacter{
 //init sprites based on portraits
 ui_menuCharacter.refreshSprites();//TODO: call this after images have finished loading
 
+//sprite packer:
 //https://www.leshylabs.com/apps/sstool/
-//https://www.codeandweb.com/free-sprite-sheet-packer
-//https://draeton.github.io/stitches/
-//https://amakaseev.github.io/sprite-sheet-packer/
-//48px size
 
 
 export {ui_menuCharacter};

@@ -64,7 +64,7 @@ class Renderer{
 		return Renderer.#varImageCache[name];
 	}
 	
-	static preload=(urls,callback)=>{
+	static preload(urls,callback){
 		let doneCount = 0;
 		const allDone = urls.length;
 		for(const url of urls){
@@ -77,7 +77,7 @@ class Renderer{
 		}
 	}
 	
-	static drawSprite=(sprite,ctx)=>{
+	static drawSprite(sprite,ctx){
 		const img = Renderer.#getImageData(sprite.url);
 		if(img.loaded){
 			ctx.drawImage(img.data,
@@ -90,7 +90,7 @@ class Renderer{
 		}
 		return false;
 	}
-	static drawSpriteScaled=(sprite,destW,destH,ctx)=>{
+	static drawSpriteScaled(sprite,destW,destH,ctx){
 		const img = Renderer.#getImageData(sprite.url);
 		if(img.loaded){
 			ctx.drawImage(img.data,
@@ -104,7 +104,7 @@ class Renderer{
 		return false;
 	}
 	//TODO: should this be paramaterised?
-	static drawSpriteFlippedH=(sprite,rendererW,ctx)=>{
+	static drawSpriteFlippedH(sprite,rendererW,ctx){
 		const img = Renderer.#getImageData(sprite.url);
 		if(img.loaded){
             ctx.save();
@@ -131,6 +131,19 @@ class Renderer{
 			sx,sy
 		};
 	}
+	
+	static drawCanvasSprite(canvas,x,y,ctx){
+		ctx.drawImage(canvas,x,y);
+	}
+	static drawCanvasSpriteFlippedH(canvas,x,y,ctx){
+		ctx.save();
+		ctx.translate(x, 0);
+		ctx.scale(-1, 1);
+		ctx.drawImage(canvas,-canvas.width,y);
+		ctx.restore();
+	}
+	
+	
 }
 
 
