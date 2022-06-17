@@ -10,7 +10,7 @@ class ui_menuCharacter{
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_shuffle,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_gender,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_start,ctx);
-		ui_menuCharacter.drawCharacter(ui_menuCharacter.#selectedChIdx,ctx);//TODO: ch idx
+		ui_menuCharacter.drawCharacterPortrait(ui_menuCharacter.#selectedChIdx,ctx);//TODO: ch idx
 		
 		for(let i=0;i<5;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_character;
@@ -364,7 +364,19 @@ class ui_menuCharacter{
 	
 	//selectColour
 	
-	static drawCharacter(chIdx,ctx){
+	static drawCharacterPortrait(chIdx,ctx){
+		const character = ui_menuCharacter.#ch[chIdx];
+		if(!character.portrait){
+			return;
+		}
+		for(const sprite of character.portrait){
+			Renderer.drawSprite(sprite,ctx);
+		}
+	}
+	static composeCharacterPortrait(chIdx){
+		const ch = ui_menuCharacter.#ch[chIdx];
+		ch.portrait = [];
+		
 		//from abs_x above...
 		const offsets = {
 			female:{
@@ -399,7 +411,6 @@ class ui_menuCharacter{
 			}
 		};
 		
-		const ch = ui_menuCharacter.#ch[chIdx];
 		
 		const getSprData = (name,gender)=>{
 			const source = (gender == 'male'?male_data:female_data);
@@ -432,7 +443,7 @@ class ui_menuCharacter{
 				const x = sprX+imgObj.x*scale;//353,683 are dims of torso?
 				const y = sprY+(-imgObj.y)*scale;
 				const sprite = Composer.composePortrait(img,x,y,scale);
-				Renderer.drawSprite(sprite,ctx);
+				ch.portrait.push(sprite);
 			}
 		}
 		if(ch.a_cape>=0){
@@ -443,7 +454,7 @@ class ui_menuCharacter{
 			const x = sprX+ix*scale;//353,683 are dims of torso?
 			const y = sprY+(-iy)*scale;
 			const sprite = Composer.composePortrait(img,x,y,scale);
-			Renderer.drawSprite(sprite,ctx);
+			ch.portrait.push(sprite);
 			
 			const [px,py] = (ch.gender=="male"?[-274,538]:[-343.181818,522.727273]);
 			const imgPatch = (ch.a_cape == 0?
@@ -452,7 +463,7 @@ class ui_menuCharacter{
 			const xPatch = sprX+px*scale;//353,683 are dims of torso?
 			const yPatch = sprY+(-py)*scale;
 			const spritePatch = Composer.composePortrait(imgPatch,xPatch,yPatch,scale);
-			Renderer.drawSprite(spritePatch,ctx);
+			ch.portrait.push(sprite);
 			
 		}
 		
@@ -475,7 +486,7 @@ class ui_menuCharacter{
 			const y = sprY+(-offsets[ch.gender][draw].y)*scale;
 			
 			const sprite = Composer.composePortrait(img,x,y,scale);
-			Renderer.drawSprite(sprite,ctx);
+			ch.portrait.push(sprite);
 		}
 		//special case: accessories (front)
 		if(ch.a_necklace>=0){
@@ -486,7 +497,7 @@ class ui_menuCharacter{
 			const x = sprX+ix*scale;//353,683 are dims of torso?
 			const y = sprY+(-iy)*scale;
 			const sprite = Composer.composePortrait(img,x,y,scale);
-			Renderer.drawSprite(sprite,ctx);
+			ch.portrait.push(sprite);
 			
 		}
 		if(ch.a_cape>=0){
@@ -497,7 +508,7 @@ class ui_menuCharacter{
 			const x = sprX+ix*scale;//353,683 are dims of torso?
 			const y = sprY+(-iy)*scale;
 			const sprite = Composer.composePortrait(img,x,y,scale);
-			Renderer.drawSprite(sprite,ctx);
+			ch.portrait.push(sprite);
 		}
 		if(ch.a_face>=0){
 			const [ix,iy] = (ch.gender=="male"?[-126,717]:[-238,829]);
@@ -507,7 +518,7 @@ class ui_menuCharacter{
 			const x = sprX+ix*scale;//353,683 are dims of torso?
 			const y = sprY+(-iy)*scale;
 			const sprite = Composer.composePortrait(img,x,y,scale);
-			Renderer.drawSprite(sprite,ctx);
+			ch.portrait.push(sprite);
 		}
 	}
 	
@@ -592,6 +603,7 @@ class ui_menuCharacter{
 		ui_menuCharacter.composeCharacterSprite(2);
 		ui_menuCharacter.composeCharacterSprite(3);
 		ui_menuCharacter.composeCharacterSprite(4);
+		ui_menuCharacter.composeCharacterPortrait(ui_menuCharacter.#selectedChIdx);
 	}
 }
 //init sprites based on portraits
