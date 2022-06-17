@@ -627,6 +627,7 @@ class ui_menuCharacter{
 					}
 					allLoaded=Renderer.drawSprite(sprite.sprite,context);
 				}
+				Renderer.paletteShiftCanvas(canvas);
 				ch.canvases[direction].push(canvas);
 			}
 		}

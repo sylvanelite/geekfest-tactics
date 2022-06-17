@@ -145,192 +145,154 @@ class Renderer{
 		ctx.restore();
 	}
 	
-	static #paletteShiftCanvas(canvas){
+	static paletteShiftCanvas(canvas){
 		
-		const COLOUR = {
-			skin_dark    :'AB8163',
-			skin_mid     :'ECB486',
-			skin_light   :'FCDC9A',
-			yellow_dark  :'837B3D',
-			yellow_mid   :'ABA039',
-			yellow_light :'FFE546',
-			pink_dark    :'542C3F',
-			pink_mid     :'804361',
-			pink_midlght :'B35D88',
-			pink_light   :'F781BC',
-			blue_dark    :'394080',
-			blue_mid     :'4F59B0',
-			blue_light   :'9EABFF',
-			brown_vdark  :'171107',
-			brown_dark   :'453A17',
-			brown_mid    :'7A5D33',
-			brown_light  :'B27C54',
-			black        :'000100',
-			metal_vdark  :'5B5A5E',
-			metal_dark   :'7C796B',
-			metal_mid    :'A89A85',
-			metal_light  :'FFDDDA',
-
-			hair_vlight :'AB836C',
-			hair_light  :'8F6C65',
-			hair_mid    :'705550',
-			hair_dark   :'47342C',
-			hair_vdark  :'211815',
-
-			green_vlight :'A3BF00',
-			green_light  :'689A00',
-			green_mid    :'007A00',
-			green_dark   :'004A00',
-
-			dgreen_mid   :'002528',
-			dgreen_light :'00413A',
-
-			white        :'F3F0F2',
-			gray         :'949494',
-			blue_light   :'3CBCF2',
-			blue_mid     :'009EF2',
-			blue_dark    :'007CC9',
+		//ok
+		const PALETTE_GB = [
+			{r:0  ,g:0  ,b:0  },
+			{r:56 ,g:40 ,b:67 },
+			{r:124,g:109,b:128},
+			{r:199,g:198,b:198},
+		];
+		//ok
+		const PALETTE_MANGA = [
+			{r:41 ,g:36 ,b:24 },
+			{r:82 ,g:72 ,b:57 },
+			{r:115,g:101,b:74 },
+			{r:139,g:125,b:98 },
+			{r:164,g:141,b:106},
+			{r:189,g:165,b:131},
+			{r:205,g:186,b:148},
+			{r:230,g:206,b:172},
+		];
+		
+		/*
+		//no
+		const PALETTE_MANGA_2 = [
+			{r:34 ,g:35 ,b:35 },
+			{r:240,g:246,b:240},
+		];
+		//no
+		const PALETTE_COMIC_3 = [
+			{r:251,g:248,b:253},
+			{r:161,g:169,b:209},
+			{r:0  ,g:127,b:255},
+			{r:36 ,g:37 ,b:111},
+			{r:20 ,g:18 ,b:24 },
+			{r:95 ,g:14 ,b:82 },
+			{r:253,g:26 ,b:67 },
+			{r:255,g:177,b:108},
+		];
+		//very red
+		const PALETTE_COMIC_2 = [
+			{r:43 ,g:18 ,b:13 },
+			{r:159,g:18 ,b:17 },
+			{r:252,g:20 ,b:0  },
+			{r:252,g:106,b:0  },
+			{r:252,g:252,b:0  },
+			{r:0  ,g:0  ,b:0  },
+			{r:51 ,g:4  ,b:69 },
+			{r:156,g:12 ,b:156},
+			{r:255,g:9  ,b:157},
+			{r:0  ,g:7  ,b:44 },
+			{r:4  ,g:0  ,b:133},
+			{r:0  ,g:0  ,b:255},
+			{r:0  ,g:102,b:255},
+			{r:103,g:205,b:252},
+			{r:0  ,g:72 ,b:73 },
+			{r:6  ,g:120,b:38 },
+			{r:0  ,g:201,b:8  },
+			{r:82 ,g:255,b:0  },
+			{r:198,g:240,b:34 },
+			{r:53 ,g:44 ,b:46 },
+			{r:117,g:73 ,b:68 },
+			{r:246,g:117,b:122},
+			{r:250,g:197,b:155},
+			{r:105,g:54 ,b:35 },
+			{r:176,g:87 ,b:43 },
+			{r:233,g:142,b:66 },
+			{r:252,g:180,b:72 },
+			{r:255,g:252,b:255},
+			{r:102,g:102,b:136},
+			{r:152,g:146,b:173},
+			{r:184,g:184,b:209},
+			{r:221,g:217,b:230},
+			{r:252,g:252,b:252},
+		];
+		//harsh...
+		const PALETTE_COMIC_4 = [
+			{r:9  ,g:9  ,b:10 },
+			{r:92 ,g:33 ,b:45 },
+			{r:194,g:56 ,b:47 },
+			{r:224,g:145,b:54 },
+			{r:235,g:223,b:66 },
+			{r:135,g:204,b:57 },
+			{r:37 ,g:102,b:45 },
+			{r:55 ,g:153,b:107},
+			{r:99 ,g:199,b:224},
+			{r:77 ,g:86 ,b:214},
+			{r:60 ,g:40 ,b:112},
+			{r:112,g:51 ,b:143},
+			{r:224,g:117,b:188},
+			{r:253,g:255,b:245},
+			{r:112,g:107,b:138},
+			{r:112,g:51 ,b:143},
+		];
+		*/
+		//ok
+		const PALETTE_COMIC = [
+			{r:31 ,g:36 ,b:75 },
+			{r:101,g:64 ,b:83 },
+			{r:168,g:96 ,b:93 },
+			{r:209,g:166,b:126},
+			{r:246,g:231,b:156},
+			{r:182,g:207,b:142},
+			{r:96 ,g:174,b:123},
+			{r:60 ,g:107,b:100},
+		];
+		//ok
+		const PALETTE_ANIME = [
+			{r:101,g:71 ,b:30 },
+			{r:181,g:112,b:117},
+			{r:220,g:171,b:128},
+			{r:248,g:216,b:171},
+			{r:184,g:170,b:170},
+			{r:255,g:245,b:245},
+			{r:252,g:165,b:194},
+			{r:236,g:70 ,b:70 },
+			{r:255,g:163,b:34},
+			{r:249,g:250,b:147},
+			{r:123,g:193,b:136},
+			{r:142,g:211,b:248},
+			{r:89 ,g:137,b:163},
+			{r:215,g:147,b:250},
+			{r:116,g:81 ,b:142},
+			{r:29 ,g:23 ,b:60 },
+		];
+		
+		const colourDistance = (r1,g1,b1,rgb)=>{
+			const drp2 = Math.pow(r1 - rgb.r, 2);
+			const dgp2 = Math.pow(g1 - rgb.g, 2);
+			const dbp2 = Math.pow(b1 - rgb.b, 2);
+			const t = (r1 + rgb.r) / 2;
+			return Math.sqrt(2 * drp2 + 4 * dgp2 + 3 * dbp2 + t * (drp2 - dbp2) / 256);
 		};
 		
-		
-		const getR = (hexStr)=>{
-			switch(hexStr){
-				case COLOUR.skin_dark     :return 56;
-				case COLOUR.skin_mid      :return 124;
-				case COLOUR.skin_light    :return 199;
-				case COLOUR.yellow_dark   :return 56;
-				case COLOUR.yellow_mid    :return 124;
-				case COLOUR.yellow_light  :return 199;
-				case COLOUR.pink_dark     :return 56;
-				case COLOUR.pink_mid      :return 124;
-				case COLOUR.pink_midlght  :return 199;
-				case COLOUR.pink_light    :return 199;
-				case COLOUR.blue_dark     :return 56;
-				case COLOUR.blue_mid      :return 124;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.brown_vdark   :return 0;
-				case COLOUR.brown_dark    :return 56;
-				case COLOUR.brown_mid     :return 124;
-				case COLOUR.brown_light   :return 199;
-				case COLOUR.black         :return 0;
-				case COLOUR.metal_vdark   :return 0;
-				case COLOUR.metal_dark    :return 56;
-				case COLOUR.metal_mid     :return 124;
-				case COLOUR.metal_light   :return 199;
-				case COLOUR.hair_vlight   :return 199;
-				case COLOUR.hair_light    :return 199;
-				case COLOUR.hair_mid      :return 124;
-				case COLOUR.hair_dark     :return 56;
-				case COLOUR.hair_vdark    :return 0;
-				case COLOUR.green_vlight  :return 199;
-				case COLOUR.green_light   :return 199;
-				case COLOUR.green_mid     :return 124;
-				case COLOUR.green_dark    :return 56;
-				case COLOUR.dgreen_mid    :return 124;
-				case COLOUR.dgreen_light  :return 199;
-				case COLOUR.white         :return 199;
-				case COLOUR.gray          :return 199;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.blue_mid      :return 124;
-				case COLOUR.blue_dark     :return 199;
-				default:return 255;//probably conversion already applied, don't process any more pixels
+		const getBestPaletteForColour=(r,g,b)=>{
+			let minDist = 9999;
+			let result = {r:255,g:0,b:255};
+			for(const col of PALETTE_COMIC){
+				const dist = colourDistance(r,g,b,col);
+				if(dist<minDist){
+					result = col;
+					minDist = dist;
+				}
 			}
-		};
-		const getG = (hexStr)=>{
-			switch(hexStr){
-				case COLOUR.skin_dark     :return 40;
-				case COLOUR.skin_mid      :return 109;
-				case COLOUR.skin_light    :return 199;
-				case COLOUR.yellow_dark   :return 40;
-				case COLOUR.yellow_mid    :return 109;
-				case COLOUR.yellow_light  :return 199;
-				case COLOUR.pink_dark     :return 40;
-				case COLOUR.pink_mid      :return 109;
-				case COLOUR.pink_midlght  :return 199;
-				case COLOUR.pink_light    :return 199;
-				case COLOUR.blue_dark     :return 40;
-				case COLOUR.blue_mid      :return 109;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.brown_vdark   :return 0;
-				case COLOUR.brown_dark    :return 40;
-				case COLOUR.brown_mid     :return 109;
-				case COLOUR.brown_light   :return 199;
-				case COLOUR.black         :return 0;
-				case COLOUR.metal_vdark   :return 0;
-				case COLOUR.metal_dark    :return 40;
-				case COLOUR.metal_mid     :return 109;
-				case COLOUR.metal_light   :return 199;
-				case COLOUR.hair_vlight   :return 199;
-				case COLOUR.hair_light    :return 199;
-				case COLOUR.hair_mid      :return 109;
-				case COLOUR.hair_dark     :return 40;
-				case COLOUR.hair_vdark    :return 0;
-				case COLOUR.green_vlight  :return 199;
-				case COLOUR.green_light   :return 199;
-				case COLOUR.green_mid     :return 109;
-				case COLOUR.green_dark    :return 40;
-				case COLOUR.dgreen_mid    :return 109;
-				case COLOUR.dgreen_light  :return 199;
-				case COLOUR.white         :return 199;
-				case COLOUR.gray          :return 199;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.blue_mid      :return 109;
-				case COLOUR.blue_dark     :return 199;
-				default:return 255;//probably conversion already applied, don't process any more pixels
-			}
+			return result;
 		};
 		
-		const getB = (hexStr)=>{
-			switch(hexStr){
-				case COLOUR.skin_dark     :return 67;
-				case COLOUR.skin_mid      :return 128;
-				case COLOUR.skin_light    :return 199;
-				case COLOUR.yellow_dark   :return 67;
-				case COLOUR.yellow_mid    :return 128;
-				case COLOUR.yellow_light  :return 199;
-				case COLOUR.pink_dark     :return 67;
-				case COLOUR.pink_mid      :return 128;
-				case COLOUR.pink_midlght  :return 199;
-				case COLOUR.pink_light    :return 199;
-				case COLOUR.blue_dark     :return 67;
-				case COLOUR.blue_mid      :return 128;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.brown_vdark   :return 0;
-				case COLOUR.brown_dark    :return 67;
-				case COLOUR.brown_mid     :return 128;
-				case COLOUR.brown_light   :return 199;
-				case COLOUR.black         :return 0;
-				case COLOUR.metal_vdark   :return 0;
-				case COLOUR.metal_dark    :return 67;
-				case COLOUR.metal_mid     :return 128;
-				case COLOUR.metal_light   :return 199;
-				case COLOUR.hair_vlight   :return 199;
-				case COLOUR.hair_light    :return 199;
-				case COLOUR.hair_mid      :return 128;
-				case COLOUR.hair_dark     :return 67;
-				case COLOUR.hair_vdark    :return 0;
-				case COLOUR.green_vlight  :return 199;
-				case COLOUR.green_light   :return 199;
-				case COLOUR.green_mid     :return 128;
-				case COLOUR.green_dark    :return 67;
-				case COLOUR.dgreen_mid    :return 128;
-				case COLOUR.dgreen_light  :return 199;
-				case COLOUR.white         :return 199;
-				case COLOUR.gray          :return 199;
-				case COLOUR.blue_light    :return 199;
-				case COLOUR.blue_mid      :return 128;
-				case COLOUR.blue_dark     :return 199;
-				default:return 255;//probably conversion already applied, don't process any more pixels
-			}
-		};
+		//TODO: use automatic lookup based on colour distance, cache results
 		
-		const componentToHex = (c)=>{
-			var hex = c.toString(16);
-			return hex.length == 1 ? "0" + hex : hex;
-		};
-		const rgbToHex = (r, g, b)=>{
-			return ("" + componentToHex(r) + componentToHex(g) + componentToHex(b)).toUpperCase();
-		};
 		const ctx = canvas.getContext('2d');
 		const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
 		const data = imgData.data;
@@ -340,52 +302,10 @@ class Renderer{
 			const b=data[i+2];
 			const a= data[i+3];
 			if(a<200){continue;}
-			const hexStr = rgbToHex(r,g,b);
-			switch(hexStr){
-				case COLOUR.skin_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.skin_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.skin_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.yellow_dark   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.yellow_mid    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.yellow_light  : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.pink_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.pink_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.pink_midlght  : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.pink_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.brown_vdark   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.brown_dark    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.brown_mid     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.brown_light   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.black         : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.metal_vdark   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.metal_dark    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.metal_mid     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.metal_light   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.hair_vlight   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.hair_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.hair_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.hair_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.hair_vdark    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.green_vlight  : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.green_light   : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.green_mid     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.green_dark    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.dgreen_mid    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.dgreen_light  : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.white         : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.gray          : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				case COLOUR.blue_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				default:/*
-				data[i]=255;
-				data[i+1]=0;
-				data[i+2]=255;*/
-				break;//return;//probably conversion already applied, don't process any more pixels
-			}
+			const col = getBestPaletteForColour(r,g,b);
+			data[i]   =col.r;
+			data[i+1] =col.g;
+			data[i+2] =col.b;
 		}
 		
 		ctx.putImageData(imgData, 0, 0);
