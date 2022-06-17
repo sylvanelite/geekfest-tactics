@@ -566,23 +566,39 @@ class ui_menuCharacter{
 	static drawCharacterSprites(ctx){
 		ui_menuCharacter.#frameCount +=0.1;
 		let direction = "down";
-		if(Math.floor(ui_menuCharacter.#frameCount)%30>10){
+		if(Math.floor(ui_menuCharacter.#frameCount)%40>10){
 			direction="left";
 		}
-		if(Math.floor(ui_menuCharacter.#frameCount)%30>20){
+		if(Math.floor(ui_menuCharacter.#frameCount)%40>20){
 			direction="up";
+		}
+		if(Math.floor(ui_menuCharacter.#frameCount)%40>30){
+			direction="right";
 		}
 		for(let chIdx=0;chIdx<5;chIdx+=1){
 			const ch = ui_menuCharacter.#ch[chIdx];
-			const frameLength = ch.sprites[direction].length;
+			const drawDir = (direction!="right"?direction:"left");
+			const frameLength = ch.sprites[drawDir].length;
 			const frameIdx = Math.floor(ui_menuCharacter.#frameCount)%frameLength;
 			if(!ch.canvases){
 				return;
 			}
-			const canvToDraw = ch.canvases[direction][frameIdx];
+			const canvToDraw = ch.canvases[drawDir][frameIdx];
 			if(!canvToDraw){return;}
 			const ybouce = (frameIdx==1?4:0);
-			ctx.drawImage(canvToDraw,300+chIdx*100,200+ybouce);
+				const x = 300+chIdx*100;
+				const y = 200+ybouce;
+			if(direction!="right"){
+				ctx.drawImage(canvToDraw,x,y);
+			}else{
+				//right = flipped
+				ctx.save();
+				const imgW = 128;
+				ctx.translate(x-imgW+canvToDraw.width, 0);
+				ctx.scale(-1, 1);
+				ctx.drawImage(canvToDraw,-imgW,y);
+				ctx.restore();
+			}
 		}
 	}
 	

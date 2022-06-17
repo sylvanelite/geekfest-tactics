@@ -107,7 +107,6 @@ class Renderer{
 	static drawSpriteFlippedH=(sprite,rendererW,ctx)=>{
 		const img = Renderer.#getImageData(sprite.url);
 		if(img.loaded){
-			
             ctx.save();
             ctx.translate(sprite.x-sprite.width+rendererW, 0);
             ctx.scale(-1, 1);
