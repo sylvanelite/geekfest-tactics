@@ -144,7 +144,7 @@ class Renderer{
 		ctx.drawImage(canvas,-canvas.width,y);
 		ctx.restore();
 	}
-	/*
+	
 	static #paletteShiftCanvas(canvas){
 		
 		const COLOUR = {
@@ -329,7 +329,7 @@ class Renderer{
 			return hex.length == 1 ? "0" + hex : hex;
 		};
 		const rgbToHex = (r, g, b)=>{
-			return "" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+			return ("" + componentToHex(r) + componentToHex(g) + componentToHex(b)).toUpperCase();
 		};
 		const ctx = canvas.getContext('2d');
 		const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
@@ -338,7 +338,7 @@ class Renderer{
 			const r=data[i];
 			const g=data[i+1];
 			const b=data[i+2];
-			const a= data[1+3];
+			const a= data[i+3];
 			if(a<200){continue;}
 			const hexStr = rgbToHex(r,g,b);
 			switch(hexStr){
@@ -380,13 +380,17 @@ class Renderer{
 				case COLOUR.blue_light    : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
 				case COLOUR.blue_mid      : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
 				case COLOUR.blue_dark     : data[i]=getR(hexStr);data[i+1]=getG(hexStr);data[i+2]=getB(hexStr); break;
-				//default:return;//probably conversion already applied, don't process any more pixels
+				default:/*
+				data[i]=255;
+				data[i+1]=0;
+				data[i+2]=255;*/
+				break;//return;//probably conversion already applied, don't process any more pixels
 			}
 		}
 		
 		ctx.putImageData(imgData, 0, 0);
 		
-	}*/
+	}
 	
 }
 
