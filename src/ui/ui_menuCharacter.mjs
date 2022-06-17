@@ -1,5 +1,5 @@
 
-import { Renderer } from "../renderer/renderer.mjs";
+import { Renderer,PALETTE } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
 import { male_data, female_data, portraits } from "./character/data/portraits.mjs";
@@ -265,9 +265,6 @@ class ui_menuCharacter{
 		
 	};
 	
-	static selectCharacter(ch){
-		
-	}
 	static start(){
 		Menu.setMenuState(MENU_STATE.MAP);
 		//TODO: save characters to localstorage?
@@ -276,6 +273,11 @@ class ui_menuCharacter{
 		console.log("switch to ch:",ch);
 		//TODO: if unlocked...
 		ui_menuCharacter.#selectedChIdx = ch;
+		
+		
+		const pals = [PALETTE.GB ,PALETTE.MANGA,PALETTE.COMIC,PALETTE.ANIME];
+		Renderer.setRenderPalette(pals[ch%pals.length]);
+		ui_menuCharacter.refreshSprites();
 	}
 	static selectArm(item){
 		console.log("arm f: ",item);//TODO: "if unlocked"
