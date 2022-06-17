@@ -593,10 +593,9 @@ class ui_menuCharacter{
 			}else{
 				//right = flipped
 				ctx.save();
-				const imgW = 128;
-				ctx.translate(x-imgW+canvToDraw.width, 0);
+				ctx.translate(x, 0);
 				ctx.scale(-1, 1);
-				ctx.drawImage(canvToDraw,-imgW,y);
+				ctx.drawImage(canvToDraw,-canvToDraw.width,y);
 				ctx.restore();
 			}
 		}
