@@ -4,6 +4,8 @@ import { GameState,CONTROL_SOURCE } from "../Game.mjs";//todo: remove Game?
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
+import { Terrain } from "./terrain/terrain.mjs";
+
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
 	cbt_NO_PLAYER_STATE,
@@ -93,6 +95,26 @@ class ui_background{
 			}
 		}
 		ui_background.#restoreFog(backup);
+		
+		
+		
+		
+		
+		
+		//--start:iso
+		const mouse = Renderer.getMouseIsoCell();
+		console.log(mouse);
+		for(let j=0;j<h;j+=1){
+			for(let i=0;i<w;i+=1){
+				const terrain = Sy.getTerrainForCell(i,j);
+				const spr = Terrain.getTerrainSprite(i,j,terrain);
+				if(mouse.x == i&&mouse.y==j){
+					spr.y-=4;
+				}
+				Renderer.drawSprite(spr,ctx);
+			}
+		}
+		//--end:iso
 
 	}
 	static drawGridEffects(ctx){

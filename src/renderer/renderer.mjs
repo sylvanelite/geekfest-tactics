@@ -5,12 +5,13 @@ const PALETTE = {
 	ANIME:"ANIME"
 };
 
+import { Isometric } from "./isometric.mjs";
 
 //base class for drawing & computing interaction with them
 class Renderer{
 	
 	static TILE_SIZE=16;
-	static width=980;
+	static width=960;
 	static height=540;
 	
 	static mousePoint=null;
@@ -40,6 +41,16 @@ class Renderer{
 		const y = Math.floor(Renderer.mousePoint.y/Renderer.TILE_SIZE);
 		
 		return {x,y};
+	}
+	static getMouseIsoCell(){
+		if(!Renderer.mousePoint){
+			return{x:-1,y:-1};
+		}
+		const screen = {
+			x:Math.floor(Renderer.mousePoint.x),
+			y:Math.floor(Renderer.mousePoint.y)
+		};
+		return Isometric.to_grid_coordinate(screen);
 	}
 	
 	
