@@ -253,12 +253,6 @@ class Renderer{
 		const data = imgData.data;
 		const shiftCache = new Map();
 		
-		const hash = (x)=> {//https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
-			x = ((x >> 16) ^ x) * 0x45d9f3b;
-			x = ((x >> 16) ^ x) * 0x45d9f3b;
-			x = (x >> 16) ^ x;
-			return x;
-		};
 		for(let i=0;i<data.length;i+=4){
 			const r=data[i];
 			const g=data[i+1];
@@ -266,7 +260,7 @@ class Renderer{
 			const a= data[i+3];
 			if(a<200){continue;}
 			
-			const rgbHash = hash(r*10000+b*100*g);
+			const rgbHash = ((1 << 24) + (r << 16) + (g << 8) + b);
 			if(shiftCache.has(rgbHash)){
 				const colSet = shiftCache.get(rgbHash);
 				data[i]   =colSet.r;
