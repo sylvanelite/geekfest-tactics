@@ -178,6 +178,8 @@ class Renderer{
 	}
 	
 	static paletteShiftCanvas(canvas){
+		//NOTE: this is very slow, could be better to just pre-render palette shifts
+		//      this is especially true for portraits, where the img is large
 		const paletteName = Renderer.#renderPalette;
 		
 		const paletteData = {
