@@ -103,7 +103,6 @@ class ui_background{
 		
 		//--start:iso
 		const mouse = Renderer.getMouseIsoCell();
-		console.log(mouse);
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
 				const terrain = Sy.getTerrainForCell(i,j);

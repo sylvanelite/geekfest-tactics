@@ -24,12 +24,14 @@ const j_y = 0.5;
 const w = 128;
 const h = 128;
 
+//screen width/2
+const start_x = 382;
 
 class Isometric{
 	static to_screen_coordinate(tile) {
 	  // Accounting for sprite size
 	  return {
-		x: tile.x * i_x * 0.5 * w + tile.y * j_x * 0.5 * w,
+		x: start_x+tile.x * i_x * 0.5 * w + tile.y * j_x * 0.5 * w,
 		y: tile.x * i_y * 0.5 * h + tile.y * j_y * 0.5 * h,
 	  };
 	}
@@ -49,6 +51,7 @@ class Isometric{
 	}
 
 	static to_grid_coordinate(screen) {
+		screen.x-=start_x;
 	  const a = i_x * 0.5 * w;
 	  const b = j_x * 0.5 * w;
 	  const c = i_y * 0.5 * h;
