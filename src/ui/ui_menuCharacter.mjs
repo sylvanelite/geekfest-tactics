@@ -577,12 +577,12 @@ class ui_menuCharacter{
 		}
 		for(let chIdx=0;chIdx<5;chIdx+=1){
 			const ch = ui_menuCharacter.#ch[chIdx];
-			const drawDir = (direction!="right"?direction:"left");
-			const frameLength = ch.sprites[drawDir].length;
-			const frameIdx = Math.floor(ui_menuCharacter.#frameCount)%frameLength;
 			if(!ch.canvases){
 				return;
 			}
+			const drawDir = (direction!="right"?direction:"left");
+			const frameLength = ch.canvases[drawDir].length;
+			const frameIdx = Math.floor(ui_menuCharacter.#frameCount)%frameLength;
 			const canvToDraw = ch.canvases[drawDir][frameIdx];
 			if(!canvToDraw){return;}
 			const ybouce = (frameIdx==1?4:0);
@@ -602,12 +602,11 @@ class ui_menuCharacter{
 	}
 	
 	static composeCharacterSprite(chIdx){
-		//TODO: compose these sprites, and save the result against ch.
+		//NOTE: compose these sprites, and save the result against ch.
 		//      that way, ch can be a lookup
 		//      this code is not particularly fast.
 		const ch = ui_menuCharacter.#ch[chIdx];
 		const sprites = Composer.generateSpritesForCharacter(ch);
-		ch.sprites = sprites;
 		//compose down to a canvas
 		ch.canvases = null;
 		ch.canvases = {};
@@ -622,7 +621,7 @@ class ui_menuCharacter{
 				canvas.width = 128;
 				canvas.height = 128;
 				const context = canvas.getContext('2d');
-				const spritesToDraw = ch.sprites[direction][frame];
+				const spritesToDraw = sprites[direction][frame];
 				for(const sprite of spritesToDraw){
 					sprite.sprite.x+=canvas.width/2;
 					sprite.sprite.y+=canvas.height;
@@ -635,7 +634,7 @@ class ui_menuCharacter{
 				ch.canvases[direction].push(canvas);
 			}
 		}
-		//images not loaded, flush the cache?
+		//images not loaded, could flush the cache?
 		if(!allLoaded){
 			//ch.canvases = null;
 		}
