@@ -106,11 +106,13 @@ class ui_background{
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
 				const terrain = Sy.getTerrainForCell(i,j);
-				const spr = Terrain.getTerrainSprite(i,j,terrain);
-				if(mouse.x == i&&mouse.y==j){
-					spr.y-=4;
+				const sprList = Terrain.getTerrainSprite(i,j,terrain);
+				for(const spr of sprList){
+					if(mouse.x == i&&mouse.y==j){
+						spr.y-=4;
+					}
+					Renderer.drawSprite(spr,ctx);
 				}
-				Renderer.drawSprite(spr,ctx);
 			}
 		}
 		//--end:iso

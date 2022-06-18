@@ -32,12 +32,14 @@ class Terrain {
 		const sprName = "ISO_Tile_Brick_Brick_02";//TODO: lookup based on ctx;
 		
 		const spritesheet = terrainAtlas.iso_sprites[sprName];
-		const res = Renderer.getSprite(
-				'terrain_spritesheet/iso_sprites.png',
-				screen.x-spritesheet.width/2,screen.y,
-				spritesheet.width,spritesheet.height,
-				spritesheet.x,spritesheet.y
-			);
+		const res = [];
+		
+		res.push(Renderer.getSprite(
+			'terrain_spritesheet/iso_sprites.png',
+			screen.x-spritesheet.width/2,screen.y,
+			spritesheet.width,spritesheet.height,
+			spritesheet.x,spritesheet.y
+		));
 		return res;
 	}
 }
