@@ -105,8 +105,7 @@ class ui_background{
 		const mouse = Renderer.getMouseIsoCell();
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
-				const terrain = Sy.getTerrainForCell(i,j);
-				const sprList = Terrain.getTerrainSprite(i,j,terrain);
+				const sprList = Terrain.getTerrainSprite(i,j);
 				for(const spr of sprList){
 					if(mouse.x == i&&mouse.y==j){
 						spr.y-=4;
