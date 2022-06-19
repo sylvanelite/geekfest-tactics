@@ -107,7 +107,6 @@ class ui_menuCharacter{
 	
 	static #selectedChIdx = 0;
 	static #ch = [{
-		isUnlocked:true,
 		gender:'female',
 		front_arm:0,
 		back_arm:0,
@@ -134,7 +133,6 @@ class ui_menuCharacter{
 		sprites:null
 		
 	},{
-		isUnlocked:true,
 		gender:'male',
 		front_arm:1,
 		back_arm:1,
@@ -160,7 +158,6 @@ class ui_menuCharacter{
 		
 		sprites:null
 	},{
-		isUnlocked:true,
 		gender:'male',
 		front_arm:2,
 		back_arm:2,
@@ -186,7 +183,6 @@ class ui_menuCharacter{
 		
 		sprites:null
 	},{
-		isUnlocked:true,
 		gender:'male',
 		front_arm:3,
 		back_arm:3,
@@ -212,7 +208,6 @@ class ui_menuCharacter{
 		
 		sprites:null
 	},{
-		isUnlocked:true,
 		gender:'male',
 		front_arm:4,
 		back_arm:4,
@@ -557,11 +552,10 @@ class ui_menuCharacter{
 		}
 	}
 	
-	static composeCharacterSprite(chIdx){
+	static composeCharacterSprite(ch){
 		//NOTE: compose these sprites, and save the result against ch.
 		//      that way, ch can be a lookup
 		//      this code is not particularly fast.
-		const ch = ui_menuCharacter.#ch[chIdx];
 		const sprites = Composer.generateSpritesForCharacter(ch);
 		//compose down to a canvas
 		ch.canvases = null;
@@ -598,11 +592,10 @@ class ui_menuCharacter{
 	}
 	
 	static refreshSprites(){
-		ui_menuCharacter.composeCharacterSprite(0);
-		ui_menuCharacter.composeCharacterSprite(1);
-		ui_menuCharacter.composeCharacterSprite(2);
-		ui_menuCharacter.composeCharacterSprite(3);
-		ui_menuCharacter.composeCharacterSprite(4);
+		for(let i=0;i<5;i+=1){
+			const ch = ui_menuCharacter.#ch[i];
+			ui_menuCharacter.composeCharacterSprite(ch);
+		}
 		ui_menuCharacter.composeCharacterPortrait(ui_menuCharacter.#selectedChIdx);
 	}
 }
