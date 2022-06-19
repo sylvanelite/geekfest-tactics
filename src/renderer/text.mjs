@@ -1,4 +1,3 @@
-import { FontData } from '../data/FontData.js';
 import { Renderer } from "./renderer.js";
 
 const FontData = {};
@@ -199,7 +198,7 @@ const boxy = {
 
 FontData.boxy = boxy;
 
-static Text{
+class Text{
 	static FONT={
 		'OK':'OK',
 		'STAT_ATTACK':'STAT_ATTACK',

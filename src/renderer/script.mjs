@@ -27,12 +27,12 @@ class Script{
 	
 	//goes from the curScriptPosition -> the next break in rendering, calling "callback" on each line
 	//returns the index of the last line rendered
-	static #scrollThroughLines(G,callback){
+	static #scrollThroughLines(callback){
 		const script = Script.#curScript;
 		let lastLine = Script.#curScriptPosition;
 		for(let i = Script.#curScriptPosition;i<script.length;i+=1){
 			const line = script[i];
-			const s = Script.parseLine(G,line);
+			const s = Script.parseLine(line);
 			callback(s);
 			if(s.stopRendering){
 				return i;//should alway reach a break in rendering
@@ -47,12 +47,12 @@ class Script{
 		return Script.#isRunning;
 	}
 	
-	static start(G,script){
+	static start(script){
 		Script.#curScript = script;
 		Script.#curScriptPosition = 0;
 		Script.#isRunning = true;
 	}
-	static parseLine(G,line){
+	static parseLine(line){
 		const [kind,data] = line.split("|");
 		switch(kind){
 			case SCRIPT_KIND.TEXT:
@@ -77,7 +77,7 @@ class Script{
 	}
 	
 	//render goes from the current position to the next script point that needs input 
-	static render(G,ctx){//canvas context
+	static draw(ctx){//canvas context
 		const textPos = {x:255,y:150};
 		const lines = [];
 		const callback = (s)=>{
@@ -88,7 +88,7 @@ class Script{
 				}
 			}
 		};
-		Script.#scrollThroughLines(G,callback);
+		Script.#scrollThroughLines(callback);
 		
 		if(Script.#renderIdx==0&&Script.#renderLineIdx==0){
 			//TODO: use this hash to ID audio snippets 
@@ -161,34 +161,48 @@ class Script{
 		return text;
 	}
 	
+	
+	static click(e){
+		//TODO: maybe do skip on right click?
+		const action = Script.#getCurrentWaitingAction();
+		switch(s.kind){
+			case SCRIPT_KIND.TEXT:
+				Script.#actionContinue();
+				break;
+			case SCRIPT_KIND.DONE:
+				Script.#actionDone();
+				break;
+			default:
+				console.warn("cannot do script click: ",s);
+		}
+	}
 	//when the script is waiting for input (stopRendering), return the script option at that spot
-	static getCurrentWaitingAction(G){
-		const waitingIdx =Script.#scrollThroughLines(G,()=>{});
+	static #getCurrentWaitingAction(){
+		const waitingIdx =Script.#scrollThroughLines(()=>{});
 		const line= Script.#curScript[waitingIdx];
-		const s= Script.parseLine(G,line);
+		const s= Script.parseLine(line);
 		return s;
 	}
 	//actions
-	static actionContinue(G){
+	static #actionContinue(){
 		//progress past pause
 		Script.#renderLineIdx = 0;
 		Script.#renderIdx = 0;
-		Script.#curScriptPosition =Script.#scrollThroughLines(G,()=>{})+1;
+		Script.#curScriptPosition =Script.#scrollThroughLines(()=>{})+1;
 		//Audio.PlaySFX(SFX.click);
 	}
-	static actionDone(G){
+	static #actionDone(){
 		//end the script
 		Script.#renderLineIdx = 0;
 		Script.#renderIdx = 0;
 		Script.#curScript = null;
 		Script.#curScriptPosition = 0;
 		Script.#isRunning = false;
-		Script.#labelLookup = new Map();
 		//Audio.StopScriptLine();
 		//Audio.PlaySFX(SFX.receive);
 	}
 	
 }
 
-export {Script,SCRIPT_KIND};
+export {Script};
 

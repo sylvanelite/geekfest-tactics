@@ -6,6 +6,7 @@ import { Canvas } from  './components/canvas.js';
 import { GameState,GAME_STATE,CONTROL_SOURCE } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
 import { Animator } from './renderer/animator.js';
+import { Script } from './renderer/script.js';
 
 import { ui_idle } from './ui/ui_idle.js';
 import { ui_displayMove } from './ui/ui_displayMove.js';
@@ -36,7 +37,10 @@ class Logic{
 		Logic.#lastRenderTime = performance.now();
 		const ctx = canvas.getContext('2d');
 		ctx.clearRect(0,0,canvas.width,canvas.height);
-		
+		if(Script.isRunning()){
+			Script.draw(ctx);
+			return;
+		}
 		if(Animator.isRunning()){
 			Animator.draw(ctx);
 			return;
@@ -71,7 +75,10 @@ class Logic{
 		const controlSource = GameState.getControlSource();
 		if(controlSource!=CONTROL_SOURCE.LOCAL){
 			return;
-		}	
+		}
+		if(Script.isRunning()){
+			return;
+		}
 		if(Animator.isRunning()){
 			return;//TODO: skip animation? 
 		}
