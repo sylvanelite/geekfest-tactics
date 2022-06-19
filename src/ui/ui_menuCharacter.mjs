@@ -589,6 +589,7 @@ class ui_menuCharacter{
 		if(!allLoaded){
 			//ch.canvases = null;
 		}
+		return ch.canvases;
 	}
 	
 	static refreshSprites(){

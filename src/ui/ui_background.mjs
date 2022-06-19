@@ -4,7 +4,10 @@ import { GameState,CONTROL_SOURCE } from "../Game.mjs";//todo: remove Game?
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
+import { Isometric } from "../renderer/isometric.mjs";
 import { Terrain } from "./terrain/terrain.mjs";
+
+import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
@@ -169,6 +172,44 @@ class ui_background{
 				y*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2,
 				Renderer.TILE_SIZE/2, 0, 2 * Math.PI);
 		ctx.fill();
+		//--start ISO
+		if(!ch.sprite){
+			//regen sprite cache
+			ch.sprite = ui_menuCharacter.composeCharacterSprite({
+				gender:ch.sprite_gender,
+				front_arm:ch.sprite_front_arm,
+				back_arm:ch.sprite_back_arm,
+				torso:ch.sprite_torso,
+				back:ch.sprite_back,
+				weapon:ch.sprite_weapon,
+				headgear:ch.sprite_headgear,
+				base_hair:ch.sprite_base_hair,
+				back_hair:ch.sprite_back_hair,
+				front_hair:ch.sprite_front_hair,
+				ear:ch.sprite_ear,
+				eyebrow:ch.sprite_eyebrow,
+				eyes:ch.sprite_eyes,
+				mouth:ch.sprite_mouth,
+				nose:ch.sprite_nose,
+				head:ch.sprite_head,
+				a_wing:ch.sprite_a_wing,
+				a_necklace:ch.sprite_a_necklace,
+				a_cape:ch.sprite_a_cape,
+				a_face:ch.sprite_a_face,
+			});
+		}
+		const iso = Isometric.to_screen_coordinate({x,y});
+		let direction = "down";
+		if(!ch.sprite){
+			return;
+		}
+		const frameLength = ch.sprite[direction].length;
+		const frameIdx = 0;
+		const canvToDraw = ch.sprite[direction][frameIdx];
+		if(!canvToDraw){return;}
+		const ybouce = (frameIdx==1?4:0);
+		Renderer.drawCanvasSprite(canvToDraw,iso.x,iso.y+ybouce,ctx);
+		//--end ISO
 	}
 	static drawUnit(ctx,ch){
 		const [x,y] = Bit.GET_XY(ch.point_xy);
