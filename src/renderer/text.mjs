@@ -198,6 +198,7 @@ const boxy = {
 
 FontData.boxy = boxy;
 
+const scaleFactor = 1.33;
 class Text{
 	static FONT={
 		'OK':'OK',
@@ -209,32 +210,39 @@ class Text{
 	};
 
 	static drawBitmapText(ctx,text,x,y,customFont){
-		if(customFont){
-			if(customFont == UI.FONT.TOWN_LABEL){
-				for(const ch of text){
-					const scaleFactor =1.333;
-					const chData = FontData.boxy[ch.charCodeAt(0)];
-					const boxySprite = Renderer.getSprite(
-						'font/boxy_bold_font.png',
-						x,y-chData.height,chData.width,chData.height,chData.x,chData.y
-					);
-					Renderer.drawSpriteScaled(boxySprite,chData.width*scaleFactor,chData.height*scaleFactor,ctx);
-					x+=chData.width*scaleFactor;
-				}
-				return;
-			}
+		for(const ch of text){
+			const chData = FontData.boxy[ch.charCodeAt(0)];
+			const boxySprite = Renderer.getSprite(
+				'font/boxy_bold_font.png',
+				x,y-chData.height,chData.width,chData.height,chData.x,chData.y
+			);
+			Renderer.drawSpriteScaled(boxySprite,chData.width*scaleFactor,chData.height*scaleFactor,ctx);
+			x+=chData.width*scaleFactor;
 		}
+		return;
+		/*
 		ctx.fillStyle = '#000';
-		//TODO: actually use bitmap font
 		ctx.fillText(text, x,y);
+		*/
 	}
 	static getBitmapTextDimensions(ctx,text,customFont){
-		//TODO: return length based on bitmap dimensions
+		//length based on bitmap dimensions
+		const res = {
+			width:0,height:8
+		};
+		for(const ch of text){
+			const chData = FontData.boxy[ch.charCodeAt(0)];
+			res.width += chData.width*scaleFactor;
+		}
+		return res;
+		/*
+		//length based on canvas text
 		const dims = ctx.measureText(text);
 		return {
 			width:dims.width,
 			height:15
 		}
+		*/
 	}
 }
 
