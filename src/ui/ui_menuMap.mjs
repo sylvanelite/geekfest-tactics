@@ -97,6 +97,10 @@ class ui_menuMap{
 		ch3.player_state = cbt_ENEMY;
 		ch3.point_xy = Bit.SET_XY(8,5);
 		ch3.max_range=2;
+		
+		//TODO: if host or single, load from menuCh -> player characters (x5)
+		//      if join, load from menuCh-> enemyCharacters (x5)
+		
 		return [ch0,ch1,ch2,ch3];
 	}
 	static getTerrain(){

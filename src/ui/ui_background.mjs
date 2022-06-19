@@ -30,6 +30,9 @@ const colours = [
 	'bisque'
 
 ];
+//full dimensions of iso sprites
+const ISO_TILE_WIDTH=148;
+const ISO_TILE_HEIGHT=164;
 
 class ui_background{
 	static #backupFog(){
@@ -145,6 +148,35 @@ class ui_background{
 				}
 			}
 		}
+		//--start iso
+		for(let j=0;j<h;j+=1){
+			for(let i=0;i<w;i+=1){
+				const iso = Isometric.to_screen_coordinate({x:i,y:j});
+				//if not local, and fog enabled (or always?) don't render attack grid?
+				if(Sy.FOG_ENABLED&&controlSource!=CONTROL_SOURCE.LOCAL ){continue;}
+				if(Sy_api.api_getMoveForCell(i,j)){
+					const tileMov = (Renderer.getSprite(
+						'terrain_spritesheet/move.png',
+						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
+						0,0
+					));
+					Renderer.drawSprite(tileMov,ctx);
+					continue;
+				}
+				if(Sy_api.api_getAttackForCell(i,j)){
+					const tileAtk = (Renderer.getSprite(
+						'terrain_spritesheet/target.png',
+						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
+						0,0
+					));
+					Renderer.drawSprite(tileAtk,ctx);
+					continue;
+				}
+			}
+		}
+		//--end iso
 	}
 	static drawUnitAtPosition(ctx,ch,x,y){
 		if(Sy.FOG_ENABLED){

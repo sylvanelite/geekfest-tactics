@@ -236,7 +236,6 @@ class Autotiler {
 	
 	static getTerrainForTile(x,y){
 		const tileIdx = getIdx(x,y);
-		console.log(tileIdx,map_data[tileIdx]);
 		const tiles = map_data[tileIdx];
 		const res = [];
 		for(const tile of tiles){
