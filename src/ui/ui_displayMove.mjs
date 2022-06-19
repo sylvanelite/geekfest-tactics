@@ -24,7 +24,7 @@ class ui_displayMove{
 		
 	}
 	static click(e){
-		const cell = Renderer.getMouseCell();
+		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		ui_displayMove.move();//ensure pathfinding is updated
 		console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
@@ -48,7 +48,7 @@ class ui_displayMove{
 		return [...ui_displayMove.#movePath];
 	}
 	static move(){
-		const cell = Renderer.getMouseCell();
+		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			return;//cell out of bounds
 		}

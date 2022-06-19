@@ -29,7 +29,7 @@ class ui_idle{
 		ui_background.draw(ctx);
 	}
 	static click(e){
-		const cell = Renderer.getMouseCell();
+		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		console.log("click: idle",e,cell);
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			console.log("cell out of bounds: ",cell.x,cell.y);

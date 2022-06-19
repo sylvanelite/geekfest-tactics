@@ -9,7 +9,7 @@ class ui_selectTarget{
 		ui_background.draw(ctx);
 	}
 	static click(e){
-		const cell = Renderer.getMouseCell();
+		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		console.log("click: tgt",e,cell);
 		if(e.button == 2){//right click
 			Sy_api.api_tgt_cancel();

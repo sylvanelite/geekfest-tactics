@@ -35,8 +35,9 @@ class Renderer{
 				Renderer.mousePoint.y <= rect.y + rect.height);
 	}
 	static getMouseCell(){
-		//TODO: params like grid x,y,width,height, 
-		//      as well as offsets if there's a scrollable view
+		if(!Renderer.mousePoint){
+			return{x:-1,y:-1};
+		}
 		const x = Math.floor(Renderer.mousePoint.x/Renderer.TILE_SIZE);
 		const y = Math.floor(Renderer.mousePoint.y/Renderer.TILE_SIZE);
 		
@@ -52,10 +53,13 @@ class Renderer{
 		};
 		return Isometric.to_grid_coordinate(screen);
 	}
-	
-	
-	
-	
+	static getMouseCellTileOrIso(w,h){
+		const cell = Renderer.getMouseCell();
+		if(cell.x>=w||cell.y>=h||cell.x<0||cell.y<0){//out of bounds for tile, default to ISO
+			return Renderer.getMouseIsoCell();
+		}
+		return Renderer.getMouseCell();
+	}
 	
 	static #escapeName=(url)=>{
 		return url.replace(/[\W]+/g,"_");
