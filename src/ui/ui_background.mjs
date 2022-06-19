@@ -207,8 +207,7 @@ class ui_background{
 		const frameIdx = 0;
 		const canvToDraw = ch.sprite[direction][frameIdx];
 		if(!canvToDraw){return;}
-		const ybouce = (frameIdx==1?4:0);
-		Renderer.drawCanvasSprite(canvToDraw,iso.x,iso.y+ybouce,ctx);
+		Renderer.drawCanvasSprite(canvToDraw,iso.x,iso.y-64,ctx);
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
