@@ -239,7 +239,9 @@ class ui_background{
 		const frameIdx = 0;
 		const canvToDraw = ch.sprite[direction][frameIdx];
 		if(!canvToDraw){return;}
-		Renderer.drawCanvasSprite(canvToDraw,iso.x,iso.y-64,ctx);
+		//64 = character size /2 (128x128px)
+		//64 = height of iso vertical iso tile face, 16 = 1/4 of that
+		Renderer.drawCanvasSprite(canvToDraw,iso.x-64,iso.y-64-16,ctx);
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
