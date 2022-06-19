@@ -120,6 +120,25 @@ class ui_background{
 				}
 			}
 		}
+		const backupIso = ui_background.#backupFog();
+		ui_background.#applyPlayerFog();
+		//TODO, wrap fog with api...
+		for(let j=0;j<h;j+=1){
+			for(let i=0;i<w;i+=1){
+				const fog = Sy.getFogForCell(i,j);
+				if(fog){
+					const iso = Isometric.to_screen_coordinate({x:i,y:j});
+					const tileMov = (Renderer.getSprite(
+						'terrain_spritesheet/obscured.png',
+						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
+						0,0
+					));
+					Renderer.drawSprite(tileMov,ctx);
+				}
+			}
+		}
+		ui_background.#restoreFog(backupIso);
 		//--end:iso
 
 	}
