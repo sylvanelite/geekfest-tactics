@@ -168,6 +168,11 @@ class Renderer{
 		ctx.drawImage(canvas,-canvas.width,y);
 		ctx.restore();
 	}
+	static drawCanvasSpriteScaled(canvas,x,y,destW,destH,ctx){
+		ctx.drawImage(canvas,
+			0,0,canvas.width,canvas.height,
+			x,y,destW,destH);
+	}
 	
 	
 	static #renderPalette = PALETTE.ANIME;

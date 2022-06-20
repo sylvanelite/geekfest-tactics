@@ -20,19 +20,27 @@ const i_y = 0.5;
 const j_x = -1;
 const j_y = 0.5;
 
-// Sprite size
-const w = 128;
-const h = 128;
-
-//screen width/2
-const start_x = 382;
+const sourceW = 128;
+const sourceH = 128;
+const sourceStartX = 382;
 
 class Isometric{
+	static SCALE=1;
+	static #width = sourceW*Isometric.SCALE;//sprite size
+	static #height = sourceH*Isometric.SCALE;
+	static #start_x = sourceStartX;//screen width/2 -- not affected by scale, always centre the top-most tile
+	
+	static setScale(scale){
+		Isometric.SCALE = scale;
+		Isometric.#width = sourceW*Isometric.SCALE;//sprite size
+		Isometric.#height = sourceH*Isometric.SCALE;
+	}
+	
 	static to_screen_coordinate(tile) {
 	  // Accounting for sprite size
 	  return {
-		x: start_x+tile.x * i_x * 0.5 * w + tile.y * j_x * 0.5 * w,
-		y: tile.x * i_y * 0.5 * h + tile.y * j_y * 0.5 * h,
+		x: Isometric.#start_x+tile.x * i_x * 0.5 * Isometric.#width + tile.y * j_x * 0.5 * Isometric.#width,
+		y: tile.x * i_y * 0.5 * Isometric.#height + tile.y * j_y * 0.5 * Isometric.#height,
 	  };
 	}
 
@@ -51,11 +59,11 @@ class Isometric{
 	}
 
 	static to_grid_coordinate(screen) {
-		screen.x-=start_x;
-	  const a = i_x * 0.5 * w;
-	  const b = j_x * 0.5 * w;
-	  const c = i_y * 0.5 * h;
-	  const d = j_y * 0.5 * h;
+		screen.x-=Isometric.#start_x;
+	  const a = i_x * 0.5 * Isometric.#width;
+	  const b = j_x * 0.5 * Isometric.#width;
+	  const c = i_y * 0.5 * Isometric.#height;
+	  const d = j_y * 0.5 * Isometric.#height;
 	  
 	  const inv = Isometric.invert_matrix(a, b, c, d);
 	  

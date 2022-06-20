@@ -36,7 +36,7 @@ class Terrain {
 			const spritesheet = terrainAtlas.iso_sprites[sprName];
 			res.push(Renderer.getSprite(
 				'terrain_spritesheet/iso_sprites.png',
-				screen.x-spritesheet.width/2,screen.y,
+				screen.x-(spritesheet.width*Isometric.SCALE)/2,screen.y,
 				spritesheet.width,spritesheet.height,
 				spritesheet.x,spritesheet.y
 			));

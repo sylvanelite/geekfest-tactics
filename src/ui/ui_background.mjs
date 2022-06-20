@@ -116,7 +116,11 @@ class ui_background{
 					if(mouse.x == i&&mouse.y==j){
 						spr.y-=4;
 					}
-					Renderer.drawSprite(spr,ctx);
+					//static drawSpriteScaled(sprite,destW,destH,ctx){
+					Renderer.drawSpriteScaled(spr,
+						ISO_TILE_WIDTH*Isometric.SCALE,
+						ISO_TILE_HEIGHT*Isometric.SCALE,
+						ctx);
 				}
 			}
 		}
@@ -130,11 +134,14 @@ class ui_background{
 					const iso = Isometric.to_screen_coordinate({x:i,y:j});
 					const tileMov = (Renderer.getSprite(
 						'terrain_spritesheet/obscured.png',
-						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						iso.x-(ISO_TILE_WIDTH*Isometric.SCALE)/2,iso.y,
 						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
 						0,0
 					));
-					Renderer.drawSprite(tileMov,ctx);
+					Renderer.drawSpriteScaled(tileMov,
+						ISO_TILE_WIDTH*Isometric.SCALE,
+						ISO_TILE_HEIGHT*Isometric.SCALE,
+						ctx);
 				}
 			}
 		}
@@ -176,21 +183,27 @@ class ui_background{
 				if(Sy_api.api_getMoveForCell(i,j)){
 					const tileMov = (Renderer.getSprite(
 						'terrain_spritesheet/move.png',
-						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						iso.x-(ISO_TILE_WIDTH*Isometric.SCALE)/2,iso.y,
 						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
 						0,0
 					));
-					Renderer.drawSprite(tileMov,ctx);
+					Renderer.drawSpriteScaled(tileMov,
+						ISO_TILE_WIDTH*Isometric.SCALE,
+						ISO_TILE_HEIGHT*Isometric.SCALE,
+						ctx);
 					continue;
 				}
 				if(Sy_api.api_getAttackForCell(i,j)){
 					const tileAtk = (Renderer.getSprite(
 						'terrain_spritesheet/target.png',
-						iso.x-ISO_TILE_WIDTH/2,iso.y,
+						iso.x-(ISO_TILE_WIDTH*Isometric.SCALE)/2,iso.y,
 						ISO_TILE_WIDTH,ISO_TILE_HEIGHT,
 						0,0
 					));
-					Renderer.drawSprite(tileAtk,ctx);
+					Renderer.drawSpriteScaled(tileAtk,
+						ISO_TILE_WIDTH*Isometric.SCALE,
+						ISO_TILE_HEIGHT*Isometric.SCALE,
+						ctx);
 					continue;
 				}
 			}
@@ -260,7 +273,13 @@ class ui_background{
 		if(!canvToDraw){return;}
 		//64 = character size /2 (128x128px)
 		//64 = height of iso vertical iso tile face, 16 = 1/4 of that
-		Renderer.drawCanvasSprite(canvToDraw,iso.x-64,iso.y-64-16,ctx);
+		//Renderer.drawCanvasSprite(canvToDraw,iso.x-64,iso.y-64-16,ctx);
+		Renderer.drawCanvasSpriteScaled(canvToDraw,iso.x-64*Isometric.SCALE,
+												   iso.y-16-64*Isometric.SCALE,
+										128*Isometric.SCALE,
+										128*Isometric.SCALE,
+										ctx);
+		
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
