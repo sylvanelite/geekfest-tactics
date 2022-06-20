@@ -57,6 +57,26 @@ class ui_menuMap{
 			return;
 		}
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
+			ui_menuMap.#applyMapData();
+			Menu.setMenuState(MENU_STATE.PLAYING);
+		}
+		//TODO: check if already joining/hosting?
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
+			ui_menuMap.#applyMapData();
+			Sy_api.api_setNetworking(Network);
+			ui_menuMap.#hostId = Network.host();
+		}
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiJoin)){
+			Sy_api.api_setNetworking(Network);
+			const hostId = prompt("Enter host ID to join: ");
+			if(hostId){
+				ui_menuMap.#applyMapData();//data will be overwritten by host, just need some good state here
+				Network.join(hostId.toUpperCase());
+			}
+		}
+	}
+	
+	static #applyMapData(){
 			//start game, apply stats
 			let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
 			const nwStatus = Network.getStatus();
@@ -98,7 +118,8 @@ class ui_menuMap{
 			//load player characters into units 
 			//NOTE: if you are joining a network game, your characters need to be loaded with state cbt_ENEMY
 			const characters = ui_menuCharacter.getCharacters();
-			const units = levelData.units.filter(x=>{return x.player_state == cbt_PLAYER});
+			const curPlayer = (Network.getStatus()=='disabled'||Network.isHost()?cbt_PLAYER:cbt_ENEMY);
+			const units = levelData.units.filter(x=>{return x.player_state == curPlayer});
 			if(units.length!=characters.length){console.warn("mismatch in ch length. lvl:",ui_menuMap.#selectedArea,ui_menuMap.#selectedLevel);}
 			for(let i=0;i<characters.length&&i<units.length;i+=1){
 				const ch = characters[i];
@@ -107,25 +128,11 @@ class ui_menuMap{
 				//note, the ch obj has prefixed names while the portrait state does not.
 				const keys = Object.keys(ch);
 				for(const key of keys){
-					unit["sprite_"+key] = ch[key];
+					unit["sprite_"+key] = ch[key];//TODO: actual stats (not just display attributes)
 				}
 			}
 			
 			Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
-			Menu.setMenuState(MENU_STATE.PLAYING);
-		}
-		//TODO: check if already joining/hosting?
-		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
-			Sy_api.api_setNetworking(Network);
-			ui_menuMap.#hostId = Network.host();
-		}
-		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiJoin)){
-			Sy_api.api_setNetworking(Network);
-			const hostId = prompt("Enter host ID to join: ");
-			if(hostId){
-				Network.join(hostId.toUpperCase());
-			}
-		}
 	}
 	
 	static #selectedArea = 'manga';
