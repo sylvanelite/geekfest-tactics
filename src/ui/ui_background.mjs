@@ -95,7 +95,7 @@ class ui_background{
 			for(let i=0;i<w;i+=1){
 				const fog = Sy.getFogForCell(i,j);
 				if(fog){
-					ctx.fillStyle="rgba(200,200,200,0.7)";
+					ctx.fillStyle="rgba(128,128,128,0.7)";
 					ctx.fillRect(i*Renderer.TILE_SIZE,j*Renderer.TILE_SIZE,Renderer.TILE_SIZE,Renderer.TILE_SIZE);
 				}
 			}
@@ -271,6 +271,23 @@ class ui_background{
 		const frameIdx = 0;
 		const canvToDraw = ch.sprite[direction][frameIdx];
 		if(!canvToDraw){return;}
+		if(ch.player_state == cbt_PLAYER){
+			ctx.fillStyle="rgba(0,0,200,0.7)";
+		}
+		if(ch.player_state == cbt_ENEMY){
+			ctx.fillStyle="rgba(200,0,0,0.7)";
+		}
+		if(ch.hasMoved){
+			ctx.fillStyle="rgba(200,200,200,0.7)";
+		}
+		//draw ellipse shadow to identify character owner
+		ctx.beginPath();
+		ctx.ellipse(iso.x-64*Isometric.SCALE+128*Isometric.SCALE/2,
+					iso.y-16-64*Isometric.SCALE+128*Isometric.SCALE,
+				48, 6, 0, 0, 2 * Math.PI);
+		ctx.fill();
+		
+		
 		//64 = character size /2 (128x128px)
 		//64 = height of iso vertical iso tile face, 16 = 1/4 of that
 		//Renderer.drawCanvasSprite(canvToDraw,iso.x-64,iso.y-64-16,ctx);
@@ -291,6 +308,14 @@ class ui_background{
 		const backup = ui_background.#backupFog();
 		ui_background.#applyPlayerFog();
 		const chs = Sy_api.api_get_allCharacters();
+		chs.sort((a,b)=>{
+			const [ax,ay] = Bit.GET_XY(a.point_xy);
+			const [bx,by] = Bit.GET_XY(b.point_xy);
+			const isoA = Isometric.to_screen_coordinate({x:ax,y:ay});
+			const isoB = Isometric.to_screen_coordinate({x:bx,y:by});
+			return isoA.y-isoB.y;
+		});
+		
 		for(const ch of chs){
 			if(funcHasCustomDraw!=null&&funcHasCustomDraw(ch)){
 				funcCustomDraw(ch)
