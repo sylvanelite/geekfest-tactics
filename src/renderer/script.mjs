@@ -110,10 +110,7 @@ class Script{
 	}
 	static parseLine(line){
 		const json = JSON.parse(line);
-		return {
-			data:json,
-			text:json.text
-		};
+		return json;
 	}
 	
 	//render goes from the current position to the next script point that needs input 
@@ -177,10 +174,10 @@ class Script{
 		for(let i=-3;i<0;i+=1){
 			if(Script.#curScriptPosition+i>=0){
 				const prevLine = lines[Script.#curScriptPosition+i];
-				const bubbleName = "speech_"+prevLine.data.speech+"_"+prevLine.data.talk;//e.g. speech_talk_left
+				const bubbleName = "speech_"+prevLine.speech+"_"+prevLine.talk;//e.g. speech_talk_left
 				const bubble = Script.#sprites[bubbleName];
 				bubble.y=textPos.y+64*i;//'i' is negative, so this is 200-64 
-				bubble.x=textPos.x+(prevLine.data.talk=="left"?0:100);
+				bubble.x=textPos.x+(prevLine.talk=="left"?0:100);
 				Renderer.drawSprite(bubble,ctx);
 				Text.drawBitmapText(ctx,prevLine.text, prevLine.x, prevLine.y);
 			}
@@ -192,28 +189,28 @@ class Script{
 			Script.#renderCharacterIdx = line.text.length;
 		}
 		//draw non-active ch
-		const ch_left = Script.#sprites[line.data.left];
-		const ch_right = Script.#sprites[line.data.right];
+		const ch_left = Script.#sprites[line.left];
+		const ch_right = Script.#sprites[line.right];
 		ch_left.x = 200;//TODO: ch positions
 		ch_right.x = 600;//TODO: ch positions
 		ch_left.y = 270;//TODO: ch positions
 		ch_right.y = 270;//TODO: ch positions
-		if(line.data.talk=="left"){
+		if(line.talk=="left"){
 		Renderer.drawSprite(ch_left,ctx);
 		}else{
 		Renderer.drawSprite(ch_right,ctx);
 		}
 		ctx.fillRect(0,0,Renderer.width,Renderer.height);
-		if(line.data.talk=="left"){
+		if(line.talk=="left"){
 		Renderer.drawSprite(ch_right,ctx);
 		}else{
 		Renderer.drawSprite(ch_left,ctx);
 		}
 		//draw current line
-		const bubbleName = "speech_"+line.data.speech+"_"+line.data.talk;//e.g. speech_talk_left
+		const bubbleName = "speech_"+line.speech+"_"+line.talk;//e.g. speech_talk_left
 		const bubble = Script.#sprites[bubbleName];
 		bubble.y=textPos.y;
-		bubble.x=textPos.x+(line.data.talk=="left"?0:100);
+		bubble.x=textPos.x+(line.talk=="left"?0:100);
 		Renderer.drawSprite(bubble,ctx);
 		let lineText = line.text.substring(0,Math.floor(Script.#renderCharacterIdx));
 		Text.drawBitmapText(ctx,lineText, line.x, line.y);
