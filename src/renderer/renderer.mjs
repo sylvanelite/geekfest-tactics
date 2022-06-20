@@ -173,6 +173,16 @@ class Renderer{
 			0,0,canvas.width,canvas.height,
 			x,y,destW,destH);
 	}
+	static drawCanvasSpriteScaledFlippedH(canvas,x,y,destW,destH,ctx){
+		ctx.save();
+		ctx.translate(x, 0);
+		ctx.scale(-1, 1);
+		//ctx.drawImage(canvas,-canvas.width,y);
+		ctx.drawImage(canvas,
+			0,0,canvas.width,canvas.height,
+			-canvas.width,y,destW,destH);
+		ctx.restore();
+	}
 	
 	
 	static #renderPalette = PALETTE.ANIME;

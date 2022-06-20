@@ -58,7 +58,13 @@ class Animator{
 			const duration = animation.duration/animation.totalDuration;
 			const lerpx = Animator.lerp(startx,endx,duration);
 			const lerpy = Animator.lerp(starty,endy,duration);
-			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
+			let direction = (startx<endx?'right':'left');
+			if(Math.abs(endy-starty)>Math.abs(endx-startx)){
+				direction = (starty<endy?'down':'up');
+			}
+			const frameIdx = Math.floor(animation.duration/4)%3;
+			
+			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy,direction,frameIdx);
 		};
 		const isLerpUnit = (ch)=>{
 			return (ch.point_xy == animation.data.xy_ch);
@@ -138,7 +144,7 @@ class Animator{
 		const [startx,starty] = Bit.GET_XY(xy_from);
 		const [endx,endy] = Bit.GET_XY(xy_to);
 		const distance = Math.abs(endx-startx)+Math.abs(endy-starty);
-		const moveSpeed = distance*4;
+		const moveSpeed = distance*15;
 		const animation={
 			kind:ANIMATION.MOVE,
 			data:{xy_ch,xy_from,xy_to},

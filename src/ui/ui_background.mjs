@@ -210,7 +210,7 @@ class ui_background{
 		}
 		//--end iso
 	}
-	static drawUnitAtPosition(ctx,ch,x,y){
+	static drawUnitAtPosition(ctx,ch,x,y,direction="down",frameIdx=0){
 		if(Sy.FOG_ENABLED){
 			//-- don't reveal fog unless the control source is local for the controller
 			const backup = ui_background.#backupFog();
@@ -263,13 +263,12 @@ class ui_background{
 			});
 		}
 		const iso = Isometric.to_screen_coordinate({x,y});
-		let direction = "down";
 		if(!ch.sprite){
 			return;
 		}
-		const frameLength = ch.sprite[direction].length;
-		const frameIdx = 0;
-		const canvToDraw = ch.sprite[direction][frameIdx];
+		const dirToDraw = (direction=='right'?'left':direction);
+		const frameLength = ch.sprite[dirToDraw].length;
+		const canvToDraw = ch.sprite[dirToDraw][frameIdx];
 		if(!canvToDraw){return;}
 		if(ch.player_state == cbt_PLAYER){
 			ctx.fillStyle="rgba(0,0,200,0.7)";
@@ -290,13 +289,19 @@ class ui_background{
 		
 		//64 = character size /2 (128x128px)
 		//64 = height of iso vertical iso tile face, 16 = 1/4 of that
-		//Renderer.drawCanvasSprite(canvToDraw,iso.x-64,iso.y-64-16,ctx);
-		Renderer.drawCanvasSpriteScaled(canvToDraw,iso.x-64*Isometric.SCALE,
+		if(direction=='right'){
+			Renderer.drawCanvasSpriteScaledFlippedH(canvToDraw,iso.x-64*Isometric.SCALE,
 												   iso.y-16-64*Isometric.SCALE,
 										128*Isometric.SCALE,
 										128*Isometric.SCALE,
 										ctx);
-		
+		}else{
+			Renderer.drawCanvasSpriteScaled(canvToDraw,iso.x-64*Isometric.SCALE,
+												   iso.y-16-64*Isometric.SCALE,
+										128*Isometric.SCALE,
+										128*Isometric.SCALE,
+										ctx);
+		}
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
