@@ -20,7 +20,7 @@ import { Sy_api } from './state/api.js';
 import { Sy } from './state/main.js';
 import { Sy_AI } from './state/ai.js';
 
-const DEBUG_ENABLED = true;
+const DEBUG_ENABLED = false;
 if(DEBUG_ENABLED){
 	window.Sy = Sy;
 }

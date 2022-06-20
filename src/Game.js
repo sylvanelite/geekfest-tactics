@@ -2,7 +2,6 @@
 import { Sy_api } from './state/api.js';
 import {Network}from './renderer/network.mjs';
 import {Menu,MENU_STATE}from './renderer/menu.mjs';
-window.Network=Network;//TODO: use this...
 Sy_api.api_setMenu(Menu);
 
 
