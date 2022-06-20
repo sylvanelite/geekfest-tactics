@@ -169,11 +169,11 @@ class Script{
 		-active portrait
 		-active text
 		*/
-		ctx.fillStyle = "rgba(200,200,200,0.1)";
+		ctx.fillStyle = "rgba(200,200,200,0.2)";
 		Renderer.drawSprite(Script.#sprites.bg,ctx);
 		ctx.fillRect(0,0,Renderer.width,Renderer.height);
 	
-		const textPos = {x:255,y:150};
+		const textPos = {x:355,y:150};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
 		if(Script.#renderCharacterIdx==0){
@@ -201,11 +201,10 @@ class Script{
 		for(let i=-3;i<0;i+=1){
 			if(Script.#curScriptPosition+i>=0){
 				const prevLine = lines[Script.#curScriptPosition+i];
-				prevLine.y+=64*i;//TODO: correct offset for past text
 				const bubbleName = "speech_"+prevLine.data.speech+"_"+prevLine.data.talk;//e.g. speech_talk_left
 				const bubble = Script.#sprites[bubbleName];
-				bubble.y=prevLine.y;
-				bubble.x=prevLine.x;
+				bubble.y=textPos.y+64*i;//'i' is negative, so this is 200-64 
+				bubble.x=textPos.x+(prevLine.data.talk=="left"?0:100);
 				Renderer.drawSprite(bubble,ctx);
 				Text.drawBitmapText(ctx,prevLine.text, prevLine.x, prevLine.y);
 			}
@@ -237,8 +236,8 @@ class Script{
 		//draw current line
 		const bubbleName = "speech_"+line.data.speech+"_"+line.data.talk;//e.g. speech_talk_left
 		const bubble = Script.#sprites[bubbleName];
-		bubble.y=line.y;
-		bubble.x=line.x;
+		bubble.y=textPos.y;
+		bubble.x=textPos.x+(line.data.talk=="left"?0:100);
 		Renderer.drawSprite(bubble,ctx);
 		let lineText = line.text.substring(0,Math.floor(Script.#renderCharacterIdx));
 		Text.drawBitmapText(ctx,lineText, line.x, line.y);
@@ -251,49 +250,16 @@ class Script{
 				line.x+linDim.width, line.y-6*(1-fract));
 		}
 	}
-	static #renderLine(ctx,s,textPos){
-		let text = [];
-		switch(s.kind){
-			case SCRIPT_KIND.TEXT:
-				text.push({text:s.text,x:textPos.x,y:textPos.y,data:s.data});
-				textPos.y+=15;
-				break;
-			default:
-				console.warn("cannot render script: ",s);
-		}
-		return text;
-	}
-	
 	
 	static click(e){
-		//TODO: maybe do skip on right click?
-		const action = Script.#getCurrentWaitingAction();
-		console.log(action);
-		switch(action.kind){
-			case SCRIPT_KIND.TEXT:
-				Script.#actionContinue();
-				break;
-			case SCRIPT_KIND.DONE:
-				Script.#actionDone();
-				break;
-			default:
-				console.warn("cannot do script click: ",s);
-		}
-	}
-	//when the script is waiting for input (stopRendering), return the script option at that spot
-	static #getCurrentWaitingAction(){
-		const line= Script.#curScript[Script.#curScriptPosition];
-		const s= Script.parseLine(line);
-		return s;
-	}
-	//actions
-	static #actionContinue(){
-		//progress past pause
+		//advance text
 		Script.#renderCharacterIdx = 0;
 		Script.#curScriptPosition =Script.#curScriptPosition+1;
-		//Audio.PlaySFX(SFX.click);
+		if(Script.#curScriptPosition>=Script.#curScript.length){
+			Script.#done();
+		}
 	}
-	static #actionDone(){
+	static #done(){
 		//end the script
 		Script.#renderCharacterIdx = 0;
 		Script.#curScript = null;

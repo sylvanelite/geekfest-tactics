@@ -49,8 +49,7 @@ class ui_menuSplash{
 			"left":"chA",
 			"right":"chB",
 			"talk":"left"
-		}`,
-		"done|"
+		}`
 		]);
 		//--
 		
