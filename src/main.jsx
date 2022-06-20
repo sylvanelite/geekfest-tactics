@@ -179,9 +179,8 @@ const App = () => {
 					onMouseOut={Renderer.mouseOut}
 				width={Renderer.width} 
 				height={Renderer.height} 
-				style={{width:Renderer.width/window.devicePixelRatio,
-						height:Renderer.height/window.devicePixelRatio,
-						border:"1px solid black"
+				style={{width:'100%',
+						aspectRatio:Renderer.width+"/"+Renderer.height
 				}}/>
 		</div>
 		<DebugContainer enabled={DEBUG_ENABLED}/>
