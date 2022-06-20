@@ -2,6 +2,8 @@
 import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 
+import { Script } from "../renderer/script.mjs";
+
 //TODO: loading (below)
 class ui_menuSplash{
 	static draw(ctx){
@@ -9,6 +11,50 @@ class ui_menuSplash{
 		ctx.fillText("Splash",32,32);
 	}
 	static click(e){
+		//--
+		/*{
+			text:"abc def, etc",//text to display
+			speech:"talk|exclaim|think",//speech bubble
+			left:"abc",//character + expression on LHS
+			right:"def",//character + expression on RHS
+			talk:"left|right"//which character is highlighted (and has speech bubble pointing at them)
+		}*/
+		
+		Script.start([
+		
+		`text|{
+			"text":"abc def, etc",
+			"speech":"talk",
+			"left":"chA",
+			"right":"chB",
+			"talk":"left"
+		}`,
+		`text|{
+			"text":"some other text",
+			"speech":"talk",
+			"left":"chA",
+			"right":"chB",
+			"talk":"right"
+		}`,
+		`text|{
+			"text":"exclaim!!",
+			"speech":"exclaim",
+			"left":"chA",
+			"right":"chB",
+			"talk":"right"
+		}`,
+		`text|{
+			"text":"... now thinking ...",
+			"speech":"think",
+			"left":"chA",
+			"right":"chB",
+			"talk":"left"
+		}`,
+		"done|"
+		]);
+		//--
+		
+		
 		Menu.setMenuState(MENU_STATE.CHARACTER);
 	}
 }

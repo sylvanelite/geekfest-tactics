@@ -24,6 +24,74 @@ class Script{
 	static #curScriptPosition = 0;
 	static #isRunning = false;
 	
+	static #sprites = {
+		bg: Renderer.getSprite(
+						'ui/script_bg.png',
+						0,0,
+						960,540,
+						0,0
+					),
+		speech_talk_left: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						0,0
+					),
+		speech_exclaim_left: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						128,0
+					),
+		speech_think_left: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						256,0
+					),
+		speech_talk_right: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						0,128
+					),
+		speech_exclaim_right: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						128,128
+					),
+		speech_think_right: Renderer.getSprite(
+						'ui/script_bubble.png',
+						0,0,
+						128,128,
+						256,128
+					),
+		chA: Renderer.getSprite(
+						'ui/script_ch.png',
+						0,0,
+						128,128,
+						0,0
+					),
+		chB: Renderer.getSprite(
+						'ui/script_ch.png',
+						0,0,
+						128,128,
+						128,0
+					),
+		chC: Renderer.getSprite(
+						'ui/script_ch.png',
+						0,0,
+						128,128,
+						256,0
+					),
+		chD: Renderer.getSprite(
+						'ui/script_ch.png',
+						0,0,
+						128,128,
+						384,0
+					),
+	};
 	
 	//goes from the curScriptPosition -> the next break in rendering, calling "callback" on each line
 	//returns the index of the last line rendered
@@ -56,10 +124,12 @@ class Script{
 		const [kind,data] = line.split("|");
 		switch(kind){
 			case SCRIPT_KIND.TEXT:
+				const json = JSON.parse(data);
 				return {
 					kind,
-					text:data,
-					stopRendering:false,
+					data:json,
+					text:json.text,
+					stopRendering:true,
 					hasRender:true
 				};
 				break;
@@ -78,6 +148,37 @@ class Script{
 	
 	//render goes from the current position to the next script point that needs input 
 	static draw(ctx){//canvas context
+		//TODO: draw sprite (background)
+		//      draw left, right character
+		//      draw speech bubble
+		/*
+		text|{
+			text:"abc def, etc",//text to display
+			speech:"talk|exclaim|think",//speech bubble
+			left:"abc",//character + expression on LHS
+			right:"def",//character + expression on RHS
+			talk:"left|right"//which character is highlighted (and has speech bubble pointing at them)
+		}
+		//TODO: maybe add BG to text? 
+		//      maybe add SFX to text?
+		*/
+		//draw order:
+		/*
+		-bg
+		-text box -3
+		-fade layer
+		-text box -2
+		-fade layer
+		-text box -1
+		-non-active portrait
+		-fade layer
+		-active portrait
+		-active text
+		*/
+		ctx.fillStyle = "rgba(200,200,200,0.1)";
+		Renderer.drawSprite(Script.#sprites.bg,ctx);
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+	
 		const textPos = {x:255,y:150};
 		const lines = [];
 		const callback = (s)=>{
@@ -89,7 +190,7 @@ class Script{
 			}
 		};
 		Script.#scrollThroughLines(callback);
-		
+		if(!lines.length){return};
 		if(Script.#renderIdx==0&&Script.#renderLineIdx==0){
 			//TODO: use this hash to ID audio snippets 
 			const blockText = lines.map((x)=>{
@@ -107,10 +208,25 @@ class Script{
 				}
 				return((a+(a<<15)&4294967295)>>>0).toString(16);
 			};
-			console.log("audio snippet text:",hash(blockText),blockText);
+			//console.log("audio snippet text:",hash(blockText),blockText);
 			//Audio.PlayScriptLine(hash(blockText));
 		}
-		let line = lines[Script.#renderLineIdx];
+		//render previous text by looking at lines[Script.#renderLineIdx-<some amount>]
+		//push them up, and fade to black 
+		for(let i=-3;i<0;i+=1){
+			if(Script.#renderLineIdx+i>=0){
+				const prevLine = lines[Script.#renderLineIdx+i];
+				prevLine.y+=64*i;//TODO: correct offset for past text
+				const bubbleName = "speech_"+prevLine.data.speech+"_"+prevLine.data.talk;//e.g. speech_talk_left
+				const bubble = Script.#sprites[bubbleName];
+				bubble.y=prevLine.y;
+				bubble.x=prevLine.x;
+				Renderer.drawSprite(bubble,ctx);
+				Text.drawBitmapText(ctx,prevLine.text, prevLine.x, prevLine.y);
+			}
+			ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		}
+		const line = lines[Script.#renderLineIdx];
 		Script.#renderIdx+=0.5;
 		if(Script.#renderIdx+1>=line.text.length){
 			//since this is used for substring, it needs to go up to length, not len-1
@@ -124,35 +240,46 @@ class Script{
 				Script.#renderIdx=0;//moved to next line, reset position
 			}
 		}
-		let lineIdx = 0;
-		for(const line of lines){
-			if(lineIdx>Script.#renderLineIdx){
-				break;//not up to this line yet
-			}
-			if(lineIdx == Script.#renderLineIdx){
-				let lineText = line.text.substring(0,Math.floor(Script.#renderIdx));
-				Text.drawBitmapText(ctx,lineText, line.x, line.y);
-				//bounce in the next character
-				const linDim = Text.getBitmapTextDimensions(ctx,lineText);
-				if(Math.floor(Script.#renderIdx)<line.text.length){
-					const fract = Script.#renderIdx * 10 % 10 /10;
-					Text.drawBitmapText(ctx,
-						line.text.charAt(Math.floor(Script.#renderIdx)+1), 
-						line.x+linDim.width, line.y-6*(1-fract));
-				}
-			}
-			if(lineIdx < Script.#renderLineIdx){
-				Text.drawBitmapText(ctx,line.text, line.x, line.y);
-			}
-			lineIdx+=1;
+		//draw non-active ch
+		const ch_left = Script.#sprites[line.data.left];
+		const ch_right = Script.#sprites[line.data.right];
+		ch_left.x = 200;//TODO: ch positions
+		ch_right.x = 600;//TODO: ch positions
+		ch_left.y = 270;//TODO: ch positions
+		ch_right.y = 270;//TODO: ch positions
+		if(line.data.talk=="left"){
+		Renderer.drawSprite(ch_left,ctx);
+		}else{
+		Renderer.drawSprite(ch_right,ctx);
+		}
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		if(line.data.talk=="left"){
+		Renderer.drawSprite(ch_right,ctx);
+		}else{
+		Renderer.drawSprite(ch_left,ctx);
+		}
+		//draw current line
+		const bubbleName = "speech_"+line.data.speech+"_"+line.data.talk;//e.g. speech_talk_left
+		const bubble = Script.#sprites[bubbleName];
+		bubble.y=line.y;
+		bubble.x=line.x;
+		Renderer.drawSprite(bubble,ctx);
+		let lineText = line.text.substring(0,Math.floor(Script.#renderIdx));
+		Text.drawBitmapText(ctx,lineText, line.x, line.y);
+		//bounce in the next character
+		const linDim = Text.getBitmapTextDimensions(ctx,lineText);
+		if(Math.floor(Script.#renderIdx)<line.text.length){
+			const fract = Script.#renderIdx * 10 % 10 /10;
+			Text.drawBitmapText(ctx,
+				line.text.charAt(Math.floor(Script.#renderIdx)+1), 
+				line.x+linDim.width, line.y-6*(1-fract));
 		}
 	}
 	static #renderLine(ctx,s,textPos){
 		let text = [];
-		//text, choice, action, show
 		switch(s.kind){
 			case SCRIPT_KIND.TEXT:
-				text.push({text:s.text,x:textPos.x,y:textPos.y});
+				text.push({text:s.text,x:textPos.x,y:textPos.y,data:s.data});
 				textPos.y+=15;
 				break;
 			default:
@@ -165,7 +292,8 @@ class Script{
 	static click(e){
 		//TODO: maybe do skip on right click?
 		const action = Script.#getCurrentWaitingAction();
-		switch(s.kind){
+		console.log(action);
+		switch(action.kind){
 			case SCRIPT_KIND.TEXT:
 				Script.#actionContinue();
 				break;

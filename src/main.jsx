@@ -77,6 +77,7 @@ class Logic{
 			return;
 		}
 		if(Script.isRunning()){
+			Script.click(e);
 			return;
 		}
 		if(Animator.isRunning()){
