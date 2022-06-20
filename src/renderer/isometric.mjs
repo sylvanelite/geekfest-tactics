@@ -74,6 +74,6 @@ class Isometric{
 	}
 	
 }
-window.Isometric = Isometric;
+
 
 export {Isometric};

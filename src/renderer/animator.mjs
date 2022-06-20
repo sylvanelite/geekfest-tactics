@@ -70,22 +70,23 @@ class Animator{
 	static draw_Battle(ctx,animation){
 		const initialIso = Isometric.SCALE;//test juice by scaling
 		//TODO: apply panning, don't just zoom to the middle?
+		const zoomAmount = 1.1;//TODO: don't do animation until after zoom is fully in
 		//zooming in
 		if(animation.duration<animation.totalDuration/4){
 			const lerpPercent = (animation.duration)/(animation.totalDuration/4);
-			const lerpAmount = Animator.lerp(initialIso,initialIso*1.5,lerpPercent);
+			const lerpAmount = Animator.lerp(initialIso,initialIso*zoomAmount,lerpPercent);
 			Isometric.setScale(lerpAmount);
 		}
 		//zooming out
 		if(animation.duration>animation.totalDuration*(3/4)){
 			const lerpPercent = (animation.duration-animation.totalDuration*(3/4))/(animation.totalDuration/4);
-			const lerpAmount = Animator.lerp(initialIso*1.5,initialIso,lerpPercent);
+			const lerpAmount = Animator.lerp(initialIso*zoomAmount,initialIso,lerpPercent);
 			Isometric.setScale(lerpAmount);
 		}
 		//zoomed
 		if(animation.duration>=animation.totalDuration/4&&
 			animation.duration<=animation.totalDuration*(3/4)){
-			Isometric.setScale(initialIso*1.5);
+			Isometric.setScale(initialIso*zoomAmount);
 		}
 		
 		ui_background.drawTerrain(ctx);
