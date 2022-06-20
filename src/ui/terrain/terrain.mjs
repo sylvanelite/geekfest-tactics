@@ -35,7 +35,7 @@ class Terrain {
 		for(const sprName of terrainTiles){
 			const spritesheet = terrainAtlas.iso_sprites[sprName];
 			res.push(Renderer.getSprite(
-				'TERRAIN.spritesheet/iso_sprites.png',
+				'terrain_spritesheet/iso_sprites.png',
 				screen.x-(spritesheet.width*Isometric.SCALE)/2,screen.y,
 				spritesheet.width,spritesheet.height,
 				spritesheet.x,spritesheet.y
@@ -45,7 +45,8 @@ class Terrain {
 	}
 	
 	static setTerrainMapData(mapData){
-		map_data = mapData;
+		map_data = mapData.terrain;
+		Isometric.setScale(mapData.scale);
 	}
 }
 

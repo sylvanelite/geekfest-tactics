@@ -15,7 +15,8 @@ class st_Character{//"st" prefix indicates it's struct-like.
 	  );
 	}
 	
-	constructor(){
+	constructor(ch){
+		
 		this.hp=1;
 		this.atk=5;
 		this.point_xy=0;
@@ -53,6 +54,13 @@ class st_Character{//"st" prefix indicates it's struct-like.
 		
 		//for UI purposes, to track ch between state transitionas
 		this.id = st_Character.#generateId();
+		//constructor
+		if(ch){
+			const keys = Object.keys(ch);
+			for(const key of keys){
+				this[key] = ch[key];
+			}
+		}
 	}
 }
 const cbt_NULL_CHARACTER = new st_Character();//NOTE: don't compare to null directly, compare player_state instead.
