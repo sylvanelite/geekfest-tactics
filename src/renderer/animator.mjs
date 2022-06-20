@@ -70,7 +70,7 @@ class Animator{
 		const initialIso = Isometric.SCALE;//test juice by scaling
 		//TODO: apply panning, don't just zoom to the middle?
 		const zoomAmount = 1.05;
-		//zooming in
+		//zooming in (//TODO: easing?)
 		if(animation.duration<animation.totalDuration/6){
 			const lerpPercent = (animation.duration)/(animation.totalDuration/6);
 			const lerpAmount = Animator.lerp(initialIso,initialIso*zoomAmount,lerpPercent);
@@ -94,7 +94,7 @@ class Animator{
 			//lerp to destination
 			const [startx,starty] = Bit.GET_XY(ch.point_xy);
 			const [endx,endy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
-			const duration = animation.duration/animation.totalDuration;
+			const duration = (animation.duration-(animation.totalDuration*(2/6)))/(animation.totalDuration*(4/6));
 			const lerpx = Animator.lerp(startx,endx,duration);
 			const lerpy = Animator.lerp(starty,endy,duration);
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
