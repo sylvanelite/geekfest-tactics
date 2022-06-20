@@ -18,8 +18,7 @@ import { Text } from "./text.js";
 //import { SFX } from "./data/AudioData.js";
 
 class Script{
-	static #renderLineIdx = 0;//when rendering text, which line is the current one to fade in
-	static #renderIdx = 0;//which character within the line
+	static #renderCharacterIdx = 0;//which character within the line
 	static #curScript = null;
 	static #curScriptPosition = 0;
 	static #isRunning = false;
@@ -93,22 +92,17 @@ class Script{
 					),
 	};
 	
-	//goes from the curScriptPosition -> the next break in rendering, calling "callback" on each line
-	//returns the index of the last line rendered
-	static #scrollThroughLines(callback){
+	static #getCurrentLines(){
+		const res = [];
 		const script = Script.#curScript;
-		let lastLine = Script.#curScriptPosition;
-		for(let i = Script.#curScriptPosition;i<script.length;i+=1){
+		for(let i=0;i<script.length&& i<= Script.#curScriptPosition;i+=1){
 			const line = script[i];
 			const s = Script.parseLine(line);
-			callback(s);
-			if(s.stopRendering){
-				return i;//should alway reach a break in rendering
+			if(s.hasRender){
+				res.push(s);
 			}
-			lastLine = i;
 		}
-		console.warn("fell through script",lastLine);
-		return lastLine;
+		return res;
 	}
 	
 	static isRunning(){
@@ -180,18 +174,9 @@ class Script{
 		ctx.fillRect(0,0,Renderer.width,Renderer.height);
 	
 		const textPos = {x:255,y:150};
-		const lines = [];
-		const callback = (s)=>{
-			if(s.hasRender){
-				const text = Script.#renderLine(ctx,s,textPos);
-				for(const txt of text){
-					lines.push(txt);
-				}
-			}
-		};
-		Script.#scrollThroughLines(callback);
+		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
-		if(Script.#renderIdx==0&&Script.#renderLineIdx==0){
+		if(Script.#renderCharacterIdx==0){
 			//TODO: use this hash to ID audio snippets 
 			const blockText = lines.map((x)=>{
 				return x.text;
@@ -211,11 +196,11 @@ class Script{
 			//console.log("audio snippet text:",hash(blockText),blockText);
 			//Audio.PlayScriptLine(hash(blockText));
 		}
-		//render previous text by looking at lines[Script.#renderLineIdx-<some amount>]
+		//render previous text by looking at lines[Script.#curScriptPosition-<some amount>]
 		//push them up, and fade to black 
 		for(let i=-3;i<0;i+=1){
-			if(Script.#renderLineIdx+i>=0){
-				const prevLine = lines[Script.#renderLineIdx+i];
+			if(Script.#curScriptPosition+i>=0){
+				const prevLine = lines[Script.#curScriptPosition+i];
 				prevLine.y+=64*i;//TODO: correct offset for past text
 				const bubbleName = "speech_"+prevLine.data.speech+"_"+prevLine.data.talk;//e.g. speech_talk_left
 				const bubble = Script.#sprites[bubbleName];
@@ -226,19 +211,10 @@ class Script{
 			}
 			ctx.fillRect(0,0,Renderer.width,Renderer.height);
 		}
-		const line = lines[Script.#renderLineIdx];
-		Script.#renderIdx+=0.5;
-		if(Script.#renderIdx+1>=line.text.length){
-			//since this is used for substring, it needs to go up to length, not len-1
-			Script.#renderIdx = line.text.length;
-			//reached end of a line, progress to next line
-			Script.#renderLineIdx+=1;
-			if(Script.#renderLineIdx>=lines.length){
-				//don't go past end of all lines
-				Script.#renderLineIdx=lines.length-1;
-			}else{
-				Script.#renderIdx=0;//moved to next line, reset position
-			}
+		const line = lines[Script.#curScriptPosition];
+		Script.#renderCharacterIdx+=0.5;
+		if(Script.#renderCharacterIdx+1>=line.text.length){
+			Script.#renderCharacterIdx = line.text.length;
 		}
 		//draw non-active ch
 		const ch_left = Script.#sprites[line.data.left];
@@ -264,14 +240,14 @@ class Script{
 		bubble.y=line.y;
 		bubble.x=line.x;
 		Renderer.drawSprite(bubble,ctx);
-		let lineText = line.text.substring(0,Math.floor(Script.#renderIdx));
+		let lineText = line.text.substring(0,Math.floor(Script.#renderCharacterIdx));
 		Text.drawBitmapText(ctx,lineText, line.x, line.y);
 		//bounce in the next character
 		const linDim = Text.getBitmapTextDimensions(ctx,lineText);
-		if(Math.floor(Script.#renderIdx)<line.text.length){
-			const fract = Script.#renderIdx * 10 % 10 /10;
+		if(Math.floor(Script.#renderCharacterIdx)<line.text.length){
+			const fract = Script.#renderCharacterIdx * 10 % 10 /10;
 			Text.drawBitmapText(ctx,
-				line.text.charAt(Math.floor(Script.#renderIdx)+1), 
+				line.text.charAt(Math.floor(Script.#renderCharacterIdx)+1), 
 				line.x+linDim.width, line.y-6*(1-fract));
 		}
 	}
@@ -306,23 +282,20 @@ class Script{
 	}
 	//when the script is waiting for input (stopRendering), return the script option at that spot
 	static #getCurrentWaitingAction(){
-		const waitingIdx =Script.#scrollThroughLines(()=>{});
-		const line= Script.#curScript[waitingIdx];
+		const line= Script.#curScript[Script.#curScriptPosition];
 		const s= Script.parseLine(line);
 		return s;
 	}
 	//actions
 	static #actionContinue(){
 		//progress past pause
-		Script.#renderLineIdx = 0;
-		Script.#renderIdx = 0;
-		Script.#curScriptPosition =Script.#scrollThroughLines(()=>{})+1;
+		Script.#renderCharacterIdx = 0;
+		Script.#curScriptPosition =Script.#curScriptPosition+1;
 		//Audio.PlaySFX(SFX.click);
 	}
 	static #actionDone(){
 		//end the script
-		Script.#renderLineIdx = 0;
-		Script.#renderIdx = 0;
+		Script.#renderCharacterIdx = 0;
 		Script.#curScript = null;
 		Script.#curScriptPosition = 0;
 		Script.#isRunning = false;
