@@ -146,7 +146,7 @@ class Script{
 		Renderer.drawSprite(Script.#sprites.bg,ctx);
 		ctx.fillRect(0,0,Renderer.width,Renderer.height);
 	
-		const textPos = {x:355,y:150};
+		const textPos = {x:355,y:150,xOff:8,yOff:64};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
 		if(Script.#renderCharacterIdx==0){
@@ -174,16 +174,20 @@ class Script{
 		for(let i=-3;i<0;i+=1){
 			if(Script.#curScriptPosition+i>=0){
 				const prevLine = lines[Script.#curScriptPosition+i];
+				prevLine.x = textPos.x+(prevLine.talk=="left"?0:100);
+				prevLine.y = textPos.y+64*i;//'i' is negative, so this is 200-64 
 				const bubbleName = "speech_"+prevLine.speech+"_"+prevLine.talk;//e.g. speech_talk_left
 				const bubble = Script.#sprites[bubbleName];
-				bubble.y=textPos.y+64*i;//'i' is negative, so this is 200-64 
-				bubble.x=textPos.x+(prevLine.talk=="left"?0:100);
+				bubble.y=prevLine.y;
+				bubble.x=prevLine.x;
 				Renderer.drawSprite(bubble,ctx);
-				Text.drawBitmapText(ctx,prevLine.text, prevLine.x, prevLine.y);
+				Text.drawBitmapText(ctx,prevLine.text, prevLine.x+textPos.xOff, prevLine.y+textPos.yOff);
 			}
 			ctx.fillRect(0,0,Renderer.width,Renderer.height);
 		}
 		const line = lines[Script.#curScriptPosition];
+		line.x = textPos.x+(line.talk=="left"?0:100);
+		line.y = textPos.y;
 		Script.#renderCharacterIdx+=0.5;
 		if(Script.#renderCharacterIdx+1>=line.text.length){
 			Script.#renderCharacterIdx = line.text.length;
@@ -209,18 +213,18 @@ class Script{
 		//draw current line
 		const bubbleName = "speech_"+line.speech+"_"+line.talk;//e.g. speech_talk_left
 		const bubble = Script.#sprites[bubbleName];
-		bubble.y=textPos.y;
-		bubble.x=textPos.x+(line.talk=="left"?0:100);
+		bubble.y=line.y;
+		bubble.x=line.x;
 		Renderer.drawSprite(bubble,ctx);
 		let lineText = line.text.substring(0,Math.floor(Script.#renderCharacterIdx));
-		Text.drawBitmapText(ctx,lineText, line.x, line.y);
+		Text.drawBitmapText(ctx,lineText, line.x+textPos.xOff, line.y+textPos.yOff);
 		//bounce in the next character
 		const linDim = Text.getBitmapTextDimensions(ctx,lineText);
 		if(Math.floor(Script.#renderCharacterIdx)<line.text.length){
 			const fract = Script.#renderCharacterIdx * 10 % 10 /10;
 			Text.drawBitmapText(ctx,
 				line.text.charAt(Math.floor(Script.#renderCharacterIdx)+1), 
-				line.x+linDim.width, line.y-6*(1-fract));
+				line.x+linDim.width+textPos.xOff, line.y-6*(1-fract)+textPos.yOff);
 		}
 	}
 	
