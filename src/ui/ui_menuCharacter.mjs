@@ -235,6 +235,11 @@ class ui_menuCharacter{
 	},
 		
 	];
+	static getCharacters(){
+		//used by the map stage to load characters into the game
+		//should not be exposed otherwise
+		return ui_menuCharacter.#ch;
+	}
 	
 	static #sprites = {
 		btn_character:Renderer.getSprite(

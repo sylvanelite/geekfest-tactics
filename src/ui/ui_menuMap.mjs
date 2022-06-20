@@ -4,8 +4,9 @@ import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Network }from '../renderer/network.mjs';
 import { Sy_api } from "../state/api.mjs";
 import { Terrain } from "../ui/terrain/terrain.mjs";
+import { cbt_ENEMY,cbt_PLAYER } from "../state/consts.mjs";
 import { MapData,MAP_KIND } from "../ui/map/mapData.mjs";
-
+import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 
 class ui_menuMap{
 	static #sprites = {
@@ -27,7 +28,6 @@ class ui_menuMap{
 		),
 	};
 	static #hostId = "";
-	static #selectedMap = 0;
 	
 	static draw(ctx){
 		Renderer.drawSprite(ui_menuMap.#sprites.bg_map,ctx);
@@ -52,7 +52,7 @@ class ui_menuMap{
 		//TODO: select a map, set terrain
 		
 		//disable until selecting a map
-		if(ui_menuMap.#selectedMap<0){
+		if(ui_menuMap.#selectedLevel<0){
 			alert("plese select a map before starting a game");
 			return;
 		}
@@ -95,6 +95,22 @@ class ui_menuMap{
 				Script.start(levelData.script);
 			}
 			Terrain.setTerrainMapData(levelData.display);
+			//load player characters into units 
+			//NOTE: if you are joining a network game, your characters need to be loaded with state cbt_ENEMY
+			const characters = ui_menuCharacter.getCharacters();
+			const units = levelData.units.filter(x=>{return x.player_state == cbt_PLAYER});
+			if(units.length!=characters.length){console.warn("mismatch in ch length. lvl:",ui_menuMap.#selectedArea,ui_menuMap.#selectedLevel);}
+			for(let i=0;i<characters.length&&i<units.length;i+=1){
+				const ch = characters[i];
+				const unit = units[i];
+				//patch the map units with props from the ch state
+				//note, the ch obj has prefixed names while the portrait state does not.
+				const keys = Object.keys(ch);
+				for(const key of keys){
+					unit["sprite_"+key] = ch[key];
+				}
+			}
+			
 			Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
 			Menu.setMenuState(MENU_STATE.PLAYING);
 		}
@@ -113,7 +129,7 @@ class ui_menuMap{
 	}
 	
 	static #selectedArea = 'manga';
-	static #selectedLevel = 0;
+	static #selectedLevel = 0;//TODO: set to -1 on init?
 	//TODO apply levels?
 	static #maxMangaUnlocked = 2;//TODO: load/save unlock, and increment on win?
 	static #maxAnimeUnlocked = 0;
