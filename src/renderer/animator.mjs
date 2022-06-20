@@ -70,7 +70,7 @@ class Animator{
 	static draw_Battle(ctx,animation){
 		const initialIso = Isometric.SCALE;//test juice by scaling
 		//TODO: apply panning, don't just zoom to the middle?
-		const zoomAmount = 1.1;//TODO: don't do animation until after zoom is fully in
+		const zoomAmount = 1.1;
 		//zooming in
 		if(animation.duration<animation.totalDuration/4){
 			const lerpPercent = (animation.duration)/(animation.totalDuration/4);
@@ -101,7 +101,9 @@ class Animator{
 			ui_background.drawUnitAtPosition(ctx,ch,lerpx,lerpy);
 		};
 		//TODO: could also reset player 'hasMoved' state
-		
+		//don't do animation until after zoom is fully in
+		if(animation.duration>=animation.totalDuration/4&&
+			animation.duration<=animation.totalDuration*(3/4)){
 		//need to render defending unit if it's damage has already been calced
 		const [dx,dy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
 		const defUnit = Sy_api.api_getCharacterAtPosition(dx,dy);
@@ -112,7 +114,7 @@ class Animator{
 		};
 		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		defUnit.player_state = defState;
-		
+		}
 		
 		Isometric.setScale(initialIso);
 	}
