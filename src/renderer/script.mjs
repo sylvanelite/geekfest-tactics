@@ -8,10 +8,6 @@
 //old text bubbles
 //wipe out
 
-const SCRIPT_KIND = {
-	TEXT:"text",
-	DONE:"done",
-};
 import { Renderer } from "./renderer.js";
 import { Text } from "./text.js";
 //import { Audio } from "./audio/audio.js";
@@ -98,9 +94,7 @@ class Script{
 		for(let i=0;i<script.length&& i<= Script.#curScriptPosition;i+=1){
 			const line = script[i];
 			const s = Script.parseLine(line);
-			if(s.hasRender){
-				res.push(s);
-			}
+			res.push(s);
 		}
 		return res;
 	}
@@ -115,29 +109,11 @@ class Script{
 		Script.#isRunning = true;
 	}
 	static parseLine(line){
-		const [kind,data] = line.split("|");
-		switch(kind){
-			case SCRIPT_KIND.TEXT:
-				const json = JSON.parse(data);
-				return {
-					kind,
-					data:json,
-					text:json.text,
-					stopRendering:true,
-					hasRender:true
-				};
-				break;
-			case SCRIPT_KIND.DONE:
-				return {
-					kind,//no data for done
-					stopRendering:true,
-					hasRender:false
-				};
-				break;
-			default:
-				console.warn("unknown script: ",line);
-				return {kind:'unknown'};
-		}
+		const json = JSON.parse(line);
+		return {
+			data:json,
+			text:json.text
+		};
 	}
 	
 	//render goes from the current position to the next script point that needs input 

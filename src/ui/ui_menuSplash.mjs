@@ -22,28 +22,28 @@ class ui_menuSplash{
 		
 		Script.start([
 		
-		`text|{
+		`{
 			"text":"abc def, etc",
 			"speech":"talk",
 			"left":"chA",
 			"right":"chB",
 			"talk":"left"
 		}`,
-		`text|{
+		`{
 			"text":"some other text",
 			"speech":"talk",
 			"left":"chA",
 			"right":"chB",
 			"talk":"right"
 		}`,
-		`text|{
+		`{
 			"text":"exclaim!!",
 			"speech":"exclaim",
 			"left":"chA",
 			"right":"chB",
 			"talk":"right"
 		}`,
-		`text|{
+		`{
 			"text":"... now thinking ...",
 			"speech":"think",
 			"left":"chA",
