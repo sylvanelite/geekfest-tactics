@@ -35,13 +35,17 @@ class Terrain {
 		for(const sprName of terrainTiles){
 			const spritesheet = terrainAtlas.iso_sprites[sprName];
 			res.push(Renderer.getSprite(
-				'terrain_spritesheet/iso_sprites.png',
+				'TERRAIN.spritesheet/iso_sprites.png',
 				screen.x-(spritesheet.width*Isometric.SCALE)/2,screen.y,
 				spritesheet.width,spritesheet.height,
 				spritesheet.x,spritesheet.y
 			));
 		}
 		return res;
+	}
+	
+	static setTerrainMapData(mapData){
+		map_data = mapData;
 	}
 }
 
@@ -51,7 +55,7 @@ const getIdx = (x,y)=>{
 };
 //TODO: when selecting map, populate terrain images here too
 //      when setting map, also shuffle vaules in [tileLookup]
-const map_data=[
+let map_data=[
 [12     ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],
 [12     ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],
 [12     ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],[1      ],
@@ -61,22 +65,24 @@ const map_data=[
 ];
 
 
-const TERRAIN_NONE = -1;//todo
-const TERRAIN_WALL = 99;//todo
-const TERRAIN_BRICK = 1;
-const TERRAIN_DIRT = 2;
-const TERRAIN_FOLIAGE = 3;
-const TERRAIN_GRASS = 4;
-const TERRAIN_LAVA = 5;
-const TERRAIN_LOW = 6;
-const TERRAIN_OVERLAY = 7;
-const TERRAIN_SAND = 8;
-const TERRAIN_SKIN = 9;
-const TERRAIN_SNOW = 10;
-const TERRAIN_STONE = 11;
-const TERRAIN_WATER = 12;//animation sub folder?
-const TERRAIN_WOOD = 13;
-const TERRAIN_ROAD = 14;//TODO: autotile
+const TERRAIN={
+    NONE : -1,//todo
+    WALL : 99,//todo
+    BRICK : 1,
+    DIRT : 2,
+    FOLIAGE : 3,
+    GRASS : 4,
+    LAVA : 5,
+    LOW : 6,
+    OVERLAY : 7,
+    SAND : 8,
+    SKIN : 9,
+    SNOW : 10,
+    STONE : 11,
+    WATER : 12,//animation sub folder?
+    WOOD : 13,
+    ROAD : 14,//TODO: autotile
+}
 
 const tileLookup = {
 	brick:['ISO_Tile_Brick_Brick_02',
@@ -240,36 +246,36 @@ class Autotiler {
 		const res = [];
 		for(const tile of tiles){
 			switch(tile){
-				//TERRAIN_NONE
-				case TERRAIN_WALL://TODO
+				//TERRAIN.NONE
+				case TERRAIN.WALL://TODO
 				break;
-				case TERRAIN_BRICK:res.push(tileLookup.brick[0]);
+				case TERRAIN.BRICK:res.push(tileLookup.brick[0]);
 				break;
-				case TERRAIN_DIRT:res.push(tileLookup.dirt[0]);
+				case TERRAIN.DIRT:res.push(tileLookup.dirt[0]);
 				break;
-				case TERRAIN_FOLIAGE:res.push(tileLookup.foliage[0]);
+				case TERRAIN.FOLIAGE:res.push(tileLookup.foliage[0]);
 				break;
-				case TERRAIN_GRASS:res.push(tileLookup.grass[0]);
+				case TERRAIN.GRASS:res.push(tileLookup.grass[0]);
 				break;
-				case TERRAIN_LAVA:res.push(tileLookup.lava[0]);
+				case TERRAIN.LAVA:res.push(tileLookup.lava[0]);
 				break;
-				case TERRAIN_LOW://todo
+				case TERRAIN.LOW://todo
 				break;
-				case TERRAIN_OVERLAY://todo
+				case TERRAIN.OVERLAY://todo
 				break;
-				case TERRAIN_SAND:res.push(tileLookup.sand[0]);
+				case TERRAIN.SAND:res.push(tileLookup.sand[0]);
 				break;
-				case TERRAIN_SKIN:res.push(tileLookup.skin[0]);
+				case TERRAIN.SKIN:res.push(tileLookup.skin[0]);
 				break;
-				case TERRAIN_SNOW:res.push(tileLookup.snow[0]);
+				case TERRAIN.SNOW:res.push(tileLookup.snow[0]);
 				break;
-				case TERRAIN_STONE:res.push(tileLookup.stone[0]);
+				case TERRAIN.STONE:res.push(tileLookup.stone[0]);
 				break;
-				case TERRAIN_WATER:res.push(tileLookup.water[0]);
+				case TERRAIN.WATER:res.push(tileLookup.water[0]);
 				break;
-				case TERRAIN_WOOD:res.push(tileLookup.wood[0]);
+				case TERRAIN.WOOD:res.push(tileLookup.wood[0]);
 				break;
-				case TERRAIN_ROAD://todo
+				case TERRAIN.ROAD://todo
 				break;
 			}
 		}
@@ -283,10 +289,10 @@ class Autotiler {
 		   W/\N
 		   S\/E
 		*/
-		let N = (x+1<MAP_WIDTH && Sy_api.api_getTerrainTile(x+1,y) == TERRAIN_WALL);
-		let S = (x-1>=0 && Sy_api.api_getTerrainTile(x-1,y) == TERRAIN_WALL);
-		let E = (y+1<MAP_HEIGHT && Sy_api.api_getTerrainTile(x,y+1) == TERRAIN_WALL);
-		let W = (y-1>=0 && Sy_api.api_getTerrainTile(x,y-1) == TERRAIN_WALL);
+		let N = (x+1<MAP_WIDTH && Sy_api.api_getTerrainTile(x+1,y) == TERRAIN.WALL);
+		let S = (x-1>=0 && Sy_api.api_getTerrainTile(x-1,y) == TERRAIN.WALL);
+		let E = (y+1<MAP_HEIGHT && Sy_api.api_getTerrainTile(x,y+1) == TERRAIN.WALL);
+		let W = (y-1>=0 && Sy_api.api_getTerrainTile(x,y-1) == TERRAIN.WALL);
 		if(!N&&!E&&!S&&!W){ return "ISO_Fence_01_M1";}// <none>
 		if( N&& E&& S&& W){ return "ISO_Fence_01_C4";} // NSEW
 		if( N&& E&&!S&&!W){ return "ISO_Fence_01_C2E";}// NE
@@ -312,10 +318,10 @@ class Autotiler {
 		   W/\N
 		   S\/E
 		*/
-		let N = (x+1<MAP_WIDTH && Sy_api.api_getTerrainTile(x+1,y) == TERRAIN_ROAD);
-		let S = (x-1>=0 && Sy_api.api_getTerrainTile(x-1,y) == TERRAIN_ROAD);
-		let E = (y+1<MAP_HEIGHT && Sy_api.api_getTerrainTile(x,y+1) == TERRAIN_ROAD);
-		let W = (y-1>=0 && Sy_api.api_getTerrainTile(x,y-1) == TERRAIN_ROAD);
+		let N = (x+1<MAP_WIDTH && Sy_api.api_getTerrainTile(x+1,y) == TERRAIN.ROAD);
+		let S = (x-1>=0 && Sy_api.api_getTerrainTile(x-1,y) == TERRAIN.ROAD);
+		let E = (y+1<MAP_HEIGHT && Sy_api.api_getTerrainTile(x,y+1) == TERRAIN.ROAD);
+		let W = (y-1>=0 && Sy_api.api_getTerrainTile(x,y-1) == TERRAIN.ROAD);
 		if(!N&&!E&&!S&&!W){ return "ISO_Tile_Dirt_01_GrassPath_Single";}// <none>
 		if( N&& E&& S&& W){ return "ISO_Tile_Dirt_01_GrassPath_4Cross";} // NSEW
 		if( N&& E&& S&&!W){ return "ISO_Tile_Dirt_01_GrassPath_3Cross_01";}// NSE
@@ -417,4 +423,4 @@ class Autotiler {
 }
 
 
-export { Terrain };
+export { Terrain,TERRAIN };

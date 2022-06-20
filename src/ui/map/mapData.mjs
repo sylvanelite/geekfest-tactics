@@ -1,3 +1,8 @@
+import { TERRAIN } from "../terrain/terrain.js";
+import { Bit } from "../../state/bit.mjs";
+import { st_Character, cbt_ENEMY,cbt_PLAYER } from "../../state/consts.mjs";
+import { Sy_api } from "../../state/api.mjs";
+
 
 const MAP_KIND={
 	MANGA:'MANGA',
@@ -7,9 +12,8 @@ const MAP_KIND={
 	MANGA_MULTI:'MANGA_MULTI',
 	ANIME_MULTI:'ANIME_MULTI',
 	COMIC_MULTI:'COMIC_MULTI',
-	GAME_MULTI:'GAME_MULTI',
-	
-}
+	GAME_MULTI:'GAME_MULTI'
+};
 
 const manga_data = [];
 const anime_data = [];

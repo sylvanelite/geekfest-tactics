@@ -3,8 +3,9 @@ import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Network }from '../renderer/network.mjs';
 import { Sy_api } from "../state/api.mjs";
-import { Bit } from "../state/bit.mjs";
-import { st_Character, cbt_ENEMY,cbt_PLAYER } from "../state/consts.mjs";
+import { Terrain } from "../ui/terrain/terrain.mjs";
+import { MapData,MAP_KIND } from "../ui/map/mapData.mjs";
+
 
 class ui_menuMap{
 	static #sprites = {
@@ -57,9 +58,44 @@ class ui_menuMap{
 		}
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
 			//start game, apply stats
-			const terrain = ui_menuMap.getTerrain();
-			const units = ui_menuMap.getUnits();
-			Sy_api.api_generateRoom(42,terrain,units);
+			let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
+			const nwStatus = Network.getStatus();
+			const isLocal = (nwStatus=="disabled");
+			switch(ui_menuMap.#selectedArea){
+				case 'manga':
+					if(isLocal){
+						levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
+					}else{
+						levelData = MapData.getMapData(MAP_KIND.MANGA_MULTI,ui_menuMap.#selectedLevel);
+					}
+					break;
+				case 'anime':
+					if(isLocal){
+						levelData = MapData.getMapData(MAP_KIND.ANIME,ui_menuMap.#selectedLevel);
+					}else{
+						levelData = MapData.getMapData(MAP_KIND.ANIME_MULTI,ui_menuMap.#selectedLevel);
+					}
+					break;
+				case 'game':
+					if(isLocal){
+						levelData = MapData.getMapData(MAP_KIND.GAME,ui_menuMap.#selectedLevel);
+					}else{
+						levelData = MapData.getMapData(MAP_KIND.GAME_MULTI,ui_menuMap.#selectedLevel);
+					}
+					break;
+				case 'comic':
+					if(isLocal){
+						levelData = MapData.getMapData(MAP_KIND.COMIC,ui_menuMap.#selectedLevel);
+					}else{
+						levelData = MapData.getMapData(MAP_KIND.COMIC_MULTI,ui_menuMap.#selectedLevel);
+					}
+					break;
+			}
+			if(levelData.script){
+				Script.start(levelData.script);
+			}
+			Terrain.setTerrainMapData(levelData.display);
+			Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
 			Menu.setMenuState(MENU_STATE.PLAYING);
 		}
 		//TODO: check if already joining/hosting?
@@ -75,48 +111,68 @@ class ui_menuMap{
 			}
 		}
 	}
-	//TODO: host/join NW implementation buttons
+	
+	static #selectedArea = 'manga';
+	static #selectedLevel = 0;
+	//TODO apply levels?
+	static #maxMangaUnlocked = 2;//TODO: load/save unlock, and increment on win?
+	static #maxAnimeUnlocked = 0;
+	static #maxGameUnlocked = 0;
+	static #maxComicUnlocked = 0;
+	static #selectArea(area){
+		if(area==ui_menuMap.#selectedArea){
+			return;//already selected, nothing to do
+		}
+		ui_menuMap.#selectedArea='manga';//default
+		if(area=="manga"){
+			ui_menuMap.#selectedArea='manga';
+			ui_menuMap.#selectLevel(ui_menuMap.#maxMangaUnlocked);
+		}
+		if(area=="anime"){
+			ui_menuMap.#selectedArea='anime';
+			ui_menuMap.#selectLevel(ui_menuMap.#maxAnimeUnlocked);
+		}
+		if(area=="game"){
+			ui_menuMap.#selectedArea='game';
+			ui_menuMap.#selectLevel(ui_menuMap.#maxGameUnlocked);
+		}
+		if(area=="comic"){
+			ui_menuMap.#selectedArea='comic';
+			ui_menuMap.#selectLevel(ui_menuMap.#maxComicUnlocked);
+		}
+	}
+	static #selectLevel(level){
+		const area = ui_menuMap.#selectedArea;
+		ui_menuMap.#selectedLevel=0;//default
+		if(area=="manga"){
+			if(level>ui_menuMap.#maxMangaUnlocked){
+				level = ui_menuMap.#maxMangaUnlocked;
+			}
+		}
+		if(area=="anime"){
+			if(level>ui_menuMap.#maxAnimeUnlocked){
+				level = ui_menuMap.#maxAnimeUnlocked;
+			}
+		}
+		if(area=="game"){
+			if(level>ui_menuMap.#maxGameUnlocked){
+				level = ui_menuMap.#maxGameUnlocked;
+			}
+		}
+		if(area=="comic"){
+			if(level>ui_menuMap.#maxComicUnlocked){
+				level = ui_menuMap.#maxComicUnlocked;
+			}
+		}
+		ui_menuMap.#selectedLevel=level;
+	}
 	
 	//TODO: actually set the data based on the map
 	static getUnits(){
-		const ch0 = new st_Character();
-		const ch1 = new st_Character();
-		const ch2 = new st_Character();
-		const ch3 = new st_Character();
-
-		ch0.player_state = cbt_PLAYER;
-		ch0.point_xy = Bit.SET_XY(3,4);
-		ch0.mov=10;
-		ch1.player_state = cbt_PLAYER;
-		ch1.point_xy = Bit.SET_XY(2,2);
-		ch1.mov=4;
-		ch2.player_state = cbt_ENEMY;
-		ch2.point_xy = Bit.SET_XY(1,4);
-		ch2.max_range=1;
-		ch2.mov=10;
-		ch3.player_state = cbt_ENEMY;
-		ch3.point_xy = Bit.SET_XY(8,5);
-		ch3.max_range=2;
 		
-		//TODO: if host or single, load from menuCh -> player characters (x5)
-		//      if join, load from menuCh-> enemyCharacters (x5)
-		
-		return [ch0,ch1,ch2,ch3];
 	}
 	static getTerrain(){
-		return {
-			width:9,
-			height:6,
-			fogEnabled:true,
-			terrain:[
-			1 ,1 ,1 ,2 ,1 ,4 ,1 ,1 ,1 ,
-			99,1 ,99,2 ,5 ,1 ,1 ,1 ,1 ,
-			99,1 ,1 ,2 ,1 ,3 ,1 ,1 ,1 ,
-			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,99,
-			1 ,1 ,99,1 ,1 ,1 ,1 ,99,1 ,
-			]
-		};
+		
 	}
 }
 export {ui_menuMap};
