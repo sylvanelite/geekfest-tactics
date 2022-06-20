@@ -425,7 +425,7 @@ class Sy_api {
 			const copy = new st_Character();
 			const keys = Object.keys(copy);
 			for(const key of keys){
-				if(typeof ch[key] === 'object'){console.log(key);continue;}//ignore complex props (specifally sprites)
+				if(typeof ch[key] === 'object'){continue;}//ignore complex props (specifally sprites)
 				copy[key] = ch[key];
 			}
 			chCopy[i] = copy;
