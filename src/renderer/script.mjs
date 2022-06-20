@@ -114,21 +114,9 @@ class Script{
 	}
 	
 	//render goes from the current position to the next script point that needs input 
-	static draw(ctx){//canvas context
-		//TODO: draw sprite (background)
-		//      draw left, right character
-		//      draw speech bubble
-		/*
-		text|{
-			text:"abc def, etc",//text to display
-			speech:"talk|exclaim|think",//speech bubble
-			left:"abc",//character + expression on LHS
-			right:"def",//character + expression on RHS
-			talk:"left|right"//which character is highlighted (and has speech bubble pointing at them)
-		}
-		//TODO: maybe add BG to text? 
-		//      maybe add SFX to text?
-		*/
+	static draw(ctx){
+		//TODO: maybe add BG to text obejct, so that it can change?
+		//      maybe add SFX to text object?
 		//draw order:
 		/*
 		-bg
@@ -137,15 +125,14 @@ class Script{
 		-text box -2
 		-fade layer
 		-text box -1
+		-fade layer
 		-non-active portrait
 		-fade layer
 		-active portrait
 		-active text
 		*/
 		ctx.fillStyle = "rgba(200,200,200,0.2)";
-		Renderer.drawSprite(Script.#sprites.bg,ctx);
-		ctx.fillRect(0,0,Renderer.width,Renderer.height);
-	
+		Renderer.drawSprite(Script.#sprites.bg,ctx);	
 		const textPos = {x:355,y:150,xOff:8,yOff:64};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};

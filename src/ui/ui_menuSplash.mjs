@@ -21,7 +21,6 @@ class ui_menuSplash{
 		}*/
 		
 		Script.start([
-		
 		`{
 			"text":"abc def, etc",
 			"speech":"talk",
