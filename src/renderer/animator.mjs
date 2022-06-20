@@ -22,7 +22,6 @@ class Animator{
 		const animation = Animator.#animations[0];
 		animation.duration +=1;
 		// switch on animation.kind and perform drawing
-		ui_background.drawTerrain(ctx);
 		switch(animation.kind){
 			case ANIMATION.MOVE:
 				Animator.draw_Movement(ctx,animation);
@@ -70,22 +69,22 @@ class Animator{
 	static draw_Battle(ctx,animation){
 		const initialIso = Isometric.SCALE;//test juice by scaling
 		//TODO: apply panning, don't just zoom to the middle?
-		const zoomAmount = 1.1;
+		const zoomAmount = 1.05;
 		//zooming in
-		if(animation.duration<animation.totalDuration/4){
-			const lerpPercent = (animation.duration)/(animation.totalDuration/4);
+		if(animation.duration<animation.totalDuration/6){
+			const lerpPercent = (animation.duration)/(animation.totalDuration/6);
 			const lerpAmount = Animator.lerp(initialIso,initialIso*zoomAmount,lerpPercent);
 			Isometric.setScale(lerpAmount);
 		}
 		//zooming out
-		if(animation.duration>animation.totalDuration*(3/4)){
-			const lerpPercent = (animation.duration-animation.totalDuration*(3/4))/(animation.totalDuration/4);
+		if(animation.duration>animation.totalDuration*(5/6)){
+			const lerpPercent = (animation.duration-animation.totalDuration*(5/6))/(animation.totalDuration/6);
 			const lerpAmount = Animator.lerp(initialIso*zoomAmount,initialIso,lerpPercent);
 			Isometric.setScale(lerpAmount);
 		}
 		//zoomed
-		if(animation.duration>=animation.totalDuration/4&&
-			animation.duration<=animation.totalDuration*(3/4)){
+		if(animation.duration>=animation.totalDuration/6&&
+			animation.duration<=animation.totalDuration*(5/6)){
 			Isometric.setScale(initialIso*zoomAmount);
 		}
 		
@@ -102,19 +101,22 @@ class Animator{
 		};
 		//TODO: could also reset player 'hasMoved' state
 		//don't do animation until after zoom is fully in
-		if(animation.duration>=animation.totalDuration/4&&
-			animation.duration<=animation.totalDuration*(3/4)){
 		//need to render defending unit if it's damage has already been calced
 		const [dx,dy] = Bit.GET_XY(animation.data.tgtCh.point_xy);
 		const defUnit = Sy_api.api_getCharacterAtPosition(dx,dy);
 		const defState = defUnit.player_state;
 		defUnit.player_state = animation.data.targetStats.player_state;
 		const isLerpUnit = (ch)=>{
+			if(!(animation.duration>=animation.totalDuration*(2/6)&&
+			animation.duration<=animation.totalDuration*(4/6))){
+				return false;
+			}
+			
 			return (ch.point_xy == animation.data.ch.point_xy);
 		};
 		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		defUnit.player_state = defState;
-		}
+		
 		
 		Isometric.setScale(initialIso);
 	}
