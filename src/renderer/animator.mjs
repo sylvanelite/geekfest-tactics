@@ -1,6 +1,7 @@
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { ui_background } from '../ui/ui_background.mjs';
+import { Isometric } from "./isometric.mjs";
 
 const ANIMATION = {
 	MOVE:'MOVE',
@@ -67,7 +68,28 @@ class Animator{
 		
 	}
 	static draw_Battle(ctx,animation){
+		const initialIso = Isometric.SCALE;//test juice by scaling
+		//TODO: apply panning, don't just zoom to the middle?
+		//zooming in
+		if(animation.duration<animation.totalDuration/4){
+			const lerpPercent = (animation.duration)/(animation.totalDuration/4);
+			const lerpAmount = Animator.lerp(initialIso,initialIso*1.5,lerpPercent);
+			Isometric.setScale(lerpAmount);
+		}
+		//zooming out
+		if(animation.duration>animation.totalDuration*(3/4)){
+			const lerpPercent = (animation.duration-animation.totalDuration*(3/4))/(animation.totalDuration/4);
+			const lerpAmount = Animator.lerp(initialIso*1.5,initialIso,lerpPercent);
+			Isometric.setScale(lerpAmount);
+		}
+		//zoomed
+		if(animation.duration>=animation.totalDuration/4&&
+			animation.duration<=animation.totalDuration*(3/4)){
+			Isometric.setScale(initialIso*1.5);
+		}
+		
 		ui_background.drawTerrain(ctx);
+		
 		const lerpUnit = (ch)=>{
 			//lerp to destination
 			const [startx,starty] = Bit.GET_XY(ch.point_xy);
@@ -89,6 +111,9 @@ class Animator{
 		};
 		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		defUnit.player_state = defState;
+		
+		
+		Isometric.setScale(initialIso);
 	}
 	static draw_ToggleTurn(ctx,animation){
 		ui_background.drawTerrain(ctx);
