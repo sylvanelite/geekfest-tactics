@@ -49,6 +49,25 @@ const getTorso = (base)=>{
 	};
 };
 const getBackArm = (base)=>{//'back' is the left arm
+	if(base == "3xM"){
+		return {
+			up:{folder:'left_arms',frames:[
+				['back_arm3x_0 '],
+				['back_arm3x_1'],
+				['back_arm3x_2'],
+			]},
+			down:{folder:'left_arms',frames:[
+				['forward_arm3x_0'],
+				['forward_arm3x_1'],
+				['forward_arm3x_2'],
+			]},
+			left:{folder:'left_arms',frames:[
+				['side_arm3x_0'],
+				['side_arm3x_1'],
+				['side_arm3x_2'],
+			]},
+		};
+	}
 	if(base == "1x"){
 		return {
 			up:{folder:'left_arms',frames:[
@@ -110,6 +129,25 @@ const getBackArm = (base)=>{//'back' is the left arm
 	};
 };
 const getFrontArm = (base)=>{//'front' is the right arm
+	if(base == "3xM"){
+		return {
+			up:{folder:'right_arms',frames:[
+				['back_arm3x_2'],
+				['back_arm3x_0 '],
+				['back_arm3x_1'],
+			]},
+			down:{folder:'right_arms',frames:[
+				['forward_arm3x_2'],
+				['forward_arm3x_0'],
+				['forward_arm3x_1'],
+			]},
+			left:{folder:'right_arms',frames:[
+				['side_arm3x_2'],
+				['side_arm3x_0'],
+				['side_arm3x_1'],
+			]},
+		};
+	}
 	if(base == "1x"){
 		return {
 			up:{folder:'right_arms',frames:[
@@ -125,7 +163,7 @@ const getFrontArm = (base)=>{//'front' is the right arm
 			left:{folder:'right_arms',frames:[
 				['side_arm1_2x'],
 				['side_arm1_0x'],
-				['side_arm1_1xg'],
+				['side_arm1_1x'],
 			]},
 		};
 	}
@@ -144,7 +182,7 @@ const getFrontArm = (base)=>{//'front' is the right arm
 			left:{folder:'right_arms',frames:[
 				['side_arm2_2x'],
 				['side_arm2_0x'],
-				['side_arm2_1xg'],
+				['side_arm2_1x'],
 			]},
 		};
 	}
@@ -410,7 +448,7 @@ const portraitLookup = {
 		"back_arm_1":getBackArm('1'),
 		"back_arm_1x":getBackArm('1x'),
 		"back_arm_3":getBackArm('3'),
-		"back_arm_3x":getBackArm('3x'),
+		"back_arm_3x":getBackArm('3xM'),
 		"back_arm_4":getBackArm('4'),
 		"back_arm_4x":getBackArm('4x'),
 		"back_arm_5":getBackArm('5'),
@@ -432,7 +470,7 @@ const portraitLookup = {
 		"front_arm_1":getFrontArm('1'),
 		"front_arm_1x":getFrontArm('1x'),
 		"front_arm_3":getFrontArm('3'),
-		"front_arm_3x":getFrontArm('3x'),
+		"front_arm_3x":getFrontArm('3xM'),
 		"front_arm_4":getFrontArm('4'),
 		"front_arm_4x":getFrontArm('4x'),
 		"front_arm_5":getFrontArm('5'),
