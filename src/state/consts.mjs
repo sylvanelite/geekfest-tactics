@@ -17,15 +17,20 @@ class st_Character{//"st" prefix indicates it's struct-like.
 	
 	constructor(ch){
 		
-		this.hp=1;
-		this.atk=5;
+		this.level=0;
+		this.hp=2;
+		this.max_hp=2;
+		this.atk=1;
 		this.point_xy=0;
 		this.mov=2;
 		this.hasMoved=false;
 		this.player_state=cbt_NO_PLAYER_STATE;
 		this.min_range=1;
-		this.max_range=2;
+		this.max_range=1;
 		this.movCl=st_Character.ch_cl_DEFAULT;
+		
+		//TODO: for display
+		//this.sprite_monster = '';
 		
 		//for display (sprite generation)
 		this.sprite_gender='male';
