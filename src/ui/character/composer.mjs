@@ -357,8 +357,8 @@ class Composer{
 		const res = Renderer.getSprite(
 				'character_spritesheet/portrait/'+sprData.folder+".png",
 				x,y,
-				spritesheet.width*scale,spritesheet.height*scale,
-				spritesheet.x*scale,spritesheet.y*scale
+				Math.round(spritesheet.width*scale),Math.round(spritesheet.height*scale),
+				Math.round(spritesheet.x*scale),Math.round(spritesheet.y*scale)+1
 			);
 		return res;
 	}
