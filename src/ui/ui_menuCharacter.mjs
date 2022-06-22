@@ -334,11 +334,7 @@ class ui_menuCharacter{
 		}
 		ui_menuCharacter.refreshSprites();
 	}
-	static selectWeapon(item){
-		console.log("weapon: ",item);
-	}
 	static shuffleCharacter(){
-		console.log("shuffle");
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const drawOrder = [//'back_arm','torso','front_arm','headgear'
 		'back_hair','head','base_hair',
@@ -603,6 +599,10 @@ class ui_menuCharacter{
 			ui_menuCharacter.composeCharacterSprite(ch);
 		}
 		ui_menuCharacter.composeCharacterPortrait(ui_menuCharacter.#selectedChIdx);
+	}
+	
+	static loadCharacters(load){
+		ui_menuCharacter.#ch = load.characters;
 	}
 }
 //init sprites based on portraits

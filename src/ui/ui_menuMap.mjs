@@ -394,6 +394,8 @@ class ui_menuMap{
 		}
 		
 		Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
+		
+		ui_menuMap.#save();
 	}
 	
 	static #selectedArea = 'manga';
@@ -483,7 +485,26 @@ class ui_menuMap{
 			}
 		}
 	}
-	
+	static #save(){
+		//save the current selections to local storage
+		//TODO: move this into a save/load class?
+		const storage = {
+			version:1,//TODO: could be used in conjuction with localStorave.clearStorage() if data format changes
+			characters:characters,
+			mangaUnlocked:ui_menuMap.#maxMangaUnlocked,
+			animeUnlocked:ui_menuMap.#maxAnimeUnlocked,
+			gameUnlocked:ui_menuMap.#maxGameUnlocked,
+			comicUnlocked:ui_menuMap.#maxComicUnlocked,
+		};
+		const storageStr = JSON.stringify(storage);
+		window.localStorage.setItem('savedata',storageStr);
+	}
+	static loadUnlock(load){
+		ui_menuMap.#maxMangaUnlocked = load.mangaUnlocked;
+		ui_menuMap.#maxAnimeUnlocked = load.animeUnlocked;
+		ui_menuMap.#maxGameUnlocked = load.gameUnlocked;
+		ui_menuMap.#maxComicUnlocked = load.comicUnlocked;
+	}
 }
 //once off init, establish clearing callback
 Menu.setEndCallback(ui_menuMap.clearCurrentLevel);

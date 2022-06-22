@@ -3,6 +3,9 @@ import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 
 import { Script } from "../renderer/script.mjs";
+import { ui_menuMap } from "./ui_menuMap.mjs";
+import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
+
 
 //TODO: loading (below)
 class ui_menuSplash{
@@ -51,6 +54,15 @@ class ui_menuSplash{
 		}`
 		]);
 		//--
+		
+		//TODO: if mouse is over load button
+		const savedDataStr = window.localStorage.getItem('savedata');
+		if(savedDataStr){
+			const saveData = JSON.parse(savedDataStr);
+			ui_menuMap.loadUnlock(savedDataStr);
+			ui_menuCharacter.loadCharacters(savedDataStr);
+		}
+		
 		
 		
 		Menu.setMenuState(MENU_STATE.CHARACTER);
