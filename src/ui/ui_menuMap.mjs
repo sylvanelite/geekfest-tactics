@@ -398,7 +398,7 @@ class ui_menuMap{
 		ui_menuMap.#save();
 	}
 	
-	static #selectedArea = 'manga';
+	static #selectedArea = 'anime';
 	static #selectedLevel = -1;//TODO: set to -1 on init?
 	//TODO apply levels?
 	static #maxMangaUnlocked = 2;//TODO: load/save unlock, and increment on win?
@@ -460,8 +460,7 @@ class ui_menuMap{
 	
 	static #maxLevel = 4;//5 levels per area = 0,1,2,3,4
 	static clearCurrentLevel(localVictory){
-		ui_menuMap.#selectedArea="manga";
-		ui_menuMap.#selectLevel=-1;
+		ui_menuMap.#selectedLevel=-1;
 		if(localVictory){
 			const area=ui_menuMap.#selectedArea;
 			if(area=="manga"){
@@ -489,6 +488,7 @@ class ui_menuMap{
 				}
 			}
 		}
+		//ui_menuMap.#selectedArea="anime";//todo: reset palette to anime?
 	}
 	static #save(){
 		//save the current selections to local storage
