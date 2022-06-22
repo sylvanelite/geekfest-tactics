@@ -337,63 +337,63 @@ class ui_menuMap{
 		ch.hp = ch.max_hp;
 	}
 	static #applyMapData(){
-			//start game, apply stats
-			let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
-			const nwStatus = Network.getStatus();
-			const isLocal = (nwStatus=="disabled");
-			switch(ui_menuMap.#selectedArea){
-				case 'manga':
-					if(isLocal){
-						levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
-					}else{
-						levelData = MapData.getMapData(MAP_KIND.MANGA_MULTI,ui_menuMap.#selectedLevel);
-					}
-					break;
-				case 'anime':
-					if(isLocal){
-						levelData = MapData.getMapData(MAP_KIND.ANIME,ui_menuMap.#selectedLevel);
-					}else{
-						levelData = MapData.getMapData(MAP_KIND.ANIME_MULTI,ui_menuMap.#selectedLevel);
-					}
-					break;
-				case 'game':
-					if(isLocal){
-						levelData = MapData.getMapData(MAP_KIND.GAME,ui_menuMap.#selectedLevel);
-					}else{
-						levelData = MapData.getMapData(MAP_KIND.GAME_MULTI,ui_menuMap.#selectedLevel);
-					}
-					break;
-				case 'comic':
-					if(isLocal){
-						levelData = MapData.getMapData(MAP_KIND.COMIC,ui_menuMap.#selectedLevel);
-					}else{
-						levelData = MapData.getMapData(MAP_KIND.COMIC_MULTI,ui_menuMap.#selectedLevel);
-					}
-					break;
-			}
-			if(levelData.script){
-				Script.start(levelData.script);
-			}
-			Terrain.setTerrainMapData(levelData.display);
-			//load player characters into units 
-			//NOTE: if you are joining a network game, your characters need to be loaded with state cbt_ENEMY
-			const characters = ui_menuCharacter.getCharacters();
-			const curPlayer = (Network.getStatus()=='disabled'||Network.isHost()?cbt_PLAYER:cbt_ENEMY);
-			const units = levelData.units.filter(x=>{return x.player_state == curPlayer});
-			if(units.length!=characters.length){console.warn("mismatch in ch length. lvl:",ui_menuMap.#selectedArea,ui_menuMap.#selectedLevel);}
-			for(let i=0;i<characters.length&&i<units.length;i+=1){
-				const ch = characters[i];
-				const unit = units[i];
-				//patch the map units with props from the ch state
-				//note, the ch obj has prefixed names while the portrait state does not.
-				const keys = Object.keys(ch);
-				for(const key of keys){
-					unit["sprite_"+key] = ch[key];//TODO: actual stats (not just display attributes)
+		//start game, apply stats
+		let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
+		const nwStatus = Network.getStatus();
+		const isLocal = (nwStatus=="disabled");
+		switch(ui_menuMap.#selectedArea){
+			case 'manga':
+				if(isLocal){
+					levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
+				}else{
+					levelData = MapData.getMapData(MAP_KIND.MANGA_MULTI,ui_menuMap.#selectedLevel);
 				}
-				ui_menuMap.#applyStatsToCh(unit);
+				break;
+			case 'anime':
+				if(isLocal){
+					levelData = MapData.getMapData(MAP_KIND.ANIME,ui_menuMap.#selectedLevel);
+				}else{
+					levelData = MapData.getMapData(MAP_KIND.ANIME_MULTI,ui_menuMap.#selectedLevel);
+				}
+				break;
+			case 'game':
+				if(isLocal){
+					levelData = MapData.getMapData(MAP_KIND.GAME,ui_menuMap.#selectedLevel);
+				}else{
+					levelData = MapData.getMapData(MAP_KIND.GAME_MULTI,ui_menuMap.#selectedLevel);
+				}
+				break;
+			case 'comic':
+				if(isLocal){
+					levelData = MapData.getMapData(MAP_KIND.COMIC,ui_menuMap.#selectedLevel);
+				}else{
+					levelData = MapData.getMapData(MAP_KIND.COMIC_MULTI,ui_menuMap.#selectedLevel);
+				}
+				break;
+		}
+		if(levelData.script){
+			Script.start(levelData.script);
+		}
+		Terrain.setTerrainMapData(levelData.display);
+		//load player characters into units 
+		//NOTE: if you are joining a network game, your characters need to be loaded with state cbt_ENEMY
+		const characters = ui_menuCharacter.getCharacters();
+		const curPlayer = (Network.getStatus()=='disabled'||Network.isHost()?cbt_PLAYER:cbt_ENEMY);
+		const units = levelData.units.filter(x=>{return x.player_state == curPlayer});
+		if(units.length!=characters.length){console.warn("mismatch in ch length. lvl:",ui_menuMap.#selectedArea,ui_menuMap.#selectedLevel);}
+		for(let i=0;i<characters.length&&i<units.length;i+=1){
+			const ch = characters[i];
+			const unit = units[i];
+			//patch the map units with props from the ch state
+			//note, the ch obj has prefixed names while the portrait state does not.
+			const keys = Object.keys(ch);
+			for(const key of keys){
+				unit["sprite_"+key] = ch[key];//TODO: actual stats (not just display attributes)
 			}
-			
-			Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
+			ui_menuMap.#applyStatsToCh(unit);
+		}
+		
+		Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
 	}
 	
 	static #selectedArea = 'manga';
