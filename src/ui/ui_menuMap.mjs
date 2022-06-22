@@ -433,4 +433,7 @@ class ui_menuMap{
 		
 	}
 }
+//once off init, establish clearing callback
+Menu.setEndCallback(ui_menuMap.clearCurrentLevel);
+
 export {ui_menuMap};

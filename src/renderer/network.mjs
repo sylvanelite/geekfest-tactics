@@ -184,6 +184,14 @@ class Network{
 		//TODO: check that the game is synced?
 		return "connected";
 	}
+	static endNetwork(){
+		if(!Network.#peer){
+			return;//nothing to do
+		}
+		Network.#peer.disconnect();
+		Network.#peer.destroy();
+		Network.#peer = null;
+	}
 }
 
 

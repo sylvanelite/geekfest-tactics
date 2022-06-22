@@ -1,3 +1,4 @@
+import {Network} from "./network.mjs";
 
 const MENU_STATE={
 	SPLASH:"splash",
@@ -24,7 +25,19 @@ class Menu{
 	
 	static endGame(victory){
 		Menu.setMenuState(MENU_STATE.CHARACTER);
-		//TODO: if network, disconnect?
+		const nwStatus = Network.getStatus();
+		const isLocal = (nwStatus=="disabled");
+		if(!isLocal){
+			Menu.endCallback();
+		}
+		Network.endNetwork();//disconnect, safe to call even if NW is not initiated
+	}
+	//need to call ui_menuMap.clearCurrentLevel on end game
+	//but can't call directly since ui_menuMap depends on menu
+	//instead establish a callback at runtime to avoid circular references
+	endCallback = ()=>{};//can't be private because it's a func reference?
+	static setEndCallback(callback){
+		Menu.endCallback = callback;
 	}
 }
 
