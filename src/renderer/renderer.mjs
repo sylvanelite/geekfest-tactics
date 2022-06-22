@@ -83,7 +83,12 @@ class Renderer{
 					})
 				});
 			});
+		}else{
+			if(loadCallback){//already loaded, do callback
+				loadCallback(name);
+			}
 		}
+		
 		return Renderer.#varImageCache[name];
 	}
 	
