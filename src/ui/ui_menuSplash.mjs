@@ -117,8 +117,9 @@ class ui_menuSplash{
 		const savedDataStr = window.localStorage.getItem('savedata');
 		if(savedDataStr){
 			const saveData = JSON.parse(savedDataStr);
-			ui_menuMap.loadUnlock(savedDataStr);
-			ui_menuCharacter.loadCharacters(savedDataStr);
+			ui_menuMap.loadUnlock(saveData);
+			ui_menuCharacter.loadCharacters(saveData);
+			console.log("loaded:",saveData);
 		}
 		//--intro script
 		if(!savedDataStr){
