@@ -1,4 +1,6 @@
 node_modules/**
 res/**
+res_source
+/**
 package-lock.json
 idea.txt

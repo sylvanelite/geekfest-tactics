@@ -7,7 +7,6 @@ import { ui_menuMap } from "./ui_menuMap.mjs";
 import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 
 
-//TODO: loading (below)
 class ui_menuSplash{
 	
 	static #preload = [
