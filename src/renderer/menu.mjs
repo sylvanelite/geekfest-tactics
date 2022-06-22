@@ -27,9 +27,8 @@ class Menu{
 		Menu.setMenuState(MENU_STATE.CHARACTER);
 		const nwStatus = Network.getStatus();
 		const isLocal = (nwStatus=="disabled");
-		if(!isLocal){
-			Menu.endCallback();
-		}
+		const doesUnlock = (victory&&isLocal);
+		Menu.endCallback(doesUnlock);
 		Network.endNetwork();//disconnect, safe to call even if NW is not initiated
 	}
 	//need to call ui_menuMap.clearCurrentLevel on end game

@@ -281,7 +281,61 @@ class ui_menuMap{
 			}
 		}
 	}
-	
+	static #applyStatsToCh(ch){
+		const unlocked =  ui_menuMap.#maxMangaUnlocked + ui_menuMap.#maxAnimeUnlocked +
+							ui_menuMap.#maxGameUnlocked + ui_menuMap.#maxComicUnlocked;
+		/*
+		levels:    0  1  2  3  4  5
+		hp         2  3  4  4  5  5
+		atk        1  2  2  2  3  3
+		mov        2  2  2  2  2  3
+		range_min  1  1  1  1  1  1
+		range_max  1  1  1  2  2  2
+		*/
+		if(unlocked == 0){
+			ch.max_hp=2;
+			ch.atk=1;
+			ch.mov=2;
+			ch.range_min=1;
+			ch.range_min=1;
+		}
+		if(unlocked == 1){
+			ch.max_hp=3;
+			ch.atk=2;
+			ch.mov=2;
+			ch.range_min=1;
+			ch.range_min=1;
+		}
+		if(unlocked == 2){
+			ch.max_hp=4;
+			ch.atk=2;
+			ch.mov=2;
+			ch.range_min=1;
+			ch.range_min=1;
+		}
+		if(unlocked == 3){
+			ch.max_hp=4;
+			ch.atk=2;
+			ch.mov=2;
+			ch.range_min=1;
+			ch.range_min=2;
+		}
+		if(unlocked == 4){
+			ch.max_hp=5;
+			ch.atk=3;
+			ch.mov=2;
+			ch.range_min=1;
+			ch.range_min=2;
+		}
+		if(unlocked >= 5){
+			ch.max_hp=5;
+			ch.atk=3;
+			ch.mov=3;
+			ch.range_min=1;
+			ch.range_min=2;
+		}
+		ch.hp = ch.max_hp;
+	}
 	static #applyMapData(){
 			//start game, apply stats
 			let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
@@ -336,6 +390,7 @@ class ui_menuMap{
 				for(const key of keys){
 					unit["sprite_"+key] = ch[key];//TODO: actual stats (not just display attributes)
 				}
+				ui_menuMap.#applyStatsToCh(unit);
 			}
 			
 			Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
@@ -397,41 +452,38 @@ class ui_menuMap{
 	}
 	
 	static #maxLevel = 4;//5 levels per area = 0,1,2,3,4
-	static clearCurrentLevel(){
-		const area=ui_menuMap.#selectedArea;
-		if(area=="manga"){
-			ui_menuMap.#maxMangaUnlocked+=1;
-			if(ui_menuMap.#maxMangaUnlocked>ui_menuMap.#maxLevel){
-				ui_menuMap.#maxMangaUnlocked=ui_menuMap.#maxLevel;
+	static clearCurrentLevel(localVictory){
+		ui_menuMap.#selectedArea="manga";
+		ui_menuMap.#selectLevel=-1;
+		if(localVictory){
+			const area=ui_menuMap.#selectedArea;
+			if(area=="manga"){
+				ui_menuMap.#maxMangaUnlocked+=1;
+				if(ui_menuMap.#maxMangaUnlocked>ui_menuMap.#maxLevel){
+					ui_menuMap.#maxMangaUnlocked=ui_menuMap.#maxLevel;
+				}
 			}
-		}
-		if(area=="anime"){
-			ui_menuMap.#maxAnimeUnlocked+=1;
-			if(ui_menuMap.#maxAnimeUnlocked>ui_menuMap.#maxLevel){
-				ui_menuMap.#maxAnimeUnlocked=ui_menuMap.#maxLevel;
+			if(area=="anime"){
+				ui_menuMap.#maxAnimeUnlocked+=1;
+				if(ui_menuMap.#maxAnimeUnlocked>ui_menuMap.#maxLevel){
+					ui_menuMap.#maxAnimeUnlocked=ui_menuMap.#maxLevel;
+				}
 			}
-		}
-		if(area=="game"){
-			ui_menuMap.#maxGameUnlocked+=1;
-			if(ui_menuMap.#maxGameUnlocked>ui_menuMap.#maxLevel){
-				ui_menuMap.#maxGameUnlocked=ui_menuMap.#maxLevel;
+			if(area=="game"){
+				ui_menuMap.#maxGameUnlocked+=1;
+				if(ui_menuMap.#maxGameUnlocked>ui_menuMap.#maxLevel){
+					ui_menuMap.#maxGameUnlocked=ui_menuMap.#maxLevel;
+				}
 			}
-		}
-		if(area=="comic"){
-			ui_menuMap.#maxComicUnlocked+=1;
-			if(ui_menuMap.#maxComicUnlocked>ui_menuMap.#maxLevel){
-				ui_menuMap.#maxComicUnlocked=ui_menuMap.#maxLevel;
+			if(area=="comic"){
+				ui_menuMap.#maxComicUnlocked+=1;
+				if(ui_menuMap.#maxComicUnlocked>ui_menuMap.#maxLevel){
+					ui_menuMap.#maxComicUnlocked=ui_menuMap.#maxLevel;
+				}
 			}
 		}
 	}
 	
-	//TODO: actually set the data based on the map
-	static getUnits(){
-		
-	}
-	static getTerrain(){
-		
-	}
 }
 //once off init, establish clearing callback
 Menu.setEndCallback(ui_menuMap.clearCurrentLevel);
