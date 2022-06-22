@@ -26,6 +26,72 @@ class ui_menuMap{
 			'ui/map.png',
 			632,21,85,46,0,0
 		),
+		
+		//TODO: add proper icons for each area
+		btn_icon_manga:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,117,32,32,0,0
+		),
+		btn_icon_comic:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,150,32,32,0,96
+		),
+		btn_icon_game:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,195,32,32,0,64
+		),
+		btn_icon_anime:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,240,32,32,0,32
+		),
+		btn_icon_manga_selected:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,117,32,32,32,0
+		),
+		btn_icon_comic_selected:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,150,32,32,32,96
+		),
+		btn_icon_game_selected:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,195,32,32,32,64
+		),
+		btn_icon_anime_selected:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,240,32,32,32,32
+		),
+		btn_icon_manga_cleared:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,117,32,32,64,0
+		),
+		btn_icon_comic_cleared:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,150,32,32,64,96
+		),
+		btn_icon_game_cleared:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,195,32,32,64,64
+		),
+		btn_icon_anime_cleared:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,240,32,32,64,32
+		),
+		btn_icon_manga_hover:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,117,32,32,96,0
+		),
+		btn_icon_comic_hover:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,150,32,32,96,96
+		),
+		btn_icon_game_hover:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,195,32,32,96,64
+		),
+		btn_icon_anime_hover:Renderer.getSprite(
+			'ui/lvl_icons.png',
+			413,240,32,32,96,32
+		),
 	};
 	static #hostId = "";
 	
@@ -47,21 +113,161 @@ class ui_menuMap{
 				Menu.setMenuState(MENU_STATE.PLAYING);
 			}
 		}
+		
+		//draw level selection sprites
+		for(let i=0;i<ui_menuMap.#maxLevel;i+=1){
+			if(i<=ui_menuMap.#maxMangaUnlocked){
+				let spr =(i==ui_menuMap.#maxMangaUnlocked?
+							 ui_menuMap.#sprites.btn_icon_manga
+							:ui_menuMap.#sprites.btn_icon_manga_cleared);
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_manga_hover;
+					spr.x=x+i*33;
+				}
+				if(ui_menuMap.#selectedArea=='manga'&&
+				   ui_menuMap.#selectedLevel==i){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_manga_selected;
+					spr.x=x+i*33;
+				}
+				Renderer.drawSprite(spr,ctx);//TODO: hover over, cleared
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxComicUnlocked){
+				let spr =(i==ui_menuMap.#maxComicUnlocked?
+							 ui_menuMap.#sprites.btn_icon_comic
+							:ui_menuMap.#sprites.btn_icon_comic_cleared);
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_comic_hover;
+					spr.x=x+i*33;
+				}
+				if(ui_menuMap.#selectedArea=='comic'&&
+				   ui_menuMap.#selectedLevel==i){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_comic_selected;
+					spr.x=x+i*33;
+				}
+				Renderer.drawSprite(spr,ctx);//TODO: hover over, cleared
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxGameUnlocked){
+				let spr =(i==ui_menuMap.#maxGameUnlocked?
+							 ui_menuMap.#sprites.btn_icon_game
+							:ui_menuMap.#sprites.btn_icon_game_cleared);
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_game_hover;
+					spr.x=x+i*33;
+				}
+				if(ui_menuMap.#selectedArea=='game'&&
+				   ui_menuMap.#selectedLevel==i){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_game_selected;
+					spr.x=x+i*33;
+				}
+				Renderer.drawSprite(spr,ctx);//TODO: hover over, cleared
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxAnimeUnlocked){
+				let spr =(i==ui_menuMap.#maxAnimeUnlocked?
+							 ui_menuMap.#sprites.btn_icon_anime
+							:ui_menuMap.#sprites.btn_icon_anime_cleared);
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_anime_hover;
+					spr.x=x+i*33;
+				}
+				if(ui_menuMap.#selectedArea=='anime'&&
+				   ui_menuMap.#selectedLevel==i){
+					spr.x=x;spr.y=y;
+					spr=ui_menuMap.#sprites.btn_icon_anime_selected;
+					spr.x=x+i*33;
+				}
+				Renderer.drawSprite(spr,ctx);//TODO: ohover ver, cleared
+				spr.y=y;
+				spr.x=x;
+			}
+		}
 	}
 	static click(e){
-		//TODO: select a map, set terrain
+		//check for selecting a map first
+		for(let i=0;i<ui_menuMap.#maxLevel;i+=1){
+			if(i<=ui_menuMap.#maxMangaUnlocked){
+				const spr = ui_menuMap.#sprites.btn_icon_manga;
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					ui_menuMap.#selectArea("manga");
+					ui_menuMap.#selectLevel(i);
+				}
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxComicUnlocked){
+				const spr = ui_menuMap.#sprites.btn_icon_comic;
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					ui_menuMap.#selectArea("comic");
+					ui_menuMap.#selectLevel(i);
+				}
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxGameUnlocked){
+				const spr = ui_menuMap.#sprites.btn_icon_game;
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					ui_menuMap.#selectArea("game");
+					ui_menuMap.#selectLevel(i);
+				}
+				spr.y=y;
+				spr.x=x;
+			}
+			if(i<=ui_menuMap.#maxAnimeUnlocked){
+				const spr = ui_menuMap.#sprites.btn_icon_anime;
+				const [x,y] = [spr.x,spr.y];
+				spr.x=x+i*33;
+				if(Renderer.isMouseOver(spr)){
+					ui_menuMap.#selectArea("anime");
+					ui_menuMap.#selectLevel(i);
+				}
+				spr.y=y;
+				spr.x=x;
+			}
+		}
+		
+		
 		
 		//disable until selecting a map
-		if(ui_menuMap.#selectedLevel<0){
-			alert("plese select a map before starting a game");
-			return;
-		}
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
+			if(ui_menuMap.#selectedLevel<0){
+				alert("please select a map before starting a game");
+				return;
+			}
 			ui_menuMap.#applyMapData();
 			Menu.setMenuState(MENU_STATE.PLAYING);
 		}
 		//TODO: check if already joining/hosting?
 		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
+			if(ui_menuMap.#selectedLevel<0){
+				alert("please select a map before hosting a game");
+				return;
+			}
 			ui_menuMap.#applyMapData();
 			Sy_api.api_setNetworking(Network);
 			ui_menuMap.#hostId = Network.host();
@@ -136,7 +342,7 @@ class ui_menuMap{
 	}
 	
 	static #selectedArea = 'manga';
-	static #selectedLevel = 0;//TODO: set to -1 on init?
+	static #selectedLevel = -1;//TODO: set to -1 on init?
 	//TODO apply levels?
 	static #maxMangaUnlocked = 2;//TODO: load/save unlock, and increment on win?
 	static #maxAnimeUnlocked = 0;
@@ -188,6 +394,35 @@ class ui_menuMap{
 			}
 		}
 		ui_menuMap.#selectedLevel=level;
+	}
+	
+	static #maxLevel = 4;//5 levels per area = 0,1,2,3,4
+	static clearCurrentLevel(){
+		const area=ui_menuMap.#selectedArea;
+		if(area=="manga"){
+			ui_menuMap.#maxMangaUnlocked+=1;
+			if(ui_menuMap.#maxMangaUnlocked>ui_menuMap.#maxLevel){
+				ui_menuMap.#maxMangaUnlocked=ui_menuMap.#maxLevel;
+			}
+		}
+		if(area=="anime"){
+			ui_menuMap.#maxAnimeUnlocked+=1;
+			if(ui_menuMap.#maxAnimeUnlocked>ui_menuMap.#maxLevel){
+				ui_menuMap.#maxAnimeUnlocked=ui_menuMap.#maxLevel;
+			}
+		}
+		if(area=="game"){
+			ui_menuMap.#maxGameUnlocked+=1;
+			if(ui_menuMap.#maxGameUnlocked>ui_menuMap.#maxLevel){
+				ui_menuMap.#maxGameUnlocked=ui_menuMap.#maxLevel;
+			}
+		}
+		if(area=="comic"){
+			ui_menuMap.#maxComicUnlocked+=1;
+			if(ui_menuMap.#maxComicUnlocked>ui_menuMap.#maxLevel){
+				ui_menuMap.#maxComicUnlocked=ui_menuMap.#maxLevel;
+			}
+		}
 	}
 	
 	//TODO: actually set the data based on the map
