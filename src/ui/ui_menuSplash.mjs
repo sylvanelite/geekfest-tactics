@@ -10,6 +10,8 @@ import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 class ui_menuSplash{
 	
 	static #preload = [
+	'font/boxy_bold_font.png',
+	
 	'ui/lvl_icons.png',
 	'ui/map.png',
 	'ui/menu_character.png',

@@ -1,5 +1,5 @@
 
-import { Renderer } from "../renderer/renderer.mjs";
+import { Renderer,PALETTE } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Network }from '../renderer/network.mjs';
 import { Sy_api } from "../state/api.mjs";
@@ -413,19 +413,24 @@ class ui_menuMap{
 		if(area=="manga"){
 			ui_menuMap.#selectedArea='manga';
 			ui_menuMap.#selectLevel(ui_menuMap.#maxMangaUnlocked);
+			Renderer.setRenderPalette(PALETTE.MANGA);
 		}
 		if(area=="anime"){
 			ui_menuMap.#selectedArea='anime';
 			ui_menuMap.#selectLevel(ui_menuMap.#maxAnimeUnlocked);
+			Renderer.setRenderPalette(PALETTE.ANIME);
 		}
 		if(area=="game"){
 			ui_menuMap.#selectedArea='game';
 			ui_menuMap.#selectLevel(ui_menuMap.#maxGameUnlocked);
+			Renderer.setRenderPalette(PALETTE.GB);
 		}
 		if(area=="comic"){
 			ui_menuMap.#selectedArea='comic';
 			ui_menuMap.#selectLevel(ui_menuMap.#maxComicUnlocked);
+			Renderer.setRenderPalette(PALETTE.COMIC);
 		}
+		//ui_menuCharacter.refreshSprites();//TODO: is this needed?
 	}
 	static #selectLevel(level){
 		const area = ui_menuMap.#selectedArea;
@@ -487,6 +492,7 @@ class ui_menuMap{
 	}
 	static #save(){
 		//save the current selections to local storage
+		const characters = ui_menuCharacter.getCharacters();
 		//TODO: move this into a save/load class?
 		const storage = {
 			version:1,//TODO: could be used in conjuction with localStorave.clearStorage() if data format changes

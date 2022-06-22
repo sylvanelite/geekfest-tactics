@@ -1,5 +1,5 @@
 
-import { Renderer,PALETTE } from "../renderer/renderer.mjs";
+import { Renderer } from "../renderer/renderer.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
 import { male_data, female_data, portraits } from "./character/data/portraits.mjs";
@@ -271,12 +271,7 @@ class ui_menuCharacter{
 	}
 	static selectCharacter(ch){
 		console.log("switch to ch:",ch);
-		//TODO: if unlocked...
 		ui_menuCharacter.#selectedChIdx = ch;
-		
-		
-		const pals = [PALETTE.GB ,PALETTE.MANGA,PALETTE.COMIC,PALETTE.ANIME];
-		Renderer.setRenderPalette(pals[ch%pals.length]);
 		ui_menuCharacter.refreshSprites();
 	}
 	static selectArm(item){
