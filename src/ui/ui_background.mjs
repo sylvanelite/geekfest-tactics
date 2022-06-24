@@ -88,18 +88,17 @@ class ui_background{
 				//another to render the combined grid
 				//this would stop overlapping grids being re-rendered many times
 				
-				//note: could probably get away with not backing up
-				//      could just call reset() or backup, not both
-				//      this is because the state is idle, move/atk is not used until later states
-				//      this means the backup will be blank anyway
 				const moveCopy= Array.from(Sy.cbt_move);
 				const atkCopy = Array.from(Sy.cbt_attack);
 				Sy.resetMove();
 				Sy.resetAttack();
 				Sy.fillMoveAndAttackForCharacter(ch);
 				//--render the mov/atk range
-				ui_background.drawGridEffects(ctx);//TODO: re-implement so that it draws a different colour?
-												   //maybe change global alpha or blend mode?
+				
+				//change the colour of highlight
+				ctx.globalCompositeOperation='difference';
+				ui_background.drawGridEffects(ctx);
+				ctx.globalCompositeOperation='source-over';
 				
 				//--finish render, restore from backup
 				Sy.cbt_move = moveCopy;

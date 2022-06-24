@@ -3,10 +3,14 @@ import { Sy_api } from "../state/api.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
 import { ui_displayMove } from "./ui_displayMove.mjs";
+import { ui_idle } from "./ui_idle.mjs";
 
 class ui_selectTarget{
 	static draw(ctx){
 		ui_background.draw(ctx);
+		
+		//draw highlighted character atk grid 
+		ui_idle.drawHighlightedCharacters(ctx);
 	}
 	static click(e){
 		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());

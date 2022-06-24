@@ -29,10 +29,7 @@ class ui_idle{
 	static draw(ctx){
 		ui_background.draw(ctx);
 		
-		for(const chId of ui_idle.#highlightedCharacters){
-			ui_background.drawHighlightedCharacter(chId,ctx);
-		}
-		
+		ui_idle.drawHighlightedCharacters(ctx);
 		//could probably call drawHighlightedCharacter on hover too
 	}
 	static click(e){
@@ -63,7 +60,11 @@ class ui_idle{
 			ui_idle.#highlightedCharacters.add(ch.id);
 		}
 	}
-	
+	static drawHighlightedCharacters(ctx){
+		for(const chId of ui_idle.#highlightedCharacters){
+			ui_background.drawHighlightedCharacter(chId,ctx);
+		}
+	}
 	static clearEnemyHighlight(){
 		ui_idle.#highlightedCharacters.clear();
 	}

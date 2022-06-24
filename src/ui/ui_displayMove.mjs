@@ -3,6 +3,7 @@ import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
+import { ui_idle } from "./ui_idle.mjs";
 import { cbt_NO_PLAYER_STATE } from "../state/consts.mjs";
 
 class ui_displayMove{
@@ -20,7 +21,8 @@ class ui_displayMove{
 			ctx.fill();
 		}
 		
-		
+		//draw highlighted character atk grid 
+		ui_idle.drawHighlightedCharacters(ctx);
 		
 	}
 	static click(e){
