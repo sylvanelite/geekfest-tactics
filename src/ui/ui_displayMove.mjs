@@ -26,17 +26,23 @@ class ui_displayMove{
 	static click(e){
 		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		ui_displayMove.move();//ensure pathfinding is updated
-		console.log("click: mov",e,cell);
+		//console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 			return;
 		}
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
-			console.log("cell out of bounds: ",cell.x,cell.y);
+			//console.log("cell out of bounds: ",cell.x,cell.y);
+			ui_displayMove.clearPath();//turf out the user path for next time
+			Sy_api.api_mov_cancel();
 			return;
 		}
-		Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
+		const success = Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
+		if(!success){//clicked outside of mov range, or invalid atk cell
+			ui_displayMove.clearPath();//turf out the user path for next time
+			Sy_api.api_mov_cancel();
+		}
 	}
 	//a movement path suggested by the user
 	static #movePath = [];

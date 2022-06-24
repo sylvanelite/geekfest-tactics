@@ -10,17 +10,23 @@ class ui_selectTarget{
 	}
 	static click(e){
 		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
-		console.log("click: tgt",e,cell);
+		//console.log("click: tgt",e,cell);
 		if(e.button == 2){//right click
 			Sy_api.api_tgt_cancel();
 			ui_displayMove.move(e);
 			return;
 		}
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
-			console.log("cell out of bounds: ",cell.x,cell.y);
+			//console.log("cell out of bounds: ",cell.x,cell.y);
+			Sy_api.api_tgt_cancel();
+			ui_displayMove.move(e);
 			return;
 		}
-		Sy_api.api_tgt_selectTarget(cell.x,cell.y,ui_displayMove.getPath());
+		const success = Sy_api.api_tgt_selectTarget(cell.x,cell.y,ui_displayMove.getPath());
+		if(!success){//clicked on invalid attack cell (likely out of range) cancel
+			Sy_api.api_tgt_cancel();
+			//TODO: clearPath, or move?
+		}
 		ui_displayMove.clearPath();
 	}
 }
