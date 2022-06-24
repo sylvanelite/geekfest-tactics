@@ -77,6 +77,8 @@ class Network{
 				//TODO: set eCh starting positions?
 				hostState.varCharacters = allCh;
 				Network.send({kind:'sync',state:hostState});
+				//apply sync locally too
+				Sy_api.api_setState(data.state);
 				break;
 			}
 			case 'move':{
