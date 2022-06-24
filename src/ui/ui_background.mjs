@@ -144,10 +144,6 @@ class ui_background{
 		ui_background.#restoreFog(backup);
 		
 		
-		
-		
-		
-		
 		//--start:iso
 		const mouse = Renderer.getMouseIsoCell();
 		for(let j=0;j<h;j+=1){
@@ -190,8 +186,40 @@ class ui_background{
 		//--end:iso
 
 	}
+	static drawMovementPath(path,ctx){
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
+		if(controlSource!=CONTROL_SOURCE.LOCAL){return;}//don't need to draw the path for NW or AI
+		//draw user movement path 
+		for(const p of path){
+			const [x,y] = Bit.GET_XY(p);
+			ctx.fillStyle="#000";
+			ctx.beginPath();
+			ctx.arc(x*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2, 
+					y*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2,
+					Renderer.TILE_SIZE/4, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+		//draw user movement path (iso)
+		for(const p of path){
+			const [x,y] = Bit.GET_XY(p);
+			const iso = Isometric.to_screen_coordinate({x,y});
+			ctx.fillStyle="rgba(200,200,200,0.7)";
+			ctx.beginPath();
+			const radius = 20*Isometric.SCALE;
+			ctx.arc(iso.x+24*Isometric.SCALE-radius, 
+					iso.y+48*Isometric.SCALE-radius,
+					radius, 0, 2 * Math.PI);
+					/*
+					
+		ctx.ellipse(iso.x-64*Isometric.SCALE+128*Isometric.SCALE/2,
+					iso.y-16-64*Isometric.SCALE+128*Isometric.SCALE,
+				48, 6, 0, 0, 2 * Math.PI);//TODO: should 48,6 be *Isometric.SCALE?
+					*/
+			ctx.fill();
+		}
+	}
 	static drawGridEffects(ctx){
-		
 		const curPlayerState = Sy_api.api_getCurrentPlayerState();
 		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
 		//render otherwise
@@ -324,7 +352,7 @@ class ui_background{
 		ctx.beginPath();
 		ctx.ellipse(iso.x-64*Isometric.SCALE+128*Isometric.SCALE/2,
 					iso.y-16-64*Isometric.SCALE+128*Isometric.SCALE,
-				48, 6, 0, 0, 2 * Math.PI);
+				48, 6, 0, 0, 2 * Math.PI);//TODO: should 48,6 be *Isometric.SCALE?
 		ctx.fill();
 		
 		

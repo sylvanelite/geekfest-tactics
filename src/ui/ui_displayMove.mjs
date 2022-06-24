@@ -9,21 +9,8 @@ import { cbt_NO_PLAYER_STATE } from "../state/consts.mjs";
 class ui_displayMove{
 	static draw(ctx){
 		ui_background.draw(ctx);
-		//draw user movement path
-		
-		for(const p of ui_displayMove.#movePath){
-			const [x,y] = Bit.GET_XY(p);
-			ctx.fillStyle="#000";
-			ctx.beginPath();
-			ctx.arc(x*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2, 
-					y*Renderer.TILE_SIZE+Renderer.TILE_SIZE/2,
-					Renderer.TILE_SIZE/4, 0, 2 * Math.PI);
-			ctx.fill();
-		}
-		
-		//draw highlighted character atk grid 
+		ui_background.drawMovementPath(ui_displayMove.#movePath,ctx);
 		ui_idle.drawHighlightedCharacters(ctx);
-		
 	}
 	static click(e){
 		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
