@@ -7,6 +7,8 @@ import { Terrain } from "../ui/terrain/terrain.mjs";
 import { cbt_ENEMY,cbt_PLAYER } from "../state/consts.mjs";
 import { MapData,MAP_KIND } from "../ui/map/mapData.mjs";
 import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
+import { ui_idle } from "./ui_idle.mjs";
+import { ui_displayMove } from "./ui_displayMove.mjs";
 
 class ui_menuMap{
 	static #sprites = {
@@ -337,6 +339,7 @@ class ui_menuMap{
 		ch.hp = ch.max_hp;
 	}
 	static #applyMapData(){
+		ui_idle.clearEnemyHighlight();
 		//start game, apply stats
 		let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
 		const nwStatus = Network.getStatus();
@@ -460,6 +463,8 @@ class ui_menuMap{
 	
 	static #maxLevel = 4;//5 levels per area = 0,1,2,3,4
 	static clearCurrentLevel(localVictory){
+		ui_idle.clearEnemyHighlight();
+		ui_displayMove.clearPath();
 		ui_menuMap.#selectedLevel=-1;
 		if(localVictory){
 			const area=ui_menuMap.#selectedArea;

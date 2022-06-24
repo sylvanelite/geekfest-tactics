@@ -69,6 +69,46 @@ class ui_background{
 		}
 	}
 	
+	static drawHighlightedCharacter(chId,ctx){
+		//used for player to see enemy attack range while in their idle state
+		if(controlSource==CONTROL_SOURCE.LOCAL){return;}//don't render during AI or enemy turn
+		
+
+		//-- don't show attack range if unit is in fog
+		const backup = ui_background.#backupFog();
+		ui_background.#applyPlayerFog();
+		const chs = Sy_api.api_get_allCharacters();
+		for(const ch of chs){
+			//need to search by id, since the position might change between turns
+			if(ch.id == chId){
+				//generate the mov/atk range
+				//could split this into multiple funcs, one to get the move/atk per ch
+				//another to render the combined grid
+				//this would stop overlapping grids being re-rendered many times
+				
+				//note: could probably get away with not backing up
+				//      could just call reset() or backup, not both
+				//      this is because the state is idle, move/atk is not used until later states
+				//      this means the backup will be blank anyway
+				const moveCopy= Array.from(Sy.cbt_move);
+				const atkCopy = Array.from(Sy.cbt_attack);
+				Sy.resetMove();
+				Sy.resetAttack();
+				Sy.fillMoveAndAttackForCharacter(ch);
+				//--render the mov/atk range
+				ui_background.drawGridEffects(ctx);//TODO: re-implement so that it draws a different colour?
+												   //maybe change global alpha or blend mode?
+				
+				//--finish render, restore from backup
+				Sy.cbt_move = moveCopy;
+				Sy.cbt_attack = atkCopy;
+				
+				break;
+			}
+		}
+		ui_background.#restoreFog(backup);
+		
+	}
 	
 	static drawTerrain(ctx){
 		const w = Sy_api.api_getMapWidth();
