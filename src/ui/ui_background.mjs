@@ -70,6 +70,8 @@ class ui_background{
 	}
 	
 	static drawHighlightedCharacter(chId,ctx){
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
 		//used for player to see enemy attack range while in their idle state
 		if(controlSource==CONTROL_SOURCE.LOCAL){return;}//don't render during AI or enemy turn
 		

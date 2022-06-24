@@ -17,6 +17,70 @@ class Sy_api {
 	static #menu = null;
 	static #rendererBlocked=false;
 //////////////gameplay methods
+
+	//return true/false for state cell selection
+	//used to determine if selection is a cancel action
+	//not used to strictly enforce validity
+	//in theory these are the same as the responses from the regular state actions
+	//but those are async, these return immediately
+	static api_isValidIdleCell(x,y){
+		const selected_xy=Bit.SET_XY(x,y);
+		const ch = Sy.getCharacterAtPosition(x,y);
+		if (ch.player_state == Sy.cbt_CurrentPlayerState && ch.hasMoved == false) {
+			return true;
+		}
+		return false;
+	}
+	static api_isValidMoveCell(x,y,preferredPath){
+		const selected_xy=Bit.SET_XY(x,y);
+		const cellCh = Sy.getCharacterAtPosition(x,y);
+		const prevCh = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_IDLE_xy), 
+											   Bit.GET_Y(Sy.cbt_isv_STATE_IDLE_xy));
+		if(preferredPath && preferredPath.length>0){
+			const lastCell = preferredPath[preferredPath.length-1];
+			const [lastX,lastY] = Bit.GET_XY(lastCell);
+			const pathChCell = Sy.getCharacterAtPosition(lastX,lastY);
+			if(lastCell!=prevCh.point_xy){
+				//if moving the character, check it's a blue cell with no other player in it
+				if(Sy.getMoveForCell(lastX,lastY) == 0||
+				  pathChCell.player_state!=cbt_NO_PLAYER_STATE){
+					  return false;
+				}
+			}
+		}
+		//'a' on a blue square
+		if ((cellCh.player_state == cbt_NO_PLAYER_STATE || selected_xy == prevCh.point_xy) &&
+			Sy.getMoveForCell(x,y) != 0) { 
+			return true;
+		}
+		//'a' on an enemy, move to a position that the unit can attack from
+		if (cellCh.player_state != Sy.cbt_CurrentPlayerState  &&
+			cellCh.player_state != cbt_NO_PLAYER_STATE  &&
+			Sy.getAttackForCell(x,y) != 0) {
+			return true;
+		}
+		return false;
+	}
+	static api_isValidTargetCell(x,y){
+		const slectedTgt = Sy.getCharacterAtPosition(x,y);
+		//if not clicking on the unit, need to check player state for visible opponents
+		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){
+			return false;
+		}
+		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
+										   Bit.GET_Y(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy));
+		if(slectedTgt.player_state!=cbt_NO_PLAYER_STATE && 
+			!Sy_api.api_getAttackForCell(x,y) &&
+			slectedTgt.point_xy != ch.point_xy ){
+			return false;
+		}
+		if(slectedTgt.player_state == ch.player_state&&
+			slectedTgt.point_xy != ch.point_xy){
+			return false;
+		}
+		return true;
+	}
+
 	//NOTE: need a guard check when calling these to ensure it's the correct turn & x,y in bounds
 	//async calls return true/false depending on success.
 	//returning false should not fail, it's just a notice that the state did not change.

@@ -38,11 +38,11 @@ class ui_displayMove{
 			Sy_api.api_mov_cancel();
 			return;
 		}
-		const success = Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
-		if(!success){//clicked outside of mov range, or invalid atk cell
+		if(!Sy_api.api_isValidMoveCell(cell.x,cell.y,ui_displayMove.#movePath)){
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 		}
+		Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
 	}
 	//a movement path suggested by the user
 	static #movePath = [];
