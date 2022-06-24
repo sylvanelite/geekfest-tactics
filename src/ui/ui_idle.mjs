@@ -57,7 +57,6 @@ class ui_idle{
 	
 	static #highlightedCharacters = new Set();
 	static #highlightCharacter(ch){//toggles the highlight on a given character
-	console.log("toggle ch:",ch);
 		if(ui_idle.#highlightedCharacters.has(ch.id)){
 			ui_idle.#highlightedCharacters.delete(ch.id);
 		}else{
