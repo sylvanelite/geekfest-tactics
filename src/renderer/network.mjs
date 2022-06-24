@@ -104,6 +104,10 @@ class Network{
 		Network.#isHost = true;
 		const hostId = Network.#getId();
 		console.log("host: "+hostId);
+		if(Network.#peer){
+			Network.#peer.disconnect();
+			Network.#peer.destroy();
+		}
 		Network.#peer = new Peer(Network.#gameId+hostId,Network.#options);
 		const peer = Network.#peer;
 		peer.on('close',Network.#peerClose);
@@ -124,6 +128,10 @@ class Network{
 		Network.#isHost = false;
 		const joinId = Network.#getId();
 		console.log("joining:"+hostId+" as "+joinId);
+		if(Network.#peer){
+			Network.#peer.disconnect();
+			Network.#peer.destroy();
+		}
 		Network.#peer = new Peer(Network.#gameId+joinId,Network.#options);
 		const peer = Network.#peer;
 		peer.on('close',Network.#peerClose);
