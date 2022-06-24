@@ -7,6 +7,8 @@ const PALETTE = {
 
 import { Isometric } from "./isometric.mjs";
 
+const isIos = /iP(ad|od|hone)/i.test(window.navigator.userAgent);
+
 //base class for drawing & computing interaction with them
 class Renderer{
 	
@@ -73,15 +75,30 @@ class Renderer{
 			Renderer.#varImageCache[name]={loaded:false};
 			const req = new Request(url);
 			fetch(req).then((r)=>{
+				if(!r.ok){
+					//TODO: handle failed load
+					console.log("image did not load: ",r);
+				}
 				r.blob().then((b)=>{
 					createImageBitmap(b).then((c)=>{
 						Renderer.#varImageCache[name] = {loaded:true, data:c };
+						if(!isIos){
 						Renderer.#applyProcessing(Renderer.#varImageCache[name]);
+						}
 						if(loadCallback){
 							loadCallback(name);
 						}
-					})
+					}).catch((e)=>{
+						//TODO: handle failed load
+						console.warn("error making bitmap: ",e);
+					});
+				}).catch((e)=>{
+					//TODO: handle failed load
+					console.warn("error converting blob: ",e);
 				});
+			}).catch((e)=>{
+					//TODO: handle failed load
+					console.warn("error loading: ",e);
 			});
 		}else{
 			if(loadCallback){//already loaded, do callback
