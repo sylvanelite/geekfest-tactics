@@ -371,6 +371,18 @@ class ui_background{
 										128*Isometric.SCALE,
 										ctx);
 		}
+		//HP
+		if(ch.player_state == cbt_PLAYER){
+			ctx.fillStyle="rgba(0,0,200,0.7)";
+		}
+		if(ch.player_state == cbt_ENEMY){
+			ctx.fillStyle="rgba(200,0,0,0.7)";
+		}
+		ctx.beginPath();
+		ctx.strokeStyle="#000000";
+		ctx.strokeRect(iso.x-64*Isometric.SCALE,iso.y-16-64*Isometric.SCALE,128*Isometric.SCALE,16);
+		ctx.fillRect(iso.x-64*Isometric.SCALE,iso.y-16-64*Isometric.SCALE,
+			(128*Isometric.SCALE)*(ch.hp/ch.max_hp),16);
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
