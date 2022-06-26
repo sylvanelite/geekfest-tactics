@@ -15,7 +15,7 @@ const TERRAIN_IMPASSIBLE = 99;
 	cbt_NO_PLAYER_STATE,
 	cbt_PLAYER,
 	cbt_ENEMY,
-	cbt_STATE_SELECT_WEAPON_TARGET
+	cbt_STATE_SELECT_WEAPON_TARGET,
 	}from "../state/consts.mjs";
 
 const colours = [
@@ -406,21 +406,43 @@ class ui_background{
 			//now see if the mouse is over the currently draw unit
 			const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 			if(!(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0)){
-				const tgt_xy = Bit.SET_XY(cell.x,cell.y);
-				if(ch.point_xy == tgt_xy){
-					//hovering over target, calc preview
-					const [selx,sely] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
-					const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
-					const dmgStart = Math.max(0,ch.hp-selectedCh.atk)/ch.max_hp;
-					const barX = iso.x-64*Isometric.SCALE;
-					const previewX = barX+dmgStart*(128*Isometric.SCALE);
-					const previewWidth = (128*Isometric.SCALE)*(selectedCh.atk/ch.max_hp);
-					ctx.fillStyle="rgba(200,200,0,1)";
-					ctx.fillRect(previewX,iso.y-16-64*Isometric.SCALE,
-						previewWidth,16);
+				if(Sy_api.api_isValidTargetCell(cell.x,cell.y)){				
+					const tgt_xy = Bit.SET_XY(cell.x,cell.y);
+					if(ch.point_xy == tgt_xy){
+						//hovering over target, calc preview
+						const [selx,sely] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
+						const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
+						const dmgStart = Math.max(0,ch.hp-selectedCh.atk)/ch.max_hp;
+						const barX = iso.x-64*Isometric.SCALE;
+						const previewX = barX+dmgStart*(128*Isometric.SCALE);
+						const previewWidth = (128*Isometric.SCALE)*(selectedCh.atk/ch.max_hp);
+						ctx.fillStyle="rgba(200,200,0,1)";
+						ctx.fillRect(previewX,iso.y-16-64*Isometric.SCALE,
+							previewWidth,16);
+					}
 				}
 			}
 		}
+		//enemy preview on hover
+		if(controlSource==CONTROL_SOURCE.LOCAL && ch.player_state != curPlayerState){
+			//now see if the mouse is over the currently draw unit
+			const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
+			if(!(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0)){
+				const tgt_xy = Bit.SET_XY(cell.x,cell.y);
+				if(ch.point_xy == tgt_xy){
+					//hovering over target, show stats
+					if(ch.player_state!=cbt_NO_PLAYER_STATE){
+						const textX = 880;
+						Text.drawBitmapText(ctx,"HP: "+ch.hp+"/"+ch.max_hp,textX,16);
+						Text.drawBitmapText(ctx,"ATK: "+ch.atk,textX,32);
+						Text.drawBitmapText(ctx,"MOVE: "+ch.mov,textX,48);
+						Text.drawBitmapText(ctx,"RANGE: "+ch.min_range+"-"+ch.max_range,textX,64);
+					}
+					
+				}
+			}
+		}
+		
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
