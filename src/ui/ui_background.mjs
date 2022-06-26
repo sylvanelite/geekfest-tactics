@@ -4,6 +4,7 @@ import { GameState,CONTROL_SOURCE } from "../Game.mjs";//todo: remove Game?
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
+import { Text } from "../renderer/text.mjs";
 import { Isometric } from "../renderer/isometric.mjs";
 import { Terrain } from "./terrain/terrain.mjs";
 
@@ -278,6 +279,18 @@ class ui_background{
 			}
 		}
 		//--end iso
+		//draw selected stats (player phase only)
+		if(controlSource==CONTROL_SOURCE.LOCAL){
+			const [selx,sely] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
+			const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
+			if(selectedCh.player_state!=cbt_NO_PLAYER_STATE){
+				const textX = 800;
+				Text.drawBitmapText(ctx,"HP:"+selectedCh.hp+"/"+selectedCh.max_hp,textX,16);
+				Text.drawBitmapText(ctx,"ATK:"+selectedCh.atk,textX,32);
+				Text.drawBitmapText(ctx,"MOVE:"+selectedCh.mov,textX,48);
+				Text.drawBitmapText(ctx,"RANGE:"+selectedCh.min_range+"-"+selectedCh.max_range,textX,64);
+			}
+		}
 	}
 	static drawUnitAtPosition(ctx,ch,x,y,direction="down",frameIdx=0){
 		if(Sy.FOG_ENABLED){
