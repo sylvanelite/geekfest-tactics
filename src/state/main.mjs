@@ -375,6 +375,7 @@ static fillMoveAndAttackForCharacter(ch) {
 	const min_range = ch.min_range;
 	const max_range = ch.max_range;
 	const [chX,chY] = Bit.GET_XY(ch.point_xy);
+	Sy.fillAttack(chX, chY, min_range, max_range);//base case character start position
     const queueEnd = Sy.fillMove(chX, chY, ch.mov + 1, ch);
 	//#moveQueue is filled with the cells that were marked as movable, can iterate over them to fill atk
     for (let  i = 0; i < queueEnd; i += 1) {
