@@ -19,7 +19,9 @@ const anime_multi_data = {
 			player_state: cbt_ENEMY,
 			point_xy: Bit.SET_XY(1,4),
 			max_range:1,
-			mov:10
+			mov:10,
+			max_hp:20,
+			hp:20,
 		}),
 		new st_Character({
 			player_state: cbt_ENEMY,

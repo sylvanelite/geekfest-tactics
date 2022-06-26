@@ -14,7 +14,8 @@ const TERRAIN_IMPASSIBLE = 99;
 	import { 
 	cbt_NO_PLAYER_STATE,
 	cbt_PLAYER,
-	cbt_ENEMY
+	cbt_ENEMY,
+	cbt_STATE_SELECT_WEAPON_TARGET
 	}from "../state/consts.mjs";
 
 const colours = [
@@ -285,10 +286,10 @@ class ui_background{
 			const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
 			if(selectedCh.player_state!=cbt_NO_PLAYER_STATE){
 				const textX = 800;
-				Text.drawBitmapText(ctx,"HP:"+selectedCh.hp+"/"+selectedCh.max_hp,textX,16);
-				Text.drawBitmapText(ctx,"ATK:"+selectedCh.atk,textX,32);
-				Text.drawBitmapText(ctx,"MOVE:"+selectedCh.mov,textX,48);
-				Text.drawBitmapText(ctx,"RANGE:"+selectedCh.min_range+"-"+selectedCh.max_range,textX,64);
+				Text.drawBitmapText(ctx,"HP: "+selectedCh.hp+"/"+selectedCh.max_hp,textX,16);
+				Text.drawBitmapText(ctx,"ATK: "+selectedCh.atk,textX,32);
+				Text.drawBitmapText(ctx,"MOVE: "+selectedCh.mov,textX,48);
+				Text.drawBitmapText(ctx,"RANGE: "+selectedCh.min_range+"-"+selectedCh.max_range,textX,64);
 			}
 		}
 	}
@@ -396,6 +397,30 @@ class ui_background{
 		ctx.strokeRect(iso.x-64*Isometric.SCALE,iso.y-16-64*Isometric.SCALE,128*Isometric.SCALE,16);
 		ctx.fillRect(iso.x-64*Isometric.SCALE,iso.y-16-64*Isometric.SCALE,
 			(128*Isometric.SCALE)*(ch.hp/ch.max_hp),16);
+		//battle preview (player only)
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
+		const gameState = Sy_api.api_getCurrentState();
+		if(controlSource==CONTROL_SOURCE.LOCAL && gameState==cbt_STATE_SELECT_WEAPON_TARGET &&
+			ch.player_state != curPlayerState){//check the currently drawn ch is not a player unit
+			//now see if the mouse is over the currently draw unit
+			const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
+			if(!(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0)){
+				const tgt_xy = Bit.SET_XY(cell.x,cell.y);
+				if(ch.point_xy == tgt_xy){
+					//hovering over target, calc preview
+					const [selx,sely] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
+					const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
+					const dmgStart = Math.max(0,ch.hp-selectedCh.atk)/ch.max_hp;
+					const barX = iso.x-64*Isometric.SCALE;
+					const previewX = barX+dmgStart*(128*Isometric.SCALE);
+					const previewWidth = (128*Isometric.SCALE)*(selectedCh.atk/ch.max_hp);
+					ctx.fillStyle="rgba(200,200,0,1)";
+					ctx.fillRect(previewX,iso.y-16-64*Isometric.SCALE,
+						previewWidth,16);
+				}
+			}
+		}
 		//--end ISO
 	}
 	static drawUnit(ctx,ch){
