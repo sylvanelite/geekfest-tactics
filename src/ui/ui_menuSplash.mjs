@@ -76,6 +76,7 @@ class ui_menuSplash{
 	'terrain_spritesheet/target.png',
 	'terrain_spritesheet/tile.png',
 	
+	'effects/hit_yellow.png',
 	];
 	static #numberToLoad=ui_menuSplash.#preload.length;
 	static preload=()=>{

@@ -293,6 +293,35 @@ class ui_background{
 			}
 		}
 	}
+	static drawBattleHitEffect(ctx,x,y,dmg,frame){
+		const iso = Isometric.to_screen_coordinate({x,y});
+		const frames = [
+		{x:0,y:0},
+		{x:128,y:0},
+		{x:256,y:0},
+		{x:384,y:0},
+		{x:0,y:128},
+		{x:128,y:128},
+		{x:256,y:128},
+		{x:384,y:128},
+		{x:0,y:256},
+		{x:128,y:256},
+		{x:256,y:256},
+		{x:384,y:256},
+		{x:0,y:384},
+		{x:128,y:384},
+		{x:256,y:384},
+		{x:384,y:384},
+		];
+		const spr = Renderer.getSprite(
+			'effects/hit_yellow.png',
+			iso.x-128/2,iso.y-128/2,128,128,frames[frame].x,frames[frame].y
+		);
+		if(frame>8){
+			//Text.drawBitmapText(ctx,""+dmg,iso.x-128/2,iso.y-frame);
+		}
+		Renderer.drawSprite(spr,ctx);
+	}
 	static drawUnitAtPosition(ctx,ch,x,y,direction="down",frameIdx=0){
 		if(Sy.FOG_ENABLED){
 			//-- don't reveal fog unless the control source is local for the controller

@@ -122,7 +122,11 @@ class Animator{
 		};
 		ui_background.drawUnits(ctx,isLerpUnit,lerpUnit);
 		defUnit.player_state = defState;
-		
+		if((animation.duration>=animation.totalDuration*(2/6)&&
+			animation.duration<=animation.totalDuration*(4/6))){
+			const [tgtx,tgty] = Bit.GET_XY(animation.data.tgtCh.point_xy);
+			ui_background.drawBattleHitEffect(ctx,tgtx,tgty,animation.data.ch.atk,(animation.duration-animation.totalDuration*(2/6))%16);
+		}
 		
 		Isometric.setScale(initialIso);
 	}
