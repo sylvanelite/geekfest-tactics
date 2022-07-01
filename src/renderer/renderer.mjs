@@ -202,7 +202,7 @@ class Renderer{
 		//ctx.drawImage(canvas,-canvas.width,y);
 		ctx.drawImage(canvas,
 			0,0,canvas.width,canvas.height,
-			-canvas.width,y,destW,destH);
+			-destW,y,destW,destH);
 		ctx.restore();
 	}
 	
