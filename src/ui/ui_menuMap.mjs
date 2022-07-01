@@ -494,6 +494,7 @@ class ui_menuMap{
 				}
 			}
 		}
+		ui_menuMap.#save();
 		//ui_menuMap.#selectedArea="anime";//todo: reset palette to anime?
 	}
 	static #save(){

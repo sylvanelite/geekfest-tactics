@@ -57,7 +57,7 @@ class Renderer{
 	}
 	static getMouseCellTileOrIso(w,h){
 		const cell = Renderer.getMouseIsoCell();
-		if(cell.x>=w||cell.y>=h||cell.x<0||cell.y<0){//out of bounds for tile, default to ISO
+		if(cell.x>=w||cell.y>=h||cell.x<0||cell.y<0){//out of bounds for iso, default to tile
 			return Renderer.getMouseCell();
 		}
 		return cell;
