@@ -8,8 +8,8 @@ import { male_data, female_data, portraits } from "./character/data/portraits.mj
 class ui_menuCharacter{
 	static draw(ctx){
 		
-		const spr = ui_menuCharacter.#sprites.background;
-		Renderer.drawSprite(spr,ctx);
+		const background = ui_menuCharacter.#sprites.background;
+		Renderer.drawSprite(background,ctx);
 		
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_shuffle,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_gender,ctx);
@@ -26,25 +26,82 @@ class ui_menuCharacter{
 			Renderer.drawSprite(spr,ctx);
 			spr.x = 0;
 		}
+		
+		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		const spr = ui_menuCharacter.#sprites.btn_icon;
+		const sprSelected = ui_menuCharacter.#sprites.btn_icon_selected;
 		for(let i=0;i<8;i+=1){
-			const spr = ui_menuCharacter.#sprites.btn_icon;
-			//arm
+			//head
 			spr.y=117;
 			spr.x=413+i*33;
 			Renderer.drawSprite(spr,ctx);
+			if(ch.headgear == i){
+				sprSelected.x = spr.x;
+				sprSelected.y = spr.y;
+				Renderer.drawSprite(sprSelected,ctx);
+			}
+			//btn_icon_selected
+			//arm
 			spr.y=162;
 			Renderer.drawSprite(spr,ctx);
-			//head
+			if(ch.front_arm == i){
+				sprSelected.x = spr.x;
+				sprSelected.y = spr.y;
+				Renderer.drawSprite(sprSelected,ctx);
+			}
 			spr.y=195;
 			Renderer.drawSprite(spr,ctx);
+			if(ch.front_arm == i+8){
+				sprSelected.x = spr.x;
+				sprSelected.y = spr.y;
+				Renderer.drawSprite(sprSelected,ctx);
+			}
 			//torso
 			spr.y=240;
 			Renderer.drawSprite(spr,ctx);
+			if(ch.torso == i){
+				sprSelected.x = spr.x;
+				sprSelected.y = spr.y;
+				Renderer.drawSprite(sprSelected,ctx);
+			}
 			spr.y=273;
 			Renderer.drawSprite(spr,ctx);
+			if(ch.torso == i+8){
+				sprSelected.x = spr.x;
+				sprSelected.y = spr.y;
+				Renderer.drawSprite(sprSelected,ctx);
+			}
 			//accessories
 			spr.y=318;
 			Renderer.drawSprite(spr,ctx);
+			if(i == 0||i == 1){
+				if(ch.a_wing == i){
+					sprSelected.x = spr.x;
+					sprSelected.y = spr.y;
+					Renderer.drawSprite(sprSelected,ctx);
+				}
+			}
+			if(i == 2||i == 3){
+				if(ch.a_necklace == i-2){
+					sprSelected.x = spr.x;
+					sprSelected.y = spr.y;
+					Renderer.drawSprite(sprSelected,ctx);
+				}
+			}
+			if(i == 4||i == 5){
+				if(ch.a_cape == i-4){
+					sprSelected.x = spr.x;
+					sprSelected.y = spr.y;
+					Renderer.drawSprite(sprSelected,ctx);
+				}
+			}
+			if(i == 6||i == 7){
+				if(ch.a_face == i-6){
+					sprSelected.x = spr.x;
+					sprSelected.y = spr.y;
+					Renderer.drawSprite(sprSelected,ctx);
+				}
+			}
 			//reset
 			spr.x = 413;
 		}
