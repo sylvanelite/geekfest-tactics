@@ -346,6 +346,13 @@ class ui_menuCharacter{
 			const sprIdx = Math.floor(Math.random()*sprList.length);
 			ch[draw]=sprIdx;
 		}
+		ui_menuCharacter.selectArm(Math.floor(Math.random()*16));
+		ui_menuCharacter.selectHead(Math.floor(Math.random()*8));
+		ui_menuCharacter.selectTorso(Math.floor(Math.random()*16));
+		//select accessory is split into sections, call it a few times to get more randomisation
+		ui_menuCharacter.selectAccessory(Math.floor(Math.random()*8));
+		ui_menuCharacter.selectAccessory(Math.floor(Math.random()*8));
+		ui_menuCharacter.selectAccessory(Math.floor(Math.random()*8));
 		ui_menuCharacter.refreshSprites();
 	}
 	static swapGender(){
