@@ -27,6 +27,14 @@ class ui_menuCharacter{
 			spr.x = 0;
 		}
 		
+		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_start)){
+			ctx.fillStyle="rgba(200,200,200,0.7)";
+			ctx.fillRect(
+				ui_menuCharacter.#sprites.btn_start.x,
+				ui_menuCharacter.#sprites.btn_start.y,
+				ui_menuCharacter.#sprites.btn_start.width,
+				ui_menuCharacter.#sprites.btn_start.height);
+		}
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const spr = ui_menuCharacter.#sprites.btn_icon;
 		const sprSelected = ui_menuCharacter.#sprites.btn_icon_selected;
@@ -110,7 +118,6 @@ class ui_menuCharacter{
 		//--
 		ui_menuCharacter.drawCharacterSprites(ctx);
 		//--
-		//draw stats
 		
 	}
 	static click(e){

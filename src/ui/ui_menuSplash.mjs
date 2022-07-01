@@ -13,7 +13,6 @@ class ui_menuSplash{
 	'font/boxy_bold_font.png',
 	
 	'ui/lvl_icons.png',
-	'ui/map.png',
 	'ui/menu_character.png',
 	'ui/script_bg.png',
 	'ui/script_bubble.png',

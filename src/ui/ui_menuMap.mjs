@@ -13,22 +13,21 @@ import { ui_displayMove } from "./ui_displayMove.mjs";
 class ui_menuMap{
 	static #sprites = {
 		bg_map:Renderer.getSprite(
-			'ui/map.png',
-			0,0,980,540,0,0
+			"ui/screen_map.png",
+			0,0,Renderer.width,Renderer.height,0,0
 		),
 		btn_start:Renderer.getSprite(
-			'ui/map.png',
-			695,355,267,137,0,0
+			'ui/screen_map.png',
+			784,359,151,64,784,359
 		),
 		btn_multiHost:Renderer.getSprite(
-			'ui/map.png',
-			719,21,85,46,0,0
+			"ui/screen_map.png",
+			602,12,140,75,602,12
 		),
 		btn_multiJoin:Renderer.getSprite(
-			'ui/map.png',
-			632,21,85,46,0,0
+			"ui/screen_map.png",
+			750,12,140,75,750,12
 		),
-		
 		//TODO: add proper icons for each area
 		btn_icon_manga:Renderer.getSprite(
 			'ui/lvl_icons.png',
@@ -99,21 +98,51 @@ class ui_menuMap{
 	
 	static draw(ctx){
 		Renderer.drawSprite(ui_menuMap.#sprites.bg_map,ctx);
-		if(Network.isHost()){
-			ctx.font="12px monospace";
-			ctx.fillStle="black";
-			ctx.fillText(ui_menuMap.#hostId,
-				ui_menuMap.#sprites.btn_multiHost.x+46,
-				ui_menuMap.#sprites.btn_multiHost.y+40.5);
-		}
 		const nwStatus = Network.getStatus();
 		if(nwStatus!="disabled"){
+			ctx.fillStyle="black";
+			ctx.fillRect(
+				ui_menuMap.#sprites.btn_multiHost.x+46,
+				ui_menuMap.#sprites.btn_multiHost.y+64,
+				350,
+				80
+			);
+			ctx.fillStyle="red";
 			ctx.fillText(nwStatus,
-				ui_menuMap.#sprites.btn_multiHost.x+46+85,
-				ui_menuMap.#sprites.btn_multiHost.y+64.5);
+				ui_menuMap.#sprites.btn_multiHost.x+55,
+				ui_menuMap.#sprites.btn_multiHost.y+112.5);
 			if(nwStatus=="connected"){
 				Menu.setMenuState(MENU_STATE.PLAYING);
 			}
+		if(Network.isHost()){
+			ctx.font="16pt monospace";
+			ctx.fillText("HOST: "+ui_menuMap.#hostId,
+				ui_menuMap.#sprites.btn_multiHost.x+55,
+				ui_menuMap.#sprites.btn_multiHost.y+88.5);
+		}
+		}
+		
+		ctx.fillStyle="rgba(200,200,200,0.7)";
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_start)){
+			ctx.fillRect(
+				ui_menuMap.#sprites.btn_start.x,
+				ui_menuMap.#sprites.btn_start.y,
+				ui_menuMap.#sprites.btn_start.width,
+				ui_menuMap.#sprites.btn_start.height);
+		}
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiHost)){
+			ctx.fillRect(
+				ui_menuMap.#sprites.btn_multiHost.x,
+				ui_menuMap.#sprites.btn_multiHost.y,
+				ui_menuMap.#sprites.btn_multiHost.width,
+				ui_menuMap.#sprites.btn_multiHost.height);
+		}
+		if(Renderer.isMouseOver(ui_menuMap.#sprites.btn_multiJoin)){
+			ctx.fillRect(
+				ui_menuMap.#sprites.btn_multiJoin.x,
+				ui_menuMap.#sprites.btn_multiJoin.y,
+				ui_menuMap.#sprites.btn_multiJoin.width,
+				ui_menuMap.#sprites.btn_multiJoin.height);
 		}
 		
 		//draw level selection sprites
