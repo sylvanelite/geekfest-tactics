@@ -79,6 +79,7 @@ class ui_menuSplash{
 	'terrain_spritesheet/tile.png',
 	
 	'effects/hit_yellow.png',
+	'effects/fade_out.png',
 	];
 	static #numberToLoad=ui_menuSplash.#preload.length;
 	static preload=()=>{

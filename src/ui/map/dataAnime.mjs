@@ -7,7 +7,7 @@ const anime_multi_data = {
 	units:[
 		new st_Character({
 			player_state: cbt_PLAYER,
-			point_xy: Bit.SET_XY(3,4),
+			point_xy: Bit.SET_XY(1,1),
 			mov:10
 		}),
 		new st_Character({
@@ -20,8 +20,8 @@ const anime_multi_data = {
 			point_xy: Bit.SET_XY(1,4),
 			max_range:1,
 			mov:10,
-			max_hp:20,
-			hp:20,
+			max_hp:1,
+			hp:1,
 		}),
 		new st_Character({
 			player_state: cbt_ENEMY,

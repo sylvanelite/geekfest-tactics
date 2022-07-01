@@ -7,6 +7,7 @@ const ANIMATION = {
 	MOVE:'MOVE',
 	BATTLE:'BATTLE',
 	TURN:'TURN',
+	DIE:'DIE'
 };
 
 //base class for drawing & computing interaction with them
@@ -33,6 +34,9 @@ class Animator{
 				Animator.draw_ToggleTurn(ctx,animation);
 				break;
 			default:
+			case ANIMATION.DIE:
+				Animator.draw_DieEffect(ctx,animation);
+				break;
 				console.log("unknown animation:",animation);
 		}
 		
@@ -136,6 +140,11 @@ class Animator{
 		const curTurn = Sy_api.api_getCurrentPlayerState()
 		ui_background.drawToggleTurnEffect(ctx,curTurn,animation.duration);
 	}
+	static draw_DieEffect(ctx,animation){
+		ui_background.drawTerrain(ctx);
+		ui_background.drawUnits(ctx);
+		ui_background.drawBattleDieEffect(ctx,animation.data.x,animation.data.y,animation.duration);
+	}
 	
 	static #enqueuPromiseAnimation(animation){
 		const promise = new Promise((res,rej)=>{
@@ -183,6 +192,17 @@ class Animator{
 		return Animator.#enqueuPromiseAnimation(animation);
 	}
 	
+	//internal, as part of battle
+	static enqueue_dieEffect(x,y){
+		const done = new Promise((res)=>{res();});
+		const animation={
+			kind:ANIMATION.DIE,
+			data:{x,y},
+			duration:0,
+			totalDuration:16
+		};
+		return Animator.#enqueuPromiseAnimation(animation);
+	}
 }
 
 

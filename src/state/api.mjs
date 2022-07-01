@@ -259,6 +259,14 @@ class Sy_api {
 				Sy_api.#rendererBlocked = false;
 			}
 			Sy.performBattleCalculation(ch, slectedTgt);//TODO: battle tgt can be ally
+			if(slectedTgt.hp<=0){ 
+				if(Sy_api.#renderer){
+					Sy_api.#rendererBlocked = true;
+					const [tgtx,tgty]=Bit.GET_XY(slectedTgt.point_xy);
+					await Sy_api.#renderer.enqueue_dieEffect(tgtx,tgty);
+					Sy_api.#rendererBlocked = false;
+				}	
+			}
 		}
 		if(Sy_api.#networking){
 			Sy_api.#networking.send({

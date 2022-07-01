@@ -322,6 +322,16 @@ class ui_background{
 		}
 		Renderer.drawSprite(spr,ctx);
 	}
+	static drawBattleDieEffect(ctx,x,y,frame){
+		const iso = Isometric.to_screen_coordinate({x,y});
+		//8 frames
+		const spr = Renderer.getSprite(
+			'effects/fade_out.png',
+			iso.x-64*Isometric.SCALE,iso.y-16-64*Isometric.SCALE,128,128,
+			Math.floor(frame/2)*128,0
+		);
+		Renderer.drawSpriteScaled(spr,128*Isometric.SCALE,128*Isometric.SCALE,ctx);
+	}
 	static drawToggleTurnEffect(ctx,player_state,frame){
 		const alpha = Math.sin(Math.PI*frame/33)/3;
 		//draw BG
@@ -467,7 +477,7 @@ class ui_background{
 						const dmgStart = Math.max(0,ch.hp-selectedCh.atk)/ch.max_hp;
 						const barX = iso.x-64*Isometric.SCALE;
 						const previewX = barX+dmgStart*(128*Isometric.SCALE);
-						const previewWidth = (128*Isometric.SCALE)*(selectedCh.atk/ch.max_hp);
+						const previewWidth = (128*Isometric.SCALE)*(Math.min(ch.max_hp,selectedCh.atk)/ch.max_hp);
 						ctx.fillStyle="rgba(200,200,0,1)";
 						ctx.fillRect(previewX,iso.y-16-64*Isometric.SCALE,
 							previewWidth,16);
