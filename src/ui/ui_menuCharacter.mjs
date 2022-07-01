@@ -7,6 +7,9 @@ import { male_data, female_data, portraits } from "./character/data/portraits.mj
 class ui_menuCharacter{
 	static draw(ctx){
 		
+		const spr = ui_menuCharacter.#sprites.background;
+		Renderer.drawSprite(spr,ctx);
+		
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_shuffle,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_gender,ctx);
 		Renderer.drawSprite(ui_menuCharacter.#sprites.btn_start,ctx);
@@ -249,6 +252,7 @@ class ui_menuCharacter{
 	}
 	
 	static #sprites = {
+		background:Renderer.getSprite("ui/screen_character.png",0,0,Renderer.width,Renderer.height,0,0),
 		btn_character:Renderer.getSprite(
 			'ui/menu_character.png',
 			0,496,197,48,0,0
@@ -259,11 +263,11 @@ class ui_menuCharacter{
 		),
 		btn_shuffle:Renderer.getSprite(
 			'ui/menu_character.png',
-			0,0,95,66,0,167
+			95,0,95,66,0,167
 		),
 		btn_gender:Renderer.getSprite(
 			'ui/menu_character.png',
-			95,0,130,70,95,167
+			0,0,130,70,95,167
 		),
 		btn_icon:Renderer.getSprite(
 			'ui/menu_character.png',
@@ -537,7 +541,7 @@ class ui_menuCharacter{
 		const canvToDraw = ch.canvases[drawDir][frameIdx];
 		if(!canvToDraw){return;}
 		const ybouce = (frameIdx==1?4:0);
-			const x = 450;
+			const x = 455;
 			const y = 360+ybouce;
 		if(direction!="right"){
 			Renderer.drawCanvasSprite(canvToDraw,x,y,ctx);
