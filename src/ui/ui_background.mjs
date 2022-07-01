@@ -322,6 +322,29 @@ class ui_background{
 		}
 		Renderer.drawSprite(spr,ctx);
 	}
+	static drawToggleTurnEffect(ctx,player_state,frame){
+		const alpha = Math.sin(Math.PI*frame/33)/3;
+		//draw BG
+		ctx.fillStyle="rgba(50,50,50,"+alpha+")";
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		//draw BG gradient
+		
+		var gradient = ctx.createLinearGradient(Renderer.width/2,Renderer.height/2-64,
+											Renderer.width/2,Renderer.height/2+64);
+		gradient.addColorStop(0, "rgba(50,50,50,"+alpha+")");
+		gradient.addColorStop(.5, (player_state==cbt_PLAYER?'blue':'red'));
+		gradient.addColorStop(1, "rgba(50,50,50,"+alpha+")");
+		ctx.fillStyle = gradient;
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		
+		const spr = Renderer.getSprite(
+			'ui/turn_toggle.png',
+			Renderer.width/2-128,
+			Renderer.height/2-64,256,128,0,(player_state==cbt_PLAYER?0:128)
+		);
+		Renderer.drawSprite(spr,ctx);
+		
+	}
 	static drawUnitAtPosition(ctx,ch,x,y,direction="down",frameIdx=0){
 		if(Sy.FOG_ENABLED){
 			//-- don't reveal fog unless the control source is local for the controller

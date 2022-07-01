@@ -133,6 +133,8 @@ class Animator{
 	static draw_ToggleTurn(ctx,animation){
 		ui_background.drawTerrain(ctx);
 		ui_background.drawUnits(ctx);
+		const curTurn = Sy_api.api_getCurrentPlayerState()
+		ui_background.drawToggleTurnEffect(ctx,curTurn,animation.duration);
 	}
 	
 	static #enqueuPromiseAnimation(animation){

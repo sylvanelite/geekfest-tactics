@@ -18,6 +18,8 @@ class ui_menuSplash{
 	'ui/script_bg.png',
 	'ui/script_bubble.png',
 	'ui/script_ch.png',
+	'ui/turn_toggle.png',
+	
 	'character_spritesheet/portrait/female_portraits.png',
 	'character_spritesheet/portrait/male_portraits.png',
 	
