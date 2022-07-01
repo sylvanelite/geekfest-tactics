@@ -13,7 +13,7 @@ const anime_multi_data = {
 		new st_Character({
 			player_state: cbt_PLAYER,
 			point_xy: Bit.SET_XY(2,2),
-			mov:4
+			mov:10
 		}),
 		new st_Character({
 			player_state: cbt_ENEMY,
@@ -38,7 +38,7 @@ const anime_multi_data = {
 			99,1 ,99,2 ,5 ,1 ,1 ,1 ,1 ,
 			99,1 ,1 ,2 ,1 ,3 ,1 ,1 ,1 ,
 			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,99,
+			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
 			1 ,1 ,99,1 ,1 ,1 ,1 ,99,1 ,
 			]
 		},

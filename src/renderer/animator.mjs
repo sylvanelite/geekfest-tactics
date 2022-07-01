@@ -7,7 +7,8 @@ const ANIMATION = {
 	MOVE:'MOVE',
 	BATTLE:'BATTLE',
 	TURN:'TURN',
-	DIE:'DIE'
+	DIE:'DIE',
+	GAME_OVER:'GAME_OVER'
 };
 
 //base class for drawing & computing interaction with them
@@ -33,10 +34,13 @@ class Animator{
 			case ANIMATION.TURN:
 				Animator.draw_ToggleTurn(ctx,animation);
 				break;
-			default:
 			case ANIMATION.DIE:
 				Animator.draw_DieEffect(ctx,animation);
 				break;
+			case ANIMATION.GAME_OVER:
+				Animator.draw_GameOver(ctx,animation);
+				break;
+			default:
 				console.log("unknown animation:",animation);
 		}
 		
@@ -145,6 +149,11 @@ class Animator{
 		ui_background.drawUnits(ctx);
 		ui_background.drawBattleDieEffect(ctx,animation.data.x,animation.data.y,animation.duration);
 	}
+	static draw_GameOver(ctx,animation){
+		ui_background.drawTerrain(ctx);
+		ui_background.drawUnits(ctx);
+		ui_background.drawGameOverEffect(ctx);
+	}
 	
 	static #enqueuPromiseAnimation(animation){
 		const promise = new Promise((res,rej)=>{
@@ -192,7 +201,6 @@ class Animator{
 		return Animator.#enqueuPromiseAnimation(animation);
 	}
 	
-	//internal, as part of battle
 	static enqueue_dieEffect(x,y){
 		const done = new Promise((res)=>{res();});
 		const animation={
@@ -200,6 +208,16 @@ class Animator{
 			data:{x,y},
 			duration:0,
 			totalDuration:16
+		};
+		return Animator.#enqueuPromiseAnimation(animation);
+	}
+	static enqueue_gameOver(){
+		const done = new Promise((res)=>{res();});
+		const animation={
+			kind:ANIMATION.GAME_OVER,
+			data:{},
+			duration:0,
+			totalDuration:180//~2.8seconds
 		};
 		return Animator.#enqueuPromiseAnimation(animation);
 	}

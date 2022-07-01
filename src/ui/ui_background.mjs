@@ -355,6 +355,29 @@ class ui_background{
 		Renderer.drawSprite(spr,ctx);
 		
 	}
+	static drawGameOverEffect(ctx){
+		//need to deduce if you won/lost
+		//could check for which player has units alive
+		//but since there's no counterattack phase, the winner will be the current turn's player
+		//toggle turn is done after the gameover check.
+		const curPlayerState = Sy_api.api_getCurrentPlayerState();
+		const controlSource = GameState.getControlSourceForPlayer(curPlayerState);
+		//can additionally shortcut the check here
+		//just need to know if the person who won/lost is the local player
+		//don't need to check their actual assigned state
+		
+		//draw BG
+		ctx.fillStyle="rgba(50,50,50,0.6)";
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		//draw BG gradient
+		
+		const spr = Renderer.getSprite(
+			'ui/game_over.png',
+			Renderer.width/2-128,
+			Renderer.height/2-64,256,128,0,(controlSource==CONTROL_SOURCE.LOCAL?0:128)
+		);
+		Renderer.drawSprite(spr,ctx);
+	}
 	static drawUnitAtPosition(ctx,ch,x,y,direction="down",frameIdx=0){
 		if(Sy.FOG_ENABLED){
 			//-- don't reveal fog unless the control source is local for the controller

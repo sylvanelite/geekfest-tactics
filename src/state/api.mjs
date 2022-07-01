@@ -172,7 +172,15 @@ class Sy_api {
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
-				if(Sy_api.#checkGameOver()){//TODO:game over?
+				if(Sy_api.#checkGameOver()){
+					if(Sy_api.#renderer){
+						Sy_api.#rendererBlocked = true;
+						await Sy_api.#renderer.enqueue_gameOver();
+						Sy_api.#rendererBlocked = false;
+					}
+					if(Sy_api.#menu){
+						Sy_api.#menu.endGame(Sy.cbt_CurrentPlayerState==cbt_PLAYER);
+					}
 					return true;
 				}
 				if(eot && Sy_api.#renderer){
@@ -208,7 +216,15 @@ class Sy_api {
 					});
 				}
 				const eot = Sy.cbtSetUnitToWaitAndCheck(prevCh,preferredPath);
-				if(Sy_api.#checkGameOver()){//TODO:game over?
+				if(Sy_api.#checkGameOver()){
+					if(Sy_api.#renderer){
+						Sy_api.#rendererBlocked = true;
+						await Sy_api.#renderer.enqueue_gameOver();
+						Sy_api.#rendererBlocked = false;
+					}
+					if(Sy_api.#menu){
+						Sy_api.#menu.endGame(Sy.cbt_CurrentPlayerState==cbt_PLAYER);
+					}
 					return true;
 				}
 				if(eot && Sy_api.#renderer){
@@ -278,7 +294,15 @@ class Sy_api {
 			});
 		}
 		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
-		if(Sy_api.#checkGameOver()){//TODO:game over?
+		if(Sy_api.#checkGameOver()){
+			if(Sy_api.#renderer){
+				Sy_api.#rendererBlocked = true;
+				await Sy_api.#renderer.enqueue_gameOver();
+				Sy_api.#rendererBlocked = false;
+			}
+			if(Sy_api.#menu){
+				Sy_api.#menu.endGame(Sy.cbt_CurrentPlayerState==cbt_PLAYER);
+			}
 			return true;
 		}
 		if(eot&&Sy_api.#renderer){
@@ -572,11 +596,6 @@ class Sy_api {
 		if(playerAlive && enemyAlive){
 			return false;
 		}
-		//TODO: other things, like exp?
-		if(Sy_api.#menu){
-			Sy_api.#menu.endGame(playerAlive);
-		}
-		//TODO: await animation?
 		return true;
 	}
 }
