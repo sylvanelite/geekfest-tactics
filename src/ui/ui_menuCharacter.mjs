@@ -270,12 +270,10 @@ class ui_menuCharacter{
 		//TODO: save characters to localstorage?
 	}
 	static selectCharacter(ch){
-		console.log("switch to ch:",ch);
 		ui_menuCharacter.#selectedChIdx = ch;
 		ui_menuCharacter.refreshSprites();
 	}
 	static selectArm(item){
-		console.log("arm f: ",item);//TODO: "if unlocked"
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const sprList = portraits.front_arm[ch.gender];
 		ch.front_arm=item;
@@ -283,21 +281,18 @@ class ui_menuCharacter{
 		ui_menuCharacter.refreshSprites();
 	}
 	static selectHead(item){
-		console.log("head: ",item);
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const sprList = portraits.headgear[ch.gender];
 		ch.headgear=item;
 		ui_menuCharacter.refreshSprites();
 	}
 	static selectTorso(item){
-		console.log("torso: ",item);
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		const sprList = portraits.torso[ch.gender];
 		ch.torso=item;
 		ui_menuCharacter.refreshSprites();
 	}
 	static selectAccessory(item){
-		console.log("accessory: ",item);
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		if(item == 0||item == 1){//wing
 			if(ch.a_wing == item){
@@ -343,7 +338,6 @@ class ui_menuCharacter{
 		ui_menuCharacter.refreshSprites();
 	}
 	static swapGender(){
-		console.log("gender");
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
 		if(ch.gender == 'male'){
 			ch.gender = 'female';
@@ -469,7 +463,6 @@ class ui_menuCharacter{
 			//TODO: female base hair=headgear?
 			const sprList = portraits[draw][ch.gender];
 			const sprIdx = ch[draw]%sprList.length;
-			//if(ch[draw]>=sprList.length){console.log("out of range...");}
 			const sprName = sprList[sprIdx]
 			const img = getSprData(sprName,ch.gender);
 			

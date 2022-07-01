@@ -15,14 +15,12 @@ class ui_displayMove{
 	static click(e){
 		const cell = Renderer.getMouseCellTileOrIso(Sy_api.api_getMapWidth(),Sy_api.api_getMapHeight());
 		ui_displayMove.move();//ensure pathfinding is updated
-		//console.log("click: mov",e,cell);
 		if(e.button == 2){//right click
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 			return;
 		}
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
-			//console.log("cell out of bounds: ",cell.x,cell.y);
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
 			return;
@@ -53,11 +51,11 @@ class ui_displayMove{
 		const cell_xy = Bit.SET_XY(cell.x,cell.y);
 		//ensure the path is intialised
 		if(!ui_displayMove.#movePath.length){
-			console.log("empty, init path to:",ch.point_xy);
+			//console.log("empty, init path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
 		}
 		if(ui_displayMove.#movePath[0]!=ch.point_xy){
-			console.log("not at start set path to:",ch.point_xy);
+			//console.log("not at start set path to:",ch.point_xy);
 			ui_displayMove.#movePath = [ch.point_xy];
 		}
 		//check if trying to move to a targeting cell

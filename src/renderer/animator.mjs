@@ -46,7 +46,6 @@ class Animator{
 		
 		//check animation is done
 		if(animation.duration>=animation.totalDuration){
-			console.log('resolving',animation);
 			animation.resolve();
 			Animator.#animations.splice(0,1);
 		}

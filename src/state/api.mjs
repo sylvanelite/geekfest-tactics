@@ -97,7 +97,7 @@ class Sy_api {
 			Sy.cbt_CurrentState=cbt_STATE_DISPLAY_MOVE;
 			return true;
 		}
-		console.log("invalid idle select");
+		//console.log("invalid idle select");
 		Sy.checkEndOfTurn();
 		return false;
 	}
@@ -115,8 +115,8 @@ class Sy_api {
 				//if moving the character, check it's a blue cell with no other player in it
 				if(Sy.getMoveForCell(lastX,lastY) == 0||
 				  pathChCell.player_state!=cbt_NO_PLAYER_STATE){
-					console.log("blocked mov path cell");
-					  return false;
+					//console.log("blocked mov path cell");
+					return false;
 				}
 			}
 		}
@@ -147,7 +147,7 @@ class Sy_api {
 					await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,from,to);
 				}
 			}else{
-				console.log("moving with no path supplied");
+				//console.log("moving with no path supplied");
 				await Sy_api.#renderer.enqueue_drawMovement(prevCh.point_xy,prevCh.point_xy,final_xy);
 			}
 			Sy_api.#rendererBlocked = false;
@@ -196,7 +196,6 @@ class Sy_api {
 			cellCh.player_state != cbt_NO_PLAYER_STATE  &&
 			Sy.getAttackForCell(x,y) != 0) {
 			const attackPosition = Sy.getMoveCellFromAttack(x, y, prevCh);
-			console.log(attackPosition,preferredPath);
 			//set the mov cursor to the spot the player moves from, but leave the currnet cursor on the target
 			Sy.cbt_isv_STATE_DISPLAY_MOVE_xy = attackPosition;
 			if(prevCh.point_xy!=selected_xy){
@@ -235,7 +234,7 @@ class Sy_api {
 			}
 			return true;
 		}
-		console.log("invalid mov cell");
+		//console.log("invalid mov cell");
 		//TODO: invalid movement...  could also call Sy_api.api_mov_cancel()?
 		return false;
 	}
@@ -251,7 +250,7 @@ class Sy_api {
 	static async api_tgt_selectTarget(x,y,preferredPath){
 		const slectedTgt = Sy.getCharacterAtPosition(x,y);
 		if(slectedTgt.player_state == cbt_NO_PLAYER_STATE){//if not clicking on the unit, need to check player state for visible opponents
-			console.log("invalid target cell",x,y);
+			//console.log("invalid target cell",x,y);
 			return false;//TODO: invalid target...  could also call Sy_api.api_tgt_cancel()?
 		}
 		const ch = Sy.getCharacterAtPosition(Bit.GET_X(Sy.cbt_isv_STATE_DISPLAY_MOVE_xy),
@@ -259,12 +258,12 @@ class Sy_api {
 		if(slectedTgt.player_state!=cbt_NO_PLAYER_STATE && 
 			!Sy_api.api_getAttackForCell(x,y) &&
 			slectedTgt.point_xy != ch.point_xy ){
-			console.log("unit target cell out of range",x,y);
+			//console.log("unit target cell out of range",x,y);
 			return false;
 		}
 		if(slectedTgt.player_state == ch.player_state&&
 			slectedTgt.point_xy != ch.point_xy){
-			console.log("targeting ally",x,y);
+			//console.log("targeting ally",x,y);
 			return false;
 		}
 		//'a' on target
@@ -369,7 +368,7 @@ class Sy_api {
 				//cursor is the tgt, ch is the internal state var
 				return Sy.cbt_isv_STATE_DISPLAY_MOVE_xy;
 			default:
-				console.log("err: could not get position");
+				//console.log("err: could not get position");
 				return 0;
 		}		
 	}
@@ -383,7 +382,7 @@ class Sy_api {
 		//by default, add 'wait' as an option
 		const res = [Sy_api.api_getCurrentChPosition()];
 		if(Sy.cbt_CurrentState != cbt_STATE_SELECT_WEAPON_TARGET){
-			console.log("err: no target state");
+			//console.log("err: no target state");
 			return;
 		}
 		const curPlayerState = Sy_api.api_getCurrentPlayerState();
