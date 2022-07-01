@@ -293,7 +293,7 @@ class ui_menuMap{
 		mov        2  2  2  2  2  3
 		range_min  1  1  1  1  1  1
 		range_max  1  1  1  2  2  2
-		*/
+		*//*
 		if(unlocked == 0){
 			ch.max_hp=2;
 			ch.atk=1;
@@ -329,13 +329,13 @@ class ui_menuMap{
 			ch.range_min=1;
 			ch.range_min=2;
 		}
-		if(unlocked >= 5){
+		if(unlocked >= 5){*/
 			ch.max_hp=5;
 			ch.atk=3;
 			ch.mov=3;
 			ch.range_min=1;
 			ch.range_min=2;
-		}
+		//}
 		ch.hp = ch.max_hp;
 	}
 	static #applyMapData(){

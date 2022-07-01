@@ -20,6 +20,9 @@ class ui_menuSplash{
 	'ui/script_ch.png',
 	'ui/turn_toggle.png',
 	'ui/game_over.png',
+	'ui/screen_map.png',
+	'ui/screen_character.png',
+	//'ui/screen_splash.png',
 	
 	'character_spritesheet/portrait/female_portraits.png',
 	'character_spritesheet/portrait/male_portraits.png',
@@ -108,62 +111,98 @@ class ui_menuSplash{
 		load();
 	};
 	
+	static #sprites = {
+		background:Renderer.getSprite("ui/screen_splash.png",0,0,Renderer.width,Renderer.height,0,0),
+		play:Renderer.getSprite("ui/screen_splash.png",332,401,
+			331,81,331,81
+		),
+		load:Renderer.getSprite("ui/screen_splash.png",
+			801,429,91,64,91,64)
+	}
 	
 	
 	static draw(ctx){
+		const spr = ui_menuSplash.#sprites.background;
+		Renderer.drawSprite(spr,ctx);
 		const loadingAmount = ("loading: "+
 			Math.floor(100*((ui_menuSplash.#numberToLoad-ui_menuSplash.#preload.length)/ui_menuSplash.#numberToLoad))+"% ("+
 			(ui_menuSplash.#numberToLoad-ui_menuSplash.#preload.length)+"/"+ui_menuSplash.#numberToLoad+")");
-		ctx.fillText("Splash"+loadingAmount,32,32);
+		ctx.font = "14pt monospace";
+		ctx.fillStyle="black";
+		ctx.fillText(loadingAmount,Renderer.width/2-64,Renderer.height/2+64);
+		
+		ctx.fillStyle="rgba(200,200,200,0.7)";
+		if(Renderer.isMouseOver(ui_menuSplash.#sprites.play)){
+			ctx.fillRect(
+				ui_menuSplash.#sprites.play.x,
+				ui_menuSplash.#sprites.play.y,
+				ui_menuSplash.#sprites.play.width,
+				ui_menuSplash.#sprites.play.height);
+		}
+		if(Renderer.isMouseOver(ui_menuSplash.#sprites.load)){
+			ctx.fillRect(
+				ui_menuSplash.#sprites.load.x,
+				ui_menuSplash.#sprites.load.y,
+				ui_menuSplash.#sprites.load.width,
+				ui_menuSplash.#sprites.load.height);
+		}
 	}
+	static #skipIntro = false;
 	static click(e){
 		
-		//TODO: if mouse is over load button
-		const savedDataStr = window.localStorage.getItem('savedata');
-		if(savedDataStr){
-			const saveData = JSON.parse(savedDataStr);
-			ui_menuMap.loadUnlock(saveData);
-			ui_menuCharacter.loadCharacters(saveData);
-			console.log("loaded:",saveData);
-		}
-		//--intro script
-		if(!savedDataStr){
-		Script.start([
-		`{
-			"text":"abc def, etc",
-			"speech":"talk",
-			"left":"chA",
-			"right":"chB",
-			"talk":"left"
-		}`,
-		`{
-			"text":"some other text",
-			"speech":"talk",
-			"left":"chA",
-			"right":"chB",
-			"talk":"right"
-		}`,
-		`{
-			"text":"exclaim!!",
-			"speech":"exclaim",
-			"left":"chA",
-			"right":"chB",
-			"talk":"right"
-		}`,
-		`{
-			"text":"... now thinking ...",
-			"speech":"think",
-			"left":"chA",
-			"right":"chB",
-			"talk":"left"
-		}`
-		]);
+		if(Renderer.isMouseOver(ui_menuSplash.#sprites.load)){
+			const savedDataStr = window.localStorage.getItem('savedata');
+			if(savedDataStr){
+				const saveData = JSON.parse(savedDataStr);
+				ui_menuMap.loadUnlock(saveData);
+				ui_menuCharacter.loadCharacters(saveData);
+				ui_menuSplash.#skipIntro = true;
+				alert("successfully loaded");
+			}else{
+				alert("no saved data to load");
+			}
 		}
 		
-		
-		ui_menuCharacter.refreshSprites();
-		
-		Menu.setMenuState(MENU_STATE.CHARACTER);
+		if(Renderer.isMouseOver(ui_menuSplash.#sprites.play)){
+			//--intro script
+			if(!ui_menuSplash.#skipIntro){
+			Script.start([
+			`{
+				"text":"abc def, etc",
+				"speech":"talk",
+				"left":"chA",
+				"right":"chB",
+				"talk":"left"
+			}`,
+			`{
+				"text":"some other text",
+				"speech":"talk",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"exclaim!!",
+				"speech":"exclaim",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"... now thinking ...",
+				"speech":"think",
+				"left":"chA",
+				"right":"chB",
+				"talk":"left"
+			}`
+			]);
+			}
+			
+			
+			ui_menuCharacter.refreshSprites();
+			
+			Menu.setMenuState(MENU_STATE.CHARACTER);
+		}
 	}
 }
 ui_menuSplash.preload();

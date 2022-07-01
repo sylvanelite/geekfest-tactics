@@ -28,7 +28,7 @@ class ui_menuCharacter{
 			spr.y=117;
 			spr.x=413+i*33;
 			Renderer.drawSprite(spr,ctx);
-			spr.y=150;
+			spr.y=162;
 			Renderer.drawSprite(spr,ctx);
 			//head
 			spr.y=195;
@@ -49,6 +49,13 @@ class ui_menuCharacter{
 		//--
 		ui_menuCharacter.drawCharacterSprites(ctx);
 		//--
+		//TODO: draw stats
+		/*
+			ch.max_hp=5;
+			ch.atk=3;
+			ch.mov=3;
+			ch.range_min=1;
+			ch.range_min=2;*/
 	}
 	static click(e){
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_shuffle)){
@@ -70,20 +77,20 @@ class ui_menuCharacter{
 		}
 		for(let i=0;i<8;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_icon;
-			//arm
+			//head
 			spr.y=117;
 			spr.x=413+i*33;
 			if(Renderer.isMouseOver(spr)){
+				ui_menuCharacter.selectHead(i);
+			}
+			//arm
+			spr.y=162;
+			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectArm(i);
 			}
-			spr.y=150;
-			if(Renderer.isMouseOver(spr)){
-				ui_menuCharacter.selectArm(i+8);
-			}
-			//head
 			spr.y=195;
 			if(Renderer.isMouseOver(spr)){
-				ui_menuCharacter.selectHead(i);
+				ui_menuCharacter.selectArm(i+8);
 			}
 			//torso
 			spr.y=240;
