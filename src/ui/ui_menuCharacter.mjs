@@ -1,5 +1,6 @@
 
 import { Renderer } from "../renderer/renderer.mjs";
+import { Text } from "../renderer/text.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
 import { male_data, female_data, portraits } from "./character/data/portraits.mjs";
@@ -52,13 +53,8 @@ class ui_menuCharacter{
 		//--
 		ui_menuCharacter.drawCharacterSprites(ctx);
 		//--
-		//TODO: draw stats
-		/*
-			ch.max_hp=5;
-			ch.atk=3;
-			ch.mov=3;
-			ch.range_min=1;
-			ch.range_min=2;*/
+		//draw stats
+		
 	}
 	static click(e){
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_shuffle)){
@@ -272,6 +268,10 @@ class ui_menuCharacter{
 		btn_icon:Renderer.getSprite(
 			'ui/menu_character.png',
 			413,117,32,32,243,167
+		),
+		btn_icon_selected:Renderer.getSprite(
+			'ui/menu_character.png',
+			413,117,32,32,243,199
 		),
 		
 	};
