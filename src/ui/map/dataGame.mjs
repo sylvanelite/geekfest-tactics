@@ -8,12 +8,10 @@ const game_multi_data = {
 		new st_Character({
 			player_state: cbt_PLAYER,
 			point_xy: Bit.SET_XY(3,4),
-			mov:10
 		}),
 		new st_Character({
 			player_state: cbt_PLAYER,
 			point_xy: Bit.SET_XY(2,2),
-			mov:4
 		}),
 		new st_Character({
 			player_state: cbt_ENEMY,

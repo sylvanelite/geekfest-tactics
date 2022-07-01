@@ -28,70 +28,89 @@ class ui_menuMap{
 			"ui/screen_map.png",
 			750,12,140,75,750,12
 		),
-		//TODO: add proper icons for each area
+		//TODO: spread icons out in an area
+		
+		/*
+		Manga:
+		x68,y289
+		w197,h136
+
+		Anime:
+		x327,y213
+		w154,h:107
+
+		Games:
+		x368,y334
+		w193,h75
+
+		Comic:
+		x631,y247
+		w117,h89
+
+		*/
 		btn_icon_manga:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,117,32,32,0,0
+			68,299,32,32,0,0
 		),
 		btn_icon_comic:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,150,32,32,0,96
+			631,257,32,32,0,96
 		),
 		btn_icon_game:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,195,32,32,0,64
+			368,334,32,32,0,64
 		),
 		btn_icon_anime:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,240,32,32,0,32
+			327,223,32,32,0,32
 		),
 		btn_icon_manga_selected:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,117,32,32,32,0
+			68,299,32,32,32,0
 		),
 		btn_icon_comic_selected:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,150,32,32,32,96
+			631,257,32,32,32,96
 		),
 		btn_icon_game_selected:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,195,32,32,32,64
+			368,334,32,32,32,64
 		),
 		btn_icon_anime_selected:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,240,32,32,32,32
+			327,223,32,32,32,32
 		),
 		btn_icon_manga_cleared:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,117,32,32,64,0
+			68,299,32,32,64,0
 		),
 		btn_icon_comic_cleared:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,150,32,32,64,96
+			631,257,32,32,64,96
 		),
 		btn_icon_game_cleared:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,195,32,32,64,64
+			368,334,32,32,64,64
 		),
 		btn_icon_anime_cleared:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,240,32,32,64,32
+			327,223,32,32,64,32
 		),
 		btn_icon_manga_hover:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,117,32,32,96,0
+			68,299,32,32,96,0
 		),
 		btn_icon_comic_hover:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,150,32,32,96,96
+			631,257,32,32,96,96
 		),
 		btn_icon_game_hover:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,195,32,32,96,64
+			368,334,32,32,96,64
 		),
 		btn_icon_anime_hover:Renderer.getSprite(
 			'ui/lvl_icons.png',
-			413,240,32,32,96,32
+			327,223,32,32,96,32
 		),
 	};
 	static #hostId = "";
@@ -313,58 +332,11 @@ class ui_menuMap{
 		}
 	}
 	static #applyStatsToCh(ch){
-		const unlocked =  ui_menuMap.#maxMangaUnlocked + ui_menuMap.#maxAnimeUnlocked +
-							ui_menuMap.#maxGameUnlocked + ui_menuMap.#maxComicUnlocked;
-		/*
-		levels:    0  1  2  3  4  5
-		hp         2  3  4  4  5  5
-		atk        1  2  2  2  3  3
-		mov        2  2  2  2  2  3
-		range_min  1  1  1  1  1  1
-		range_max  1  1  1  2  2  2
-		*//*
-		if(unlocked == 0){
-			ch.max_hp=2;
-			ch.atk=1;
-			ch.mov=2;
-			ch.range_min=1;
-			ch.range_min=1;
-		}
-		if(unlocked == 1){
-			ch.max_hp=3;
-			ch.atk=2;
-			ch.mov=2;
-			ch.range_min=1;
-			ch.range_min=1;
-		}
-		if(unlocked == 2){
-			ch.max_hp=4;
-			ch.atk=2;
-			ch.mov=2;
-			ch.range_min=1;
-			ch.range_min=1;
-		}
-		if(unlocked == 3){
-			ch.max_hp=4;
-			ch.atk=2;
-			ch.mov=2;
-			ch.range_min=1;
-			ch.range_min=2;
-		}
-		if(unlocked == 4){
-			ch.max_hp=5;
-			ch.atk=3;
-			ch.mov=2;
-			ch.range_min=1;
-			ch.range_min=2;
-		}
-		if(unlocked >= 5){*/
-			ch.max_hp=5;
-			ch.atk=3;
-			ch.mov=3;
-			ch.range_min=1;
-			ch.range_min=2;
-		//}
+		ch.max_hp=5;
+		ch.atk=3;
+		ch.mov=3;
+		ch.min_range=1;
+		ch.max_range=2;
 		ch.hp = ch.max_hp;
 	}
 	static #applyMapData(){
