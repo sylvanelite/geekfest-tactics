@@ -56,11 +56,11 @@ class Renderer{
 		return Isometric.to_grid_coordinate(screen);
 	}
 	static getMouseCellTileOrIso(w,h){
-		const cell = Renderer.getMouseCell();
+		const cell = Renderer.getMouseIsoCell();
 		if(cell.x>=w||cell.y>=h||cell.x<0||cell.y<0){//out of bounds for tile, default to ISO
-			return Renderer.getMouseIsoCell();
+			return Renderer.getMouseCell();
 		}
-		return Renderer.getMouseCell();
+		return cell;
 	}
 	
 	static #escapeName=(url)=>{
