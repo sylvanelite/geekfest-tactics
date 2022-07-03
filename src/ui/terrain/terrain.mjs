@@ -48,6 +48,13 @@ class Terrain {
 		map_data = mapData.terrain;
 		Isometric.setScale(mapData.scale);
 	}
+	
+	static getTerrainMapData(){
+		return {
+			terrain: map_data,
+			scale: Isometric.SCALE
+		};
+	}
 }
 
 

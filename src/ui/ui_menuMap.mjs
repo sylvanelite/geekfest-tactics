@@ -408,7 +408,7 @@ class ui_menuMap{
 		}
 		
 		Audio.PlaySFX(SFX.beginMap);
-		Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
+		Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);//TODO: pass in terrain.display for sync...
 		
 		ui_menuMap.#save();
 	}

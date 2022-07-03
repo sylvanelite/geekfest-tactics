@@ -2,6 +2,7 @@ import { Peer } from "peerjs";
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
 import { cbt_PLAYER, cbt_ENEMY } from "../state/consts.mjs";
+import { Terrain } from "../ui/terrain/terrain.mjs";
 
 //used to sync peer-to-peer calls
 class Network{
@@ -57,6 +58,7 @@ class Network{
 		Sy_api.api_setNetworking(null);
 		switch(data.kind){//TODO: use switch consts
 			case 'sync':{
+				Terrain.setTerrainMapData(data.display);
 				Sy_api.api_setState(data.state);
 				break;
 			}
@@ -74,11 +76,11 @@ class Network{
 					return x.player_state == cbt_ENEMY;
 				});
 				const allCh = pCh.concat(eCh);
-				//TODO: set eCh starting positions?
 				hostState.varCharacters = allCh;
-				Network.send({kind:'sync',state:hostState});
+				const terrainDisplay = Terrain.getTerrainMapData();
+				Network.send({kind:'sync',state:hostState,display:terrainDisplay});
 				//apply sync locally too
-				Sy_api.api_setState(data.state);
+				Sy_api.api_setState(hostState);
 				break;
 			}
 			case 'move':{
