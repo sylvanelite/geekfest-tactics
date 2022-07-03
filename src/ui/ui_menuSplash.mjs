@@ -5,6 +5,8 @@ import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Script } from "../renderer/script.mjs";
 import { ui_menuMap } from "./ui_menuMap.mjs";
 import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
+
 
 
 class ui_menuSplash{
@@ -163,6 +165,7 @@ class ui_menuSplash{
 		}
 		
 		if(Renderer.isMouseOver(ui_menuSplash.#sprites.play)){
+			Audio.StartBGM(BGM.menu);
 			//--intro script
 			if(!ui_menuSplash.#skipIntro){
 			Script.start([

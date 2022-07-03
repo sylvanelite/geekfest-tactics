@@ -9,6 +9,8 @@ import { MapData,MAP_KIND } from "../ui/map/mapData.mjs";
 import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 import { ui_idle } from "./ui_idle.mjs";
 import { ui_displayMove } from "./ui_displayMove.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
+
 
 class ui_menuMap{
 	static #sprites = {
@@ -131,6 +133,8 @@ class ui_menuMap{
 				ui_menuMap.#sprites.btn_multiHost.x+55,
 				ui_menuMap.#sprites.btn_multiHost.y+112.5);
 			if(nwStatus=="connected"){
+				const bgm = [BGM.levelA,BGM.levelB,BGM.levelC];
+				Audio.StartBGM(bgm[Math.floor(Math.random()*bgm.length)]);
 				Menu.setMenuState(MENU_STATE.PLAYING);
 			}
 		if(Network.isHost()){
@@ -262,6 +266,7 @@ class ui_menuMap{
 				if(Renderer.isMouseOver(spr)){
 					ui_menuMap.#selectArea("manga");
 					ui_menuMap.#selectLevel(i);
+					Audio.PlaySFX(SFX.select);
 				}
 				spr.y=y;
 				spr.x=x;
@@ -273,6 +278,7 @@ class ui_menuMap{
 				if(Renderer.isMouseOver(spr)){
 					ui_menuMap.#selectArea("comic");
 					ui_menuMap.#selectLevel(i);
+					Audio.PlaySFX(SFX.select);
 				}
 				spr.y=y;
 				spr.x=x;
@@ -284,6 +290,7 @@ class ui_menuMap{
 				if(Renderer.isMouseOver(spr)){
 					ui_menuMap.#selectArea("game");
 					ui_menuMap.#selectLevel(i);
+					Audio.PlaySFX(SFX.select);
 				}
 				spr.y=y;
 				spr.x=x;
@@ -295,6 +302,7 @@ class ui_menuMap{
 				if(Renderer.isMouseOver(spr)){
 					ui_menuMap.#selectArea("anime");
 					ui_menuMap.#selectLevel(i);
+					Audio.PlaySFX(SFX.select);
 				}
 				spr.y=y;
 				spr.x=x;
@@ -310,6 +318,8 @@ class ui_menuMap{
 				return;
 			}
 			ui_menuMap.#applyMapData();
+			const bgm = [BGM.levelA,BGM.levelB,BGM.levelC];
+			Audio.StartBGM(bgm[Math.floor(Math.random()*bgm.length)]);
 			Menu.setMenuState(MENU_STATE.PLAYING);
 		}
 		//TODO: check if already joining/hosting?
@@ -397,6 +407,7 @@ class ui_menuMap{
 			ui_menuMap.#applyStatsToCh(unit);
 		}
 		
+		Audio.PlaySFX(SFX.beginMap);
 		Sy_api.api_generateRoom(42,levelData.terrain,levelData.units);
 		
 		ui_menuMap.#save();
@@ -495,6 +506,8 @@ class ui_menuMap{
 			}
 		}
 		ui_menuMap.#save();
+		Audio.StartBGM(BGM.menu);
+
 		//ui_menuMap.#selectedArea="anime";//todo: reset palette to anime?
 	}
 	static #save(){

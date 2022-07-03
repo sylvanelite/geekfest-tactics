@@ -4,6 +4,7 @@ import { Text } from "../renderer/text.mjs";
 import { Menu,MENU_STATE } from "../renderer/menu.mjs";
 import { Composer } from "./character/composer.mjs";
 import { male_data, female_data, portraits } from "./character/data/portraits.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
 
 class ui_menuCharacter{
 	static draw(ctx){
@@ -123,18 +124,22 @@ class ui_menuCharacter{
 	static click(e){
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_shuffle)){
 			ui_menuCharacter.shuffleCharacter();
+				Audio.PlaySFX(SFX.select);
 		}
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_gender)){
 			ui_menuCharacter.swapGender();
+				Audio.PlaySFX(SFX.select);
 		}
 		if(Renderer.isMouseOver(ui_menuCharacter.#sprites.btn_start)){
 			ui_menuCharacter.start();
+				Audio.PlaySFX(SFX.ok);
 		}
 		for(let i=0;i<5;i+=1){
 			const spr = ui_menuCharacter.#sprites.btn_character;
 			spr.x=i*spr.width;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectCharacter(i);
+				Audio.PlaySFX(SFX.select);
 			}
 			spr.x = 0;
 		}
@@ -145,29 +150,35 @@ class ui_menuCharacter{
 			spr.x=413+i*33;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectHead(i);
+				Audio.PlaySFX(SFX.select);
 			}
 			//arm
 			spr.y=162;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectArm(i);
+				Audio.PlaySFX(SFX.select);
 			}
 			spr.y=195;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectArm(i+8);
+				Audio.PlaySFX(SFX.select);
 			}
 			//torso
 			spr.y=240;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectTorso(i);
+				Audio.PlaySFX(SFX.select);
 			}
 			spr.y=273;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectTorso(i+8);
+				Audio.PlaySFX(SFX.select);
 			}
 			//accessories
 			spr.y=318;
 			if(Renderer.isMouseOver(spr)){
 				ui_menuCharacter.selectAccessory(i);
+				Audio.PlaySFX(SFX.select);
 			}
 			//reset
 			spr.x = 413;

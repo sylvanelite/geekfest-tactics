@@ -7,6 +7,7 @@ import { Renderer } from "../renderer/renderer.mjs";
 import { Text } from "../renderer/text.mjs";
 import { Isometric } from "../renderer/isometric.mjs";
 import { Terrain } from "./terrain/terrain.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
 
 import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 
@@ -321,6 +322,9 @@ class ui_background{
 			//Text.drawBitmapText(ctx,""+dmg,iso.x-128/2,iso.y-frame);
 		}
 		Renderer.drawSprite(spr,ctx);
+		if(frame==0){
+			Audio.PlaySFX(SFX.attack);
+		}
 	}
 	static drawBattleDieEffect(ctx,x,y,frame){
 		const iso = Isometric.to_screen_coordinate({x,y});
@@ -331,6 +335,9 @@ class ui_background{
 			Math.floor(frame/2)*128,0
 		);
 		Renderer.drawSpriteScaled(spr,128*Isometric.SCALE,128*Isometric.SCALE,ctx);
+		if(frame==4){
+			Audio.PlaySFX(SFX.die);
+		}
 	}
 	static drawToggleTurnEffect(ctx,player_state,frame){
 		const alpha = Math.sin(Math.PI*frame/33)/3;
@@ -353,7 +360,9 @@ class ui_background{
 			Renderer.height/2-64,256,128,0,(player_state==cbt_PLAYER?0:128)
 		);
 		Renderer.drawSprite(spr,ctx);
-		
+		if(frame==1){
+			Audio.PlaySFX(SFX.toggleTurn);
+		}
 	}
 	static drawGameOverEffect(ctx){
 		//need to deduce if you won/lost
@@ -549,7 +558,8 @@ class ui_background{
 		
 		for(const ch of chs){
 			if(funcHasCustomDraw!=null&&funcHasCustomDraw(ch)){
-				funcCustomDraw(ch)
+				funcCustomDraw(ch);
+				//Audio.PlaySFX(SFX.footsteps);
 			}else{
 				ui_background.drawUnit(ctx,ch);
 			}

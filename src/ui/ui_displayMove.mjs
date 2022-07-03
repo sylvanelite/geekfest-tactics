@@ -5,6 +5,7 @@ import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
 import { ui_idle } from "./ui_idle.mjs";
 import { cbt_NO_PLAYER_STATE } from "../state/consts.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
 
 class ui_displayMove{
 	static draw(ctx){
@@ -18,18 +19,23 @@ class ui_displayMove{
 		if(e.button == 2){//right click
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
+			Audio.PlaySFX(SFX.cursorCancel);
 			return;
 		}
 		if(cell.x>=Sy_api.api_getMapWidth()||cell.y>=Sy_api.api_getMapHeight()||cell.x<0||cell.y<0){
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
+			Audio.PlaySFX(SFX.cursorCancel);
 			return;
 		}
 		if(!Sy_api.api_isValidMoveCell(cell.x,cell.y,ui_displayMove.#movePath)){
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
+			Audio.PlaySFX(SFX.cursorCancel);
+			return;
 		}
 		Sy_api.api_mov_selectDestination(cell.x,cell.y,ui_displayMove.#movePath);
+		Audio.PlaySFX(SFX.cursorSelect);
 	}
 	//a movement path suggested by the user
 	static #movePath = [];

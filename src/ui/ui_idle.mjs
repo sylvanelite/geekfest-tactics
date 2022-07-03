@@ -3,6 +3,7 @@ import { Sy_api } from "../state/api.mjs";
 import { Renderer } from "../renderer/renderer.mjs";
 import { ui_background } from "./ui_background.mjs";
 import { ui_displayMove } from "./ui_displayMove.mjs";
+import { Audio,BGM,SFX } from "../renderer/audio.mjs";
 
 const TERRAIN_IMPASSIBLE = 99;
 	import { 
@@ -49,6 +50,7 @@ class ui_idle{
 		
 		Sy_api.api_idle_selectCharacter(cell.x,cell.y);
 		ui_displayMove.clearPath();
+		Audio.PlaySFX(SFX.cursorSelect);
 	}
 	
 	static #highlightedCharacters = new Set();
