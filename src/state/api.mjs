@@ -292,7 +292,6 @@ class Sy_api {
 				preferred_path:preferredPath
 			});
 		}
-		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
 		if(Sy_api.#checkGameOver()){
 			if(Sy_api.#renderer){
 				Sy_api.#rendererBlocked = true;
@@ -304,6 +303,7 @@ class Sy_api {
 			}
 			return true;
 		}
+		const eot = Sy.cbtSetUnitToWaitAndCheck(ch,preferredPath);
 		if(eot&&Sy_api.#renderer){
 			Sy_api.#rendererBlocked = true;
 			await Sy_api.#renderer.enqueue_drawTurnToggle();
