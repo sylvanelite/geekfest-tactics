@@ -291,7 +291,7 @@ class ui_background{
 			const [selx,sely] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
 			const selectedCh = Sy_api.api_getCharacterAtPosition(selx,sely);
 			if(selectedCh.player_state!=cbt_NO_PLAYER_STATE){
-				const textX = 800;
+				const textX = 680;
 				Text.drawBitmapText(ctx,"HP: "+selectedCh.hp+"/"+selectedCh.max_hp,textX,16);
 				Text.drawBitmapText(ctx,"ATK: "+selectedCh.atk,textX,32);
 				Text.drawBitmapText(ctx,"MOVE: "+selectedCh.mov,textX,48);
@@ -531,7 +531,7 @@ class ui_background{
 				if(ch.point_xy == tgt_xy){
 					//hovering over target, show stats
 					if(ch.player_state!=cbt_NO_PLAYER_STATE){
-						const textX = 880;
+						const textX = 820;
 						Text.drawBitmapText(ctx,"HP: "+ch.hp+"/"+ch.max_hp,textX,16);
 						Text.drawBitmapText(ctx,"ATK: "+ch.atk,textX,32);
 						Text.drawBitmapText(ctx,"MOVE: "+ch.mov,textX,48);

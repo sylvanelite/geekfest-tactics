@@ -198,7 +198,7 @@ const boxy = {
 
 FontData.boxy = boxy;
 
-const scaleFactor = 1.33;
+const scaleFactor = 2;
 class Text{
 	static FONT={
 		'OK':'OK',
