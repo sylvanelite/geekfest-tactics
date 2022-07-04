@@ -23,19 +23,19 @@ const anime_multi_data = {
 		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
 		//---
 		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY, 
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		})
 		],
 	terrain:{
@@ -223,20 +223,20 @@ const anime_4 = {
 		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
 		new st_Character({ point_xy: Bit.SET_XY(1,5), player_state: cbt_PLAYER,  }),
 		//---
-		new st_Character({ point_xy: Bit.SET_XY(7,1), player_state: cbt_ENEMY, 
-		hp:4,max_hp:2,atk:1,mov:3,min_range:1,max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(6,2), player_state: cbt_ENEMY, 
-		hp:4,max_hp:2,atk:1,mov:3,min_range:1,max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(5,3), player_state: cbt_ENEMY,  
-		hp:4,max_hp:2,atk:1,mov:3,min_range:1,max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY, 
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_ENEMY,  
-		hp:4,max_hp:2,atk:1,mov:3,min_range:1,max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(5,5), player_state: cbt_ENEMY,  
-		hp:4,max_hp:2,atk:1,mov:3,min_range:1,max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,
+		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		})
 		],
 	terrain:{

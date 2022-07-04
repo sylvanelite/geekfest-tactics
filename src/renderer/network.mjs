@@ -1,7 +1,7 @@
 import { Peer } from "peerjs";
 import { Sy_api } from "../state/api.mjs";
 import { Bit } from "../state/bit.mjs";
-import { cbt_PLAYER, cbt_ENEMY } from "../state/consts.mjs";
+import { cbt_PLAYER, cbt_ENEMY,st_Character } from "../state/consts.mjs";
 import { Terrain } from "../ui/terrain/terrain.mjs";
 
 //used to sync peer-to-peer calls
@@ -74,7 +74,21 @@ class Network{
 				});
 				const eCh = data.state.varCharacters.filter((x)=>{
 					return x.player_state == cbt_ENEMY;
+					//don't need to sync stats since they are always the same
+					//otherwise would need to sync all but the start position
 				});
+				const remoteCh = data.state.varCharacters.filter((x)=>{
+					return x.player_state == cbt_PLAYER;
+				});
+				//map incoming joined players to the enemy slots
+				for(let i=0;i<remoteCh.length&&i<eCh.length;i+=1){
+					const e = eCh[i];
+					const r = remoteCh[i];
+					const mappedCh = new st_Character(r);//take all attributes from remote source
+					mappedCh.point_xy = e.point_xy;			  //except the starting point
+					mappedCh.player_state = cbt_ENEMY;//and the player_state
+					eCh[i] = mappedCh;
+				}
 				const allCh = pCh.concat(eCh);
 				hostState.varCharacters = allCh;
 				const terrainDisplay = Terrain.getTerrainMapData();
