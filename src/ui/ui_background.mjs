@@ -99,9 +99,9 @@ class ui_background{
 				//--render the mov/atk range
 				
 				//change the colour of highlight
-				ctx.globalCompositeOperation='difference';
+				ctx.globalAlpha=0.33;
 				ui_background.drawGridEffects(ctx);
-				ctx.globalCompositeOperation='source-over';
+				ctx.globalAlpha=1;
 				
 				//--finish render, restore from backup
 				Sy.cbt_move = moveCopy;
