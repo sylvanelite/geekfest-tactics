@@ -115,12 +115,17 @@ class ui_background{
 	}
 	
 	static drawTerrain(ctx){
+		//background
+		ctx.fillStyle = "rgba(50,50,50,1)";
+		ctx.fillRect(0,0,Renderer.width,Renderer.height);
+		
+		//2d minimap
 		const w = Sy_api.api_getMapWidth();
 		const h = Sy_api.api_getMapHeight();
 		for(let j=0;j<h;j+=1){
 			for(let i=0;i<w;i+=1){
 				const terrain = Sy.getTerrainForCell(i,j);
-				ctx.fillStyle="white";
+				ctx.fillStyle="rgba(0,0,0,0)";
 				if(terrain>1){
 					ctx.fillStyle= colours[terrain%colours.length];
 				}
