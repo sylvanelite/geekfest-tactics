@@ -87,19 +87,24 @@ const comic_1 = {
 		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
 		//---
 		new st_Character({ point_xy: Bit.SET_XY(8,0), player_state: cbt_ENEMY, 
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(7,3), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		})
 		],
 	terrain:{
@@ -137,19 +142,26 @@ const comic_2 = {
 		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
 		//---
 		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
-		hp:4,max_hp:4,atk:2,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
-		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		hp:2,max_hp:2,atk:3,mov:2,min_range:1,max_range:1,
+		sprite_a_wing:-1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:2,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:-1
 		})
 		],
 	terrain:{
@@ -188,19 +200,29 @@ const comic_3 = {
 		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_PLAYER,  }),
 		//---
 		new st_Character({ point_xy: Bit.SET_XY(1,1), player_state: cbt_ENEMY, 
-		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
-		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(1,5), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		})
 		],
 	terrain:{
@@ -238,19 +260,29 @@ const comic_4 = {
 		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
 		//---
 		new st_Character({ point_xy: Bit.SET_XY(3,0), player_state: cbt_ENEMY, 
-		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
-		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(7,3), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(6,4), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		}),
 		new st_Character({ point_xy: Bit.SET_XY(5,5), player_state: cbt_ENEMY,  
-		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2,
+		sprite_gender:'female',
+		sprite_a_wing:1
 		})
 		],
 	terrain:{
