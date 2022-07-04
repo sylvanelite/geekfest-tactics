@@ -119,10 +119,10 @@ const comic_1 = {
 		scale:1,
 		terrain:[
 			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],
 			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tf     ],
-			[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
 			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
 		]
 	}
