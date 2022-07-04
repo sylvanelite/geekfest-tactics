@@ -2,29 +2,40 @@ import { TERRAIN } from "../terrain/terrain.js";
 import { Bit } from "../../state/bit.mjs";
 import { st_Character, cbt_ENEMY,cbt_PLAYER } from "../../state/consts.mjs";
 
+const tw = TERRAIN.WATER;
+const tb = TERRAIN.BRICK;
+const tl = TERRAIN.LAVA;
+const tf = TERRAIN.FOLIAGE;
+const tg = TERRAIN.GRASS;
+const ts = TERRAIN.STONE;
+const ta = TERRAIN.SAND;//sAnd
+const to = TERRAIN.WOOD;//wOod
+const td = TERRAIN.DIRT;
+
+
 const comic_multi_data = {
 	script:null,
 	units:[
-		new st_Character({
-			player_state: cbt_PLAYER,
-			point_xy: Bit.SET_XY(3,4),
-			mov:10
+		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(17,1), player_state: cbt_ENEMY, 
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
 		}),
-		new st_Character({
-			player_state: cbt_PLAYER,
-			point_xy: Bit.SET_XY(2,2),
-			mov:4
+		new st_Character({ point_xy: Bit.SET_XY(17,2), player_state: cbt_ENEMY, 
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
 		}),
-		new st_Character({
-			player_state: cbt_ENEMY,
-			point_xy: Bit.SET_XY(1,4),
-			max_range:1,
-			mov:10
+		new st_Character({ point_xy: Bit.SET_XY(17,3), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
 		}),
-		new st_Character({
-			player_state: cbt_ENEMY,
-			point_xy: Bit.SET_XY(8,5),
-			max_range:2
+		new st_Character({ point_xy: Bit.SET_XY(17,4), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(17,5), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
 		})
 		],
 	terrain:{
@@ -66,10 +77,207 @@ const comic_multi_data = {
 	}
 };
 
-const comic_1 = comic_multi_data;
-const comic_2 = comic_multi_data;
-const comic_3 = comic_multi_data;
-const comic_4 = comic_multi_data;
+const comic_1 = {
+	script:null,
+	units:[
+		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(8,0), player_state: cbt_ENEMY, 
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(7,3), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		})
+		],
+	terrain:{
+			width:9,
+			height:6,
+			fogEnabled:false,
+			terrain:[
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,3 ,3 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,3 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,3 ,
+			1 ,1 ,3 ,3 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			]
+		},
+	display:{
+		scale:1,
+		terrain:[
+			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tf     ],
+			[tb     ],[tf     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+		]
+	}
+};
+const comic_2 = {
+	script:null,
+	units:[
+		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
+		hp:4,max_hp:4,atk:2,mov:2,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
+		hp:2,max_hp:2,atk:1,mov:2,min_range:1,max_range:1
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:2,mov:2,min_range:1,max_range:2
+		})
+		],
+	terrain:{
+			width:9,
+			height:6,
+			fogEnabled:false,
+			terrain:[
+			1 ,1 ,1 ,3 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,3 ,1 ,99,99,1 ,1 ,
+			1 ,1 ,1 ,3 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,99,99,99,1 ,1 ,
+			1 ,1 ,1 ,3 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,99,1 ,99,1 ,1 ,
+			]
+		},
+	display:{
+		scale:1,
+		terrain:[
+			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tl     ],[tl     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tl     ],[tl     ],[tl     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tl     ],[tl     ],[tb     ],[tb     ],[tb     ],
+		]
+	}
+};
+const comic_3 = {
+	
+	script:null,
+	units:[
+		new st_Character({ point_xy: Bit.SET_XY(5,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(5,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(5,4), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(4,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(1,1), player_state: cbt_ENEMY, 
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(1,5), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:3,min_range:1,max_range:2
+		})
+		],
+	terrain:{
+			width:9,
+			height:6,
+			fogEnabled:false,
+			terrain:[
+			1 ,1 ,99,99,99,99,99,99,1 ,
+			1 ,1 ,1 ,1 ,99,99,99,1 ,1 ,
+			1 ,3 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,3 ,1 ,3 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,99,99,99,1 ,1 ,
+			]
+		},
+	display:{
+		scale:1,
+		terrain:[
+			[tb     ],[tb     ],[tl     ],[tl     ],[tl     ],[tl     ],[tl     ],[tl     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tl     ],[tl     ],[tl     ],[tb     ],[tb     ],
+			[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tf     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tl     ],[tl     ],[tl     ],[tb     ],[tb     ],
+		]
+	}
+};
+const comic_4 = {
+	script:null,
+	units:[
+		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,3), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(3,0), player_state: cbt_ENEMY, 
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(7,3), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(6,4), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(5,5), player_state: cbt_ENEMY,  
+		hp:4,max_hp:4,atk:3,mov:2,min_range:1,max_range:2
+		})
+		],
+	terrain:{
+			width:9,
+			height:6,
+			fogEnabled:false,
+			terrain:[
+			1 ,1 ,99,1 ,99,1 ,1 ,1 ,1 ,
+			1 ,1 ,99,1 ,99,1 ,1 ,3 ,1 ,
+			1 ,1 ,1 ,1 ,99,1 ,1 ,1 ,1 ,
+			1 ,3 ,1 ,1 ,1 ,3 ,1 ,1 ,1 ,
+			1 ,99,1 ,1 ,1 ,1 ,1 ,3 ,1 ,
+			1 ,99,1 ,1 ,1 ,3 ,1 ,1 ,1 ,
+			]
+		},
+	display:{
+		scale:1,
+		terrain:[
+			[tb     ],[tb     ],[tl     ],[tb     ],[tl     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tb     ],[tl     ],[tb     ],[tl     ],[tb     ],[tb     ],[tf     ],[tb     ],
+			[tb     ],[tb     ],[tb     ],[tb     ],[tl     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],
+			[tb     ],[tl     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],
+			[tb     ],[tl     ],[tb     ],[tb     ],[tb     ],[tf     ],[tb     ],[tb     ],[tb     ],
+		]
+	}
+};
 const comic_5 = comic_multi_data;
 
 const comic_data = [comic_1,comic_2,comic_3,comic_4,comic_5];
