@@ -28,30 +28,6 @@ class ui_displayMove{
 			Audio.PlaySFX(SFX.cursorCancel);
 			return;
 		}
-		//special case, if clicking on a target, check if the move path needs to be refreshed
-		//i.e. if it's blocked by another player unit
-		const lastPoint = ui_displayMove.#movePath[ui_displayMove.#movePath.length-1];
-		const [lastX,lastY] = Bit.GET_XY(lastPoint);
-		if(!Sy_api.api_getMoveForCell(cell.x,cell.y) && 
-			Sy_api.api_getAttackForCell(cell.x,cell.y)){
-			const eCh = Sy_api.api_getCharacterAtPosition(cell.x,cell.y);
-			const blockCh = Sy_api.api_getCharacterAtPosition(lastX,lastY);
-			const [chx,chy] = Bit.GET_XY(Sy_api.api_getCurrentChPosition());
-			const ch = Sy_api.api_getCharacterAtPosition(chx,chy);
-			if(blockCh != cbt_NO_PLAYER_STATE &&
-				eCh.player_state != cbt_NO_PLAYER_STATE && 
-				eCh.player_state != ch.player_state){
-				const atkCellCh = Sy_api.api_getCharacterAtPosition(lastX,lastY);
-			   if((Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)>=ch.min_range&&
-				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
-					//reset to a valid attack path
-					const movCell = Sy_api.api_getMoveCellFromAttack(cell.x,cell.y,ch);
-					const defaultAtkPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
-					ui_displayMove.#movePath = defaultAtkPath;
-			   }
-			}
-		}
-		
 		if(!Sy_api.api_isValidMoveCell(cell.x,cell.y,ui_displayMove.#movePath)){
 			ui_displayMove.clearPath();//turf out the user path for next time
 			Sy_api.api_mov_cancel();
@@ -97,14 +73,24 @@ class ui_displayMove{
 			Sy_api.api_getAttackForCell(cell.x,cell.y)){
 			const eCh = Sy_api.api_getCharacterAtPosition(cell.x,cell.y);
 			if(eCh.player_state != cbt_NO_PLAYER_STATE && eCh.player_state != ch.player_state){
-				const atkCellCh = Sy_api.api_getCharacterAtPosition(lastX,lastY);
 			   if(!(Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)>=ch.min_range&&
 				    Math.abs(lastX-cell.x)+Math.abs(lastY-cell.y)<=ch.max_range)){
+					//if target is not in range
 					//reset to a valid attack path
 					const movCell = Sy_api.api_getMoveCellFromAttack(cell.x,cell.y,ch);
 					const defaultAtkPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
 					ui_displayMove.#movePath = defaultAtkPath;
 					return;
+			   }else{
+					//else, the target is in range, check if you've blocked the path with another unit
+					const blockCh = Sy_api.api_getCharacterAtPosition(lastX,lastY);
+					if(blockCh.player_state != cbt_NO_PLAYER_STATE){
+						//reset to a valid attack path
+						const movCell = Sy_api.api_getMoveCellFromAttack(cell.x,cell.y,ch);
+						const defaultAtkPath = Sy_api.api_getMovePath(ch,ch.point_xy,movCell);
+						ui_displayMove.#movePath = defaultAtkPath;
+						return;
+					}
 			   }
 			}
 		}
