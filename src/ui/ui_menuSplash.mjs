@@ -23,6 +23,8 @@ class ui_menuSplash{
 	'ui/game_over.png',
 	'ui/screen_map.png',
 	'ui/screen_character.png',
+	'ui/f_icons.png',
+	'ui/m_icons.png',
 	//'ui/screen_splash.png',
 	
 	'character_spritesheet/portrait/female_portraits.png',

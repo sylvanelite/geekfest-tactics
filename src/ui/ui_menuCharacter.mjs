@@ -37,6 +37,11 @@ class ui_menuCharacter{
 				ui_menuCharacter.#sprites.btn_start.height);
 		}
 		const ch = ui_menuCharacter.#ch[ui_menuCharacter.#selectedChIdx];
+		if(ch.gender=="male"){
+			Renderer.drawSprite(ui_menuCharacter.#sprites.m_icons,ctx);
+		}else{
+			Renderer.drawSprite(ui_menuCharacter.#sprites.f_icons,ctx);
+		}
 		const spr = ui_menuCharacter.#sprites.btn_icon;
 		const sprSelected = ui_menuCharacter.#sprites.btn_icon_selected;
 		for(let i=0;i<8;i+=1){
@@ -348,7 +353,14 @@ class ui_menuCharacter{
 			'ui/menu_character.png',
 			413,117,32,32,243,199
 		),
-		
+		f_icons:Renderer.getSprite(
+			'ui/f_icons.png',
+			401,113,282,246,0,0
+		),
+		m_icons:Renderer.getSprite(
+			'ui/m_icons.png',
+			401,113,282,246,0,0
+		)
 	};
 	
 	static start(){
