@@ -136,26 +136,6 @@ class Script{
 		const textPos = {x:355,y:150,xOff:8,yOff:64};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
-		if(Script.#renderCharacterIdx==0){
-			//TODO: use this hash to ID audio snippets 
-			const blockText = lines.map((x)=>{
-				return x.text;
-			}).join(' ');
-			//jenkins hash
-			//https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
-			const hash=(b)=>{
-				let a=0;
-				let c=0;
-				for(a=0,c=b.length;c--;){
-					a+=b.charCodeAt(c);
-					a+=a<<10,a^=a>>6;
-					a+=a<<3;a^=a>>11;
-				}
-				return((a+(a<<15)&4294967295)>>>0).toString(16);
-			};
-			//console.log("audio snippet text:",hash(blockText),blockText);
-			//Audio.PlayScriptLine(hash(blockText));
-		}
 		//render previous text by looking at lines[Script.#curScriptPosition-<some amount>]
 		//push them up, and fade to black 
 		for(let i=-3;i<0;i+=1){
