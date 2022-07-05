@@ -29,38 +29,38 @@ class Script{
 		speech_talk_left: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
+						480,128,
 						0,0
 					),
 		speech_exclaim_left: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
-						128,0
+						480,128,
+						480,0
 					),
 		speech_think_left: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
-						256,0
+						480,128,
+						960,0
 					),
 		speech_talk_right: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
+						480,128,
 						0,128
 					),
 		speech_exclaim_right: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
-						128,128
+						480,128,
+						480,128
 					),
 		speech_think_right: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
-						128,128,
-						256,128
+						480,128,
+						960,128
 					),
 		chA: Renderer.getSprite(
 						'ui/script_ch.png',
@@ -133,7 +133,7 @@ class Script{
 		*/
 		ctx.fillStyle = "rgba(200,200,200,0.2)";
 		Renderer.drawSprite(Script.#sprites.bg,ctx);	
-		const textPos = {x:355,y:150,xOff:8,yOff:64};
+		const textPos = {x:255,y:150,xOff:8,yOff:64};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
 		//render previous text by looking at lines[Script.#curScriptPosition-<some amount>]
@@ -146,7 +146,7 @@ class Script{
 				const bubbleName = "speech_"+prevLine.speech+"_"+prevLine.talk;//e.g. speech_talk_left
 				const bubble = Script.#sprites[bubbleName];
 				bubble.y=prevLine.y;
-				bubble.x=prevLine.x;
+				bubble.x=prevLine.x-20;
 				Renderer.drawSprite(bubble,ctx);
 				Text.drawBitmapText(ctx,prevLine.text, prevLine.x+textPos.xOff, prevLine.y+textPos.yOff);
 			}
@@ -162,8 +162,8 @@ class Script{
 		//draw non-active ch
 		const ch_left = Script.#sprites[line.left];
 		const ch_right = Script.#sprites[line.right];
-		ch_left.x = 200;//TODO: ch positions
-		ch_right.x = 600;//TODO: ch positions
+		ch_left.x = 150;//TODO: ch positions
+		ch_right.x = 650;//TODO: ch positions
 		ch_left.y = 270;//TODO: ch positions
 		ch_right.y = 270;//TODO: ch positions
 		if(line.talk=="left"){
@@ -181,7 +181,7 @@ class Script{
 		const bubbleName = "speech_"+line.speech+"_"+line.talk;//e.g. speech_talk_left
 		const bubble = Script.#sprites[bubbleName];
 		bubble.y=line.y;
-		bubble.x=line.x;
+		bubble.x=line.x-20;
 		Renderer.drawSprite(bubble,ctx);
 		let lineText = line.text.substring(0,Math.floor(Script.#renderCharacterIdx));
 		Text.drawBitmapText(ctx,lineText, line.x+textPos.xOff, line.y+textPos.yOff);

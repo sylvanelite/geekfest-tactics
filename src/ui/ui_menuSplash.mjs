@@ -172,28 +172,28 @@ class ui_menuSplash{
 			if(!ui_menuSplash.#skipIntro){
 			Script.start([
 			`{
-				"text":"abc def, etc",
-				"speech":"talk",
+				"text":"The cosplay contest is starting!",
+				"speech":"exclaim",
 				"left":"chA",
 				"right":"chB",
 				"talk":"left"
 			}`,
 			`{
-				"text":"some other text",
+				"text":"let's get our gear on and compete",
 				"speech":"talk",
 				"left":"chA",
 				"right":"chB",
 				"talk":"right"
 			}`,
 			`{
-				"text":"exclaim!!",
-				"speech":"exclaim",
+				"text":"We've got all 5 of our crew here.",
+				"speech":"talk",
 				"left":"chA",
 				"right":"chB",
 				"talk":"right"
 			}`,
 			`{
-				"text":"... now thinking ...",
+				"text":"... I hope we can win ...",
 				"speech":"think",
 				"left":"chA",
 				"right":"chB",
