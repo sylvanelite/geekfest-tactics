@@ -41,7 +41,7 @@ const comic_multi_data = {
 	terrain:{
 			width:18,
 			height:12,
-			fogEnabled:false,
+			fogEnabled:true,
 			terrain:[
 			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
 			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
@@ -310,7 +310,7 @@ const comic_4 = {
 		]
 	}
 };
-const comic_5 = comic_multi_data;
+const comic_5 = comic_4;
 
 const comic_data = [comic_1,comic_2,comic_3,comic_4,comic_5];
 

@@ -328,7 +328,7 @@ class ui_menuMap{
 				alert("please select a map before hosting a game");
 				return;
 			}
-			ui_menuMap.#applyMapData();
+			ui_menuMap.#applyMapData(false);
 			Sy_api.api_setNetworking(Network);
 			ui_menuMap.#hostId = Network.host();
 		}
@@ -336,7 +336,7 @@ class ui_menuMap{
 			Sy_api.api_setNetworking(Network);
 			const hostId = prompt("Enter host ID to join: ");
 			if(hostId){
-				ui_menuMap.#applyMapData();//data will be overwritten by host, just need some good state here
+				ui_menuMap.#applyMapData(false);//data will be overwritten by host, just need some good state here
 				Network.join(hostId.toUpperCase());
 			}
 		}
@@ -349,12 +349,10 @@ class ui_menuMap{
 		ch.max_range=2;
 		ch.hp = ch.max_hp;
 	}
-	static #applyMapData(){
+	static #applyMapData(isLocal=true){
 		ui_idle.clearEnemyHighlight();
 		//start game, apply stats
 		let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
-		const nwStatus = Network.getStatus();
-		const isLocal = (nwStatus=="disabled");
 		switch(ui_menuMap.#selectedArea){
 			case 'manga':
 				if(isLocal){
