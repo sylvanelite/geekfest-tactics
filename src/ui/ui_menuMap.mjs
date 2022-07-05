@@ -351,12 +351,14 @@ class ui_menuMap{
 	}
 	static #applyMapData(isLocal=true){
 		ui_idle.clearEnemyHighlight();
+		let isReplay = false;
 		//start game, apply stats
 		let levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
 		switch(ui_menuMap.#selectedArea){
 			case 'manga':
 				if(isLocal){
 					levelData = MapData.getMapData(MAP_KIND.MANGA,ui_menuMap.#selectedLevel);
+					isReplay = ui_menuMap.#selectedLevel<ui_menuMap.#maxMangaUnlocked;
 				}else{
 					levelData = MapData.getMapData(MAP_KIND.MANGA_MULTI,ui_menuMap.#selectedLevel);
 				}
@@ -364,6 +366,7 @@ class ui_menuMap{
 			case 'anime':
 				if(isLocal){
 					levelData = MapData.getMapData(MAP_KIND.ANIME,ui_menuMap.#selectedLevel);
+					isReplay = ui_menuMap.#selectedLevel<ui_menuMap.#maxAnimeUnlocked;
 				}else{
 					levelData = MapData.getMapData(MAP_KIND.ANIME_MULTI,ui_menuMap.#selectedLevel);
 				}
@@ -371,6 +374,7 @@ class ui_menuMap{
 			case 'game':
 				if(isLocal){
 					levelData = MapData.getMapData(MAP_KIND.GAME,ui_menuMap.#selectedLevel);
+					isReplay = ui_menuMap.#selectedLevel<ui_menuMap.#maxGameUnlocked;
 				}else{
 					levelData = MapData.getMapData(MAP_KIND.GAME_MULTI,ui_menuMap.#selectedLevel);
 				}
@@ -378,12 +382,13 @@ class ui_menuMap{
 			case 'comic':
 				if(isLocal){
 					levelData = MapData.getMapData(MAP_KIND.COMIC,ui_menuMap.#selectedLevel);
+					isReplay = ui_menuMap.#selectedLevel<ui_menuMap.#maxComicUnlocked;
 				}else{
 					levelData = MapData.getMapData(MAP_KIND.COMIC_MULTI,ui_menuMap.#selectedLevel);
 				}
 				break;
 		}
-		if(levelData.script){
+		if(levelData.script && !isReplay){ 
 			Script.start(levelData.script);
 		}
 		Terrain.setTerrainMapData(levelData.display);
