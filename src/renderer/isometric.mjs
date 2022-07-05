@@ -41,7 +41,7 @@ class Isometric{
 	  // Accounting for sprite size
 	  return {
 		x: Isometric.#start_x+tile.x * i_x * 0.5 * Isometric.#width + tile.y * j_x * 0.5 * Isometric.#width,
-		y: sourceStartY+tile.x * i_y * 0.5 * Isometric.#height + tile.y * j_y * 0.5 * Isometric.#height,
+		y: sourceStartY*Isometric.SCALE+tile.x * i_y * 0.5 * Isometric.#height + tile.y * j_y * 0.5 * Isometric.#height,
 	  };
 	}
 
@@ -61,7 +61,7 @@ class Isometric{
 
 	static to_grid_coordinate(screen) {
 		screen.x-=Isometric.#start_x;
-		screen.y-=sourceStartY;
+		screen.y-=sourceStartY*Isometric.SCALE;
 	  const a = i_x * 0.5 * Isometric.#width;
 	  const b = j_x * 0.5 * Isometric.#width;
 	  const c = i_y * 0.5 * Isometric.#height;

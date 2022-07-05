@@ -412,9 +412,8 @@ class ui_menuMap{
 	}
 	
 	static #selectedArea = 'anime';
-	static #selectedLevel = -1;//TODO: set to -1 on init?
-	//TODO apply levels?
-	static #maxMangaUnlocked = 2;//TODO: load/save unlock, and increment on win?
+	static #selectedLevel = -1;
+	static #maxMangaUnlocked = 0;
 	static #maxAnimeUnlocked = 0;
 	static #maxGameUnlocked = 0;
 	static #maxComicUnlocked = 0;
