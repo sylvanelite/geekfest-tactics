@@ -44,7 +44,7 @@ class Script{
 						480,128,
 						960,0
 					),
-		speech_talk_right: Renderer.getSprite(
+		speech_think_right: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
 						480,128,
@@ -56,7 +56,7 @@ class Script{
 						480,128,
 						480,128
 					),
-		speech_think_right: Renderer.getSprite(
+		speech_talk_right: Renderer.getSprite(
 						'ui/script_bubble.png',
 						0,0,
 						480,128,
