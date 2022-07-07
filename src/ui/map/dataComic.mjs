@@ -354,7 +354,6 @@ const comic_4 = {
 	}
 };
 const comic_5 = {
-	script:null,
 	units:[
 		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
 		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
@@ -377,7 +376,7 @@ const comic_5 = {
 		sprite_a_wing:1,
 		sprite_gender:'female'
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_ENEMY,  
+		new st_Character({ point_xy: Bit.SET_XY(7,3), player_state: cbt_ENEMY,  
 		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
 		sprite_a_wing:1,
 		sprite_gender:'female'
@@ -405,7 +404,7 @@ const comic_5 = {
 		scale:1,
 		terrain:[
 			[tg     ],[tg     ],[tg     ],[ta     ],[ta     ],[tf     ],[tg     ],[tf     ],[tg     ],
-			[tg     ],[tw     ],[ta     ],[ta     ],[tw     ],[ta     ],[tg     ],[tg     ],[tg     ],
+			[tg     ],[tg     ],[tw     ],[ta     ],[tw     ],[ta     ],[tg     ],[tg     ],[tg     ],
 			[tg     ],[ta     ],[ta     ],[tw     ],[ta     ],[ta     ],[tg     ],[tf     ],[tg     ],
 			[ta     ],[ta     ],[tw     ],[ta     ],[ta     ],[tg     ],[tg     ],[tg     ],[tg     ],
 			[ta     ],[ta     ],[ta     ],[tf     ],[tf     ],[tg     ],[tg     ],[tf     ],[tg     ],

@@ -417,6 +417,7 @@ class ui_menuMap{
 		ui_menuMap.#save();
 	}
 	
+	static #maxLevel = 5;//5 levels per area = 0,1,2,3,4
 	static #selectedArea = 'anime';
 	static #selectedLevel = -1;
 	static #maxMangaUnlocked = 0;
@@ -476,7 +477,6 @@ class ui_menuMap{
 		ui_menuMap.#selectedLevel=level;
 	}
 	
-	static #maxLevel = 4;//5 levels per area = 0,1,2,3,4
 	static clearCurrentLevel(localVictory){
 		ui_idle.clearEnemyHighlight();
 		ui_displayMove.clearPath();
