@@ -414,7 +414,6 @@ class ui_menuMap{
 			for(const ch of levelData.units){
 				ch.mov = 6;//multiplayer gets bigger map
 			}
-			console.log(levelData.units);
 		}
 		
 		Audio.PlaySFX(SFX.beginMap);
