@@ -84,6 +84,7 @@ class Network{
 				for(let i=0;i<remoteCh.length&&i<eCh.length;i+=1){
 					const e = eCh[i];
 					const r = remoteCh[i];
+					console.log(Bit.GET_XY(e.point_xy),Bit.GET_XY(r.point_xy));
 					const mappedCh = new st_Character(r);//take all attributes from remote source
 					mappedCh.point_xy = e.point_xy;			  //except the starting point
 					mappedCh.player_state = cbt_ENEMY;//and the player_state

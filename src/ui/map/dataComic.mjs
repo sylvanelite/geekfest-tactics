@@ -22,26 +22,26 @@ const comic_multi_data = {
 		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
 		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
 		//---
-		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(17,1), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(17,2), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(17,3), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,
+		new st_Character({ point_xy: Bit.SET_XY(17,4), player_state: cbt_ENEMY,
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,
+		new st_Character({ point_xy: Bit.SET_XY(17,5), player_state: cbt_ENEMY,
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		})
 		],
 	terrain:{
 			width:18,
 			height:12,
-			fogEnabled:true,
+			fogEnabled:false,
 			terrain:[
 			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
 			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,

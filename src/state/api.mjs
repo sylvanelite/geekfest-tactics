@@ -448,11 +448,11 @@ class Sy_api {
 		}];
 		const moveCells = new Map();
 		moveCells.set(start_xy,move);
-		//max move grid is ~a mov*mov square
-		const maxLen = move*move;
+		//max move grid is ~a mov*mov squar
 		let start = 0;
 		const mapW = Sy_api.api_getMapWidth();
 		const mapH = Sy_api.api_getMapHeight();
+		const maxLen = mapW*mapH;
 		while (start<movQueue.length&&start<maxLen) {
 			const cell =  movQueue[start];
 			const [nodeX,nodeY] = Bit.GET_XY(cell.point_xy);

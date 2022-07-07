@@ -409,6 +409,12 @@ class ui_menuMap{
 				unit["sprite_"+key] = ch[key];//TODO: actual stats (not just display attributes)
 			}
 			ui_menuMap.#applyStatsToCh(unit);
+		}		
+		if(!isLocal){
+			for(const ch of levelData.units){
+				ch.mov = 6;//multiplayer gets bigger map
+			}
+			console.log(levelData.units);
 		}
 		
 		Audio.PlaySFX(SFX.beginMap);
