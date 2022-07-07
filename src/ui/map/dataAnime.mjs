@@ -60,18 +60,18 @@ const anime_multi_data = {
 	display:{
 		scale:0.5,
 		terrain:[
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[ta],[tb],[ta],[tb],[ta],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[ta],[tb],[ta],[tb],[ta],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[ta],[tb],[ta],[tb],[ta],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tg],[tb],[tg],[tb],[tg],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tg],[tb],[tg],[tb],[tg],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tg],[tb],[tg],[tb],[tg],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
-			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[tf],[ta],[tf],[ta],[tf],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[tf],[ta],[tf],[ta],[tf],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[tf],[ta],[tf],[ta],[tf],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[tg],[ta],[tg],[ta],[tg],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[tg],[ta],[tg],[ta],[tg],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[tg],[ta],[tg],[ta],[tg],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
+			[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],[ta],
 		]
 	}
 };
