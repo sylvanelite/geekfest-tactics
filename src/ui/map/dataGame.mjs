@@ -16,50 +16,62 @@ const td = TERRAIN.DIRT;
 const game_multi_data = {
 	script:null,
 	units:[
+		new st_Character({ point_xy: Bit.SET_XY(1,0), player_state: cbt_PLAYER,  }),
 		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
-		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
-		new st_Character({ point_xy: Bit.SET_XY(0,3), player_state: cbt_PLAYER,  }),
-		new st_Character({ point_xy: Bit.SET_XY(0,4), player_state: cbt_PLAYER,  }),
-		new st_Character({ point_xy: Bit.SET_XY(0,5), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(17,10), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(16,11), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(9,0), player_state: cbt_PLAYER,  }),
 		//---
-		new st_Character({ point_xy: Bit.SET_XY(8,1), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(0,10), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,2), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(1,11), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,3), player_state: cbt_ENEMY, 
+		new st_Character({ point_xy: Bit.SET_XY(16,0), player_state: cbt_ENEMY, 
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,4), player_state: cbt_ENEMY,
+		new st_Character({ point_xy: Bit.SET_XY(17,1), player_state: cbt_ENEMY,
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		}),
-		new st_Character({ point_xy: Bit.SET_XY(8,5), player_state: cbt_ENEMY,
+		new st_Character({ point_xy: Bit.SET_XY(9,11), player_state: cbt_ENEMY,
 		hp:5,max_hp:5,atk:3,mov:3,min_range:1,max_range:2
 		})
 		],
 	terrain:{
-			width:9,
-			height:6,
-			fogEnabled:false,
+			width:18,
+			height:12,
+			fogEnabled:true,
 			terrain:[
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
-			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,99,1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,99,1 ,1 ,99,1 ,1 ,
+			99,99,99,1 ,1 ,99,2 ,1 ,2 ,1 ,2 ,1 ,99,1 ,1 ,99,99,99,
+			1 ,1 ,1 ,1 ,1 ,99,2 ,1 ,2 ,1 ,2 ,1 ,99,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,99,99,99,99,2 ,1 ,2 ,1 ,2 ,1 ,99,99,99,99,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,99,99,99,99,1 ,2 ,1 ,2 ,1 ,2 ,99,99,99,99,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,99,1 ,2 ,1 ,2 ,1 ,2 ,99,1 ,1 ,1 ,1 ,1 ,
+			99,99,99,1 ,1 ,99,1 ,2 ,1 ,2 ,1 ,2 ,99,1 ,1 ,99,99,99,
+			1 ,1 ,99,1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,99,1 ,1 ,99,1 ,1 ,
+			1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,
 			]
 		},
 	display:{
-		scale:1,
+		scale:0.5,
 		terrain:[
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
-			[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],[tb     ],
+			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
+			[tb],[tb],[tw],[tb],[tb],[tw],[tb],[tb],[tb],[tb],[tb],[tb],[tw],[tb],[tb],[tw],[tb],[tb],
+			[tw],[tw],[tw],[tb],[tb],[tw],[ta],[tb],[ta],[tb],[ta],[tb],[tw],[tb],[tb],[tw],[tw],[tw],
+			[tb],[tb],[tb],[tb],[tb],[tw],[ta],[tb],[ta],[tb],[ta],[tb],[tw],[tb],[tb],[tb],[tb],[tb],
+			[tb],[tb],[tw],[tw],[tw],[tw],[ta],[tb],[ta],[tb],[ta],[tb],[tw],[tw],[tw],[tw],[tb],[tb],
+			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
+			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
+			[tb],[tb],[tw],[tw],[tw],[tw],[tb],[tg],[tb],[tg],[tb],[tg],[tw],[tw],[tw],[tw],[tb],[tb],
+			[tb],[tb],[tb],[tb],[tb],[tw],[tb],[tg],[tb],[tg],[tb],[tg],[tw],[tb],[tb],[tb],[tb],[tb],
+			[tw],[tw],[tw],[tb],[tb],[tw],[tb],[tg],[tb],[tg],[tb],[tg],[tw],[tb],[tb],[tw],[tw],[tw],
+			[tb],[tb],[tw],[tb],[tb],[tw],[tb],[tb],[tb],[tb],[tb],[tb],[tw],[tb],[tb],[tw],[tb],[tb],
+			[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],[tb],
 		]
 	}
 };
