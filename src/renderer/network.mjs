@@ -25,6 +25,8 @@ class Network{
 	static #connection = null;
 	static #options = {reliable:true};
 	
+	static #packetBuffer = [];
+	
 	static #peerClose(e){
 		console.log("peer: closed",e);//TODO: handle peer object destruction
 	}
@@ -48,10 +50,19 @@ class Network{
 	static #connectionOpen(e){
 		console.log("conn: open",e);
 	}
-	static async #connectionData(data){
+	
+	static #connectionData(data){
 		console.log("conn: data",data);
-		//TODO: check control source. warn if not network? 
-		//      add method to close() network when mission over
+		//push the packed into a buffer, it will be read during the update() loop
+		Network.#packetBuffer.push(data);
+	}
+	
+	static async update(){
+		if(!Network.#packetBuffer.length){
+			return;//no enqueued packets
+		}
+		//get the latest enqueued packet, and process it
+		const data = Network.#packetBuffer.shift();
 		
 		//TODO: less hacky way of handling data
 		//      to prevent infinite loops, do not let the API send network requests on a packet recieved
@@ -112,7 +123,6 @@ class Network{
 				break;
 		}
 		Sy_api.api_setNetworking(Network);
-		
 	}
 	
 	static host(){
@@ -217,6 +227,7 @@ class Network{
 		Network.#peer.disconnect();
 		Network.#peer.destroy();
 		Network.#peer = null;
+		Network.#packetBuffer = [];
 	}
 }
 

@@ -6,6 +6,7 @@ import { Canvas } from  './components/canvas.js';
 import { GameState,GAME_STATE,CONTROL_SOURCE } from './Game.js';
 import { Renderer } from './renderer/renderer.js';
 import { Animator } from './renderer/animator.js';
+import { Network } from './renderer/network.js';
 import { Script } from './renderer/script.js';
 
 import { ui_idle } from './ui/ui_idle.js';
@@ -106,6 +107,10 @@ class Logic{
 		}
 	}
 	static update(){
+		if(!Animator.isRunning()){
+			Network.update();//this is an async call
+		}
+		
 		//check and execute AI
 		const controlSource = GameState.getControlSource();
 		if(controlSource!=CONTROL_SOURCE.AI){
