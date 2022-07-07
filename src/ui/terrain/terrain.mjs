@@ -226,7 +226,11 @@ const tileLookup = {
 			'ISO_Tile_Snow_02',
 			'ISO_Tile_Snow_02_ToStone_01',
 			'ISO_Tile_Snow_02_ToStone_02'],
-	stone:['ISO_Deco_Stairs_01_Stone_01',
+	stone:[
+			'ISO_Tile_Stone_01',
+			'ISO_Tile_Stone_02',
+			'ISO_Tile_Stone_03',
+			'ISO_Deco_Stairs_01_Stone_01',
 			'ISO_Tile_Riverbed_01',
 			'ISO_Tile_Riverbed_02',
 			'ISO_Tile_Riverbed_03',

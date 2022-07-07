@@ -10,6 +10,7 @@ import { ui_menuCharacter } from "./ui_menuCharacter.mjs";
 import { ui_idle } from "./ui_idle.mjs";
 import { ui_displayMove } from "./ui_displayMove.mjs";
 import { Audio,BGM,SFX } from "../renderer/audio.mjs";
+import { Script } from "../renderer/script.mjs";
 
 
 class ui_menuMap{

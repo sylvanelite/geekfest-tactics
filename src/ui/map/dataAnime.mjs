@@ -65,7 +65,50 @@ const anime_multi_data = {
 };
 
 const anime_1 = {
-	script:null,
+	script:[
+			`{
+				"text":"This is the Anime hall!",
+				"speech":"talk",
+				"left":"chA",
+				"right":"chB",
+				"talk":"left"
+			}`,
+			`{
+				"text":"we can watch shows here",
+				"speech":"talk",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"Wait! over there",
+				"speech":"exclaim",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"Another group of Cosplayers",
+				"speech":"exclaim",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"We must battle!",
+				"speech":"exclaim",
+				"left":"chA",
+				"right":"chB",
+				"talk":"right"
+			}`,
+			`{
+				"text":"Have we been Isekai'ed here?",
+				"speech":"think",
+				"left":"chA",
+				"right":"chB",
+				"talk":"left"
+			}`
+			],
 	units:[
 		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
 		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
@@ -296,7 +339,66 @@ const anime_4 = {
 		]
 	}
 };
-const anime_5 = anime_multi_data;
+const anime_5 = {
+	script:null,
+	units:[
+		new st_Character({ point_xy: Bit.SET_XY(0,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,2), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(1,0), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(1,1), player_state: cbt_PLAYER,  }),
+		new st_Character({ point_xy: Bit.SET_XY(0,0), player_state: cbt_PLAYER,  }),
+		//---
+		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_ENEMY, 
+		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_a_wing:1,
+		sprite_gender:'female'
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(5,4), player_state: cbt_ENEMY, 
+		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_a_wing:1,
+		sprite_gender:'female'
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(6,5), player_state: cbt_ENEMY,  
+		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_a_wing:1,
+		sprite_gender:'female'
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(6,3), player_state: cbt_ENEMY,  
+		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_a_wing:1,
+		sprite_gender:'female'
+		}),
+		new st_Character({ point_xy: Bit.SET_XY(7,5), player_state: cbt_ENEMY,  
+		hp:6,max_hp:6,atk:3,mov:3,min_range:1,max_range:2,
+		sprite_a_wing:1,
+		sprite_gender:'female'
+		})
+		],
+	terrain:{
+			width:9,
+			height:6,
+			fogEnabled:false,
+			terrain:[
+			1 ,1 ,1 ,1 ,1 ,3 ,1 ,3 ,1 ,
+			1 ,1 ,99,1 ,99,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,99,1 ,1 ,1 ,3 ,1 ,
+			1 ,1 ,99,1 ,1 ,1 ,1 ,1 ,1 ,
+			1 ,1 ,1 ,3 ,3 ,1 ,1 ,3 ,1 ,
+			1 ,1 ,1 ,3 ,3 ,1 ,1 ,1 ,1 ,
+			]
+		},
+	display:{
+		scale:1,
+		terrain:[
+			[tg     ],[tg     ],[tg     ],[ta     ],[ta     ],[tf     ],[tg     ],[tf     ],[tg     ],
+			[tg     ],[tw     ],[ta     ],[ta     ],[tw     ],[ta     ],[tg     ],[tg     ],[tg     ],
+			[tg     ],[ta     ],[ta     ],[tw     ],[ta     ],[ta     ],[tg     ],[tf     ],[tg     ],
+			[ta     ],[ta     ],[tw     ],[ta     ],[ta     ],[tg     ],[tg     ],[tg     ],[tg     ],
+			[ta     ],[ta     ],[ta     ],[tf     ],[tf     ],[tg     ],[tg     ],[tf     ],[tg     ],
+			[ta     ],[ta     ],[ta     ],[tf     ],[tf     ],[tg     ],[tg     ],[tg     ],[tg     ],
+		]
+	}
+};
 
 const anime_data = [anime_1,anime_2,anime_3,anime_4,anime_5];
 

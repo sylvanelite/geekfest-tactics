@@ -65,26 +65,14 @@ class Script{
 		chA: Renderer.getSprite(
 						'ui/script_ch.png',
 						0,0,
-						128,128,
+						256,320,
 						0,0
 					),
 		chB: Renderer.getSprite(
 						'ui/script_ch.png',
 						0,0,
-						128,128,
-						128,0
-					),
-		chC: Renderer.getSprite(
-						'ui/script_ch.png',
-						0,0,
-						128,128,
+						256,320,
 						256,0
-					),
-		chD: Renderer.getSprite(
-						'ui/script_ch.png',
-						0,0,
-						128,128,
-						384,0
 					),
 	};
 	
@@ -133,7 +121,7 @@ class Script{
 		*/
 		ctx.fillStyle = "rgba(200,200,200,0.2)";
 		Renderer.drawSprite(Script.#sprites.bg,ctx);	
-		const textPos = {x:255,y:150,xOff:8,yOff:64};
+		const textPos = {x:205,y:150,xOff:8,yOff:64};
 		const lines = Script.#getCurrentLines();
 		if(!lines.length){return};
 		//render previous text by looking at lines[Script.#curScriptPosition-<some amount>]
@@ -162,10 +150,10 @@ class Script{
 		//draw non-active ch
 		const ch_left = Script.#sprites[line.left];
 		const ch_right = Script.#sprites[line.right];
-		ch_left.x = 150;//TODO: ch positions
-		ch_right.x = 650;//TODO: ch positions
-		ch_left.y = 270;//TODO: ch positions
-		ch_right.y = 270;//TODO: ch positions
+		ch_left.x = 75;//TODO: ch positions
+		ch_right.x = 700;//TODO: ch positions
+		ch_left.y = 250;//TODO: ch positions
+		ch_right.y = 250;//TODO: ch positions
 		if(line.talk=="left"){
 		Renderer.drawSprite(ch_left,ctx);
 		}else{
